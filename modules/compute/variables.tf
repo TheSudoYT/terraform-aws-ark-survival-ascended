@@ -52,12 +52,20 @@ variable "ark_subnet_id" {
   type        = string
 }
 
-variable "max_players" {
-  description = "The number of max players the server allows"
-  type = string
-  default = "32"
+variable "ebs_volume_size" {
+  description = "The size of the EBS volume attached to the EC2 instance"
+  type = number
+  default = 50
 }
 
+### Ark application variables ###
+variable "max_players" {
+  description = "The number of max players the server allows"
+  type        = string
+  default     = "32"
+}
+
+// TO DO: Add validation. Query Port cannot be between 27020 and 27050 due to Steam using those ports.
 variable "steam_query_port" {
   description = "The query port for steam server browser"
   type        = number
@@ -72,12 +80,12 @@ variable "game_client_port" {
 
 variable "server_admin_password" {
   description = "The admin password for the Ark server to perform admin commands"
-  type = string
-  default = "adminandypassword"
+  type        = string
+  default     = "adminandypassword"
 }
 
 variable "ark_session_name" {
   description = "The name of the Ark server as it appears in the list of servers when users look for a server to join"
-  type = string
-  default = "ark-aws-ascended"
+  type        = string
+  default     = "ark-aws-ascended"
 }

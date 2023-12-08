@@ -1,5 +1,5 @@
 resource "aws_key_pair" "ssh_key" {
-  count = var.create_ssh_key == true  ? 1 : 0
+  count = var.create_ssh_key == true ? 1 : 0
 
   key_name   = var.ssh_key_name
   public_key = file(var.ssh_public_key)
@@ -23,6 +23,10 @@ resource "aws_instance" "ark_server" {
   vpc_security_group_ids = [var.ark_security_group_id]
 
   user_data = data.template_file.user_data_template.rendered
+
+  root_block_device {
+    volume_size = var.ebs_volume_size
+  }
 }
 
 resource "aws_eip" "ark_server_ip" {

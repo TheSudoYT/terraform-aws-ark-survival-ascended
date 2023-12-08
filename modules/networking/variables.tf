@@ -30,6 +30,7 @@ variable "rcon_port" {
   default     = null
 }
 
+// TO DO: Add validation. Query Port cannot be between 27020 and 27050 due to Steam using those ports.
 variable "steam_query_port" {
   description = "The query port for steam server browser"
   type        = number
