@@ -67,14 +67,14 @@ variable "use_custom_gameusersettings" {
 
 variable "custom_gameusersettings_s3" {
   description = "True or False. Set true if use_custom_gameusersettings is true and you want to upload and download them from an S3 bucket during installation"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "custom_gameusersettings_github" {
   description = "True or False. Set true if use_custom_gameusersettings is true and you want to download them from github. Must be a public repo."
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "game_user_settings_ini_path" {
