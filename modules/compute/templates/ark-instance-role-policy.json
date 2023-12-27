@@ -1,0 +1,20 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "InteractWithS3",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:GetObject",
+                "s3:DeleteObject",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": [
+                %{ if custom_gameusersettings_s3 == true }"${gameusersettings_s3_bucket_arn}",%{ endif }
+                %{ if custom_gameusersettings_s3 == true }"${gameusersettings_s3_bucket_arn}/*"%{ endif }
+            ]
+        }
+    ]
+}

@@ -54,11 +54,47 @@ variable "ark_subnet_id" {
 
 variable "ebs_volume_size" {
   description = "The size of the EBS volume attached to the EC2 instance"
-  type = number
-  default = 50
+  type        = number
+  default     = 50
 }
 
 ### Ark application variables ###
+variable "use_custom_gameusersettings" {
+  description = "True or False. Set true if you want to provide your own GameUserSettings.ini file when the server is started. Required if game_user_settings_ini_path is defined"
+  type        = bool
+  default     = false
+}
+
+variable "custom_gameusersettings_s3" {
+  description = "True or False. Set true if use_custom_gameusersettings is true and you want to upload and download them from an S3 bucket during installation"
+  type = bool
+  default = false
+}
+
+variable "custom_gameusersettings_github" {
+  description = "True or False. Set true if use_custom_gameusersettings is true and you want to download them from github. Must be a public repo."
+  type = bool
+  default = false
+}
+
+variable "game_user_settings_ini_path" {
+  description = "Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_gameusersettings = true"
+  type        = string
+  default     = null
+}
+
+variable "is_password_protected" {
+  description = "True or False. Is a password required for players to join the server"
+  type        = bool
+  default     = true
+}
+
+variable "join_password" {
+  description = "The password required for players to join the server. Only required if is_password_protected = true"
+  type        = string
+  default     = "TinyTrexArms123!"
+}
+
 variable "max_players" {
   description = "The number of max players the server allows"
   type        = string

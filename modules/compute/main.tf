@@ -27,6 +27,10 @@ resource "aws_instance" "ark_server" {
   root_block_device {
     volume_size = var.ebs_volume_size
   }
+
+  tags = {
+    Name = var.ark_session_name
+  }
 }
 
 resource "aws_eip" "ark_server_ip" {
