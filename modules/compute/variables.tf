@@ -65,8 +65,20 @@ variable "use_custom_gameusersettings" {
   default     = false
 }
 
+variable "use_custom_game_ini" {
+  description = "True or False. Set true if you want to provide your own Game.ini file when the server is started. Required if game_user_settings_ini_path is defined"
+  type        = bool
+  default     = false
+}
+
 variable "custom_gameusersettings_s3" {
   description = "True or False. Set true if use_custom_gameusersettings is true and you want to upload and download them from an S3 bucket during installation"
+  type        = bool
+  default     = false
+}
+
+variable "custom_gameini_s3" {
+  description = "True or False. Set true if use_custom_gameini is true and you want to upload and download them from an S3 bucket during installation"
   type        = bool
   default     = false
 }
@@ -77,10 +89,34 @@ variable "custom_gameusersettings_github" {
   default     = false
 }
 
+variable "custom_gameini_github" {
+  description = "True or False. Set true if use_custom_gameini is true and you want to download them from github. Must be a public repo."
+  type        = bool
+  default     = false
+}
+
+variable "custom_gameusersettings_github_url" {
+  description = "The URL to the GameUserSettings.ini file on a public GitHub repo. Used when custom_gameusersettings_github and custom_game_usersettings both == true."
+  type        = string
+  default     = ""
+}
+
+variable "custom_gameini_github_url" {
+  description = "The URL to the Game.ini file on a public GitHub repo. Used when custom_gameini_github and use_custom_game_ini both == true."
+  type        = string
+  default     = ""
+}
+
 variable "game_user_settings_ini_path" {
   description = "Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_gameusersettings = true"
   type        = string
-  default     = null
+  default     = ""
+}
+
+variable "game_ini_path" {
+  description = "Path to Game.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_game_ini = true"
+  type        = string
+  default     = ""
 }
 
 variable "is_password_protected" {

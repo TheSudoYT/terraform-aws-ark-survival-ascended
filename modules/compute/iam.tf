@@ -11,12 +11,13 @@ resource "aws_iam_role_policy" "instance_role_policy" {
 
   name = "ark-instance-role-policy-${data.aws_region.current.name}"
   policy = templatefile(
-    "${path.module}/templates/-instance-role-policy.json",
+    "${path.module}/templates/ark-instance-role-policy.json",
     {
-      gameusersettings_s3_bucket_arn = aws_s3_bucket.ark.id
+      gameusersettings_s3_bucket_arn = aws_s3_bucket.ark[0].arn
+      custom_gameusersettings_s3     = "${var.custom_gameusersettings_s3}"
     }
   )
-  role = aws_iam_role.instance_role.id
+  role = aws_iam_role.instance_role[0].id
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
@@ -24,5 +25,5 @@ resource "aws_iam_instance_profile" "instance_profile" {
 
   name = "ark-instance-profile-${data.aws_region.current.name}"
   path = "/"
-  role = aws_iam_role.instance_role.name
+  role = aws_iam_role.instance_role[0].name
 }

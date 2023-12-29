@@ -24,6 +24,9 @@ resource "aws_instance" "ark_server" {
 
   user_data = data.template_file.user_data_template.rendered
 
+  iam_instance_profile = aws_iam_instance_profile.instance_profile[0].name
+
+
   root_block_device {
     volume_size = var.ebs_volume_size
   }
