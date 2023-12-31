@@ -44,6 +44,10 @@ data "template_file" "user_data_template" {
     github_url_gameini    = var.custom_gameini_github == true ? "${var.custom_gameini_github_url}" : ""
     game_ini_path         = var.custom_gameini_s3 == true ? "${var.game_ini_path}" : ""
     // END Game.ini inputs
+    // START backup related inputs
+    enable_s3_backups               = var.enable_s3_backups
+    backup_s3_bucket_name           = var.backup_s3_bucket_name
+    backup_interval_cron_expression = var.backup_interval_cron_expression
     # Can't use a local file and render into the template to be placed into a file because the allowable length of user_data will be exceeded
     #gameusersettings_contents   = var.use_custom_gameusersettings == true ? file("${var.game_user_settings_ini_path}") : null
   }

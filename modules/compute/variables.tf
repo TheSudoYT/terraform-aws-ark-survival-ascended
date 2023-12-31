@@ -161,3 +161,27 @@ variable "ark_session_name" {
   type        = string
   default     = "ark-aws-ascended"
 }
+
+variable "enable_s3_backups" {
+  description = "True or False. Set to true to enable backing up of the ShooterGame/Saved directory to S3"
+  type        = bool
+  default     = false
+}
+
+variable "backup_s3_bucket_arn" {
+  description = "The ARN of the s3 bucket that you would like to use for ShooterGame/Saved directory backups"
+  type        = string
+  default     = ""
+}
+
+variable "backup_s3_bucket_name" {
+  description = "The name of the S3 bucket to backup the ShooterGame/Saved directory to"
+  type        = string
+  default     = ""
+}
+
+variable "backup_interval_cron_expression" {
+  description = "How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/)"
+  type        = string
+  default     = ""
+}

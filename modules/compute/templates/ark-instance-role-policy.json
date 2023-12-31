@@ -13,7 +13,12 @@
             ],
             "Resource": [
                 %{ if custom_gameusersettings_s3 == true }"${gameusersettings_s3_bucket_arn}",%{ endif }
-                %{ if custom_gameusersettings_s3 == true }"${gameusersettings_s3_bucket_arn}/*"%{ endif }
+                %{ if custom_gameusersettings_s3 == true }"${gameusersettings_s3_bucket_arn}/*",%{ endif }
+                %{ if custom_gameini_s3 == true }"${gameini_s3_bucket_arn}",%{ endif }
+                %{ if custom_gameini_s3 == true }"${gameini_s3_bucket_arn}/*",%{ endif }
+                %{ if enable_s3_backups == true }"${backup_s3_bucket_arn}",%{ endif }
+                %{ if enable_s3_backups == true }"${backup_s3_bucket_arn}/*"%{ endif }
+                
             ]
         }
     ]

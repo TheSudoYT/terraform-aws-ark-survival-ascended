@@ -191,7 +191,7 @@ handle_gameini() {
     local gameini_bucket_arn="$4"
     local github_url_gameini="$5"
 
-    echo "[INFO] CHECKING FOR CUSTOM GameUserSettings.ini OPTIONS"
+    echo "[INFO] CHECKING FOR CUSTOM Game.ini OPTIONS"
     echo "[INFO] use_custom_game_ini SET TO $use_custom_game_ini"
     echo "[INFO] custom_gameini_s3 SET TO $custom_gameini_s3"
     echo "[INFO] custom_gameini_github SET TO $custom_gameini_github"
@@ -214,10 +214,12 @@ handle_gameini() {
 }
 
 if [[ ${use_custom_gameusersettings} == "true" ]]; then
+echo "[INFO] CUSTOM GameUserSettings.INI REQUESTED FOR USE"
 handle_gameusersettings ${use_custom_gameusersettings} ${custom_gameusersettings_s3} ${custom_gameusersettings_github} ${gameusersettings_bucket_arn} ${github_url}
 fi
 
 if [[ ${use_custom_game_ini} == "true" ]]; then
+echo "[INFO] CUSTOM Game.INI REQUESTED FOR USE"
 handle_gameini ${use_custom_game_ini} ${custom_gameini_s3} ${custom_gameini_github} ${gameini_bucket_arn} ${github_url_gameini}
 fi
 
@@ -232,6 +234,35 @@ chown -R steam:steam /ark-asa/ShooterGame/Saved
 
 # Start and enable the ASA service
 systemctl daemon-reload
+echo "[INFO] ENABLING ARK-ISLAND.SERVICE"
 systemctl enable ark-island
+echo "[INFO] STARTING ARK-ISLAND.SERVICE"
 systemctl start ark-island
 
+if [[ ${enable_s3_backups} == "true" ]]; then
+cat > /ark-asa/ark_backup_script.sh <<EOD
+#!/bin/bash
+
+# Backup variables
+DIR_TO_BACKUP="/ark-asa/ShooterGame/Saved"
+S3_BUCKET_NAME="${backup_s3_bucket_name}"
+TIMESTAMP=$(date '+%Y-%m-%d-%H-%M-%S')
+BACKUP_FILENAME="${ark_session_name}_backup_$TIMESTAMP.tar.gz"
+
+# Create backup
+echo "[INFO] Creating Ark Backup"
+tar -zcvf $BACKUP_FILENAME $DIR_TO_BACKUP
+
+# Upload backup to S3
+echo "[INFO] Uploading Ark Backup to s3"
+aws s3 cp $BACKUP_FILENAME s3://$S3_BUCKET_NAME/
+
+# Remove local backup file
+echo "[INFO] Removing Local Ark Backup File"
+rm $BACKUP_FILENAME
+EOD
+
+chmod +x /ark-asa/ark_backup_script.sh
+
+(crontab -l ; echo "${backup_interval_cron_expression} /ark-asa/ark_backup_script.sh >> /ark-asa/ark_backup_log.log 2>&1") | crontab -
+fi

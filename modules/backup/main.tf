@@ -1,22 +1,17 @@
-// get the account ID. Used to create a globally unique S3 bucket name.
 resource "aws_s3_bucket" "ark_backup_bucket" {
   count = var.create_backup_s3_bucket == true ? 1 : 0
 
-  bucket = "${data.aws_caller_identity.current.account_id}-${var.backup_s3_bucket_name}"
+  bucket = "ark-backups-${data.aws_caller_identity.current.account_id}"
 }
 
-resource "aws_s3_bucket_acl" "ark_backup_bucket" {
+resource "aws_s3_bucket_versioning" "ark_backup_versioning" {
   count = var.create_backup_s3_bucket == true ? 1 : 0
 
   bucket = aws_s3_bucket.ark_backup_bucket[0].id
-  acl    = "private"
-}
 
-resource "aws_s3_account_public_access_block" "ark_backup_bucket" {
-  count = var.create_backup_s3_bucket == true ? 1 : 0
-
-  block_public_acls   = true
-  block_public_policy = true
+  versioning_configuration {
+    status = "Disabled"
+  }
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "example" {
