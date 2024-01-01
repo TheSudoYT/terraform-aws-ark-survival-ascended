@@ -1,5 +1,5 @@
 # ark-aws-ascended-infra
-ASA Server Infrastructure
+Ark Survival Ascended (ASA) Server Infrastructure Terraform module.
 
 ## Donate
 I do this in my free time. Consider donating to keep the project going and motivate me to maintain the repo, add new features, etc :)
@@ -8,7 +8,7 @@ I do this in my free time. Consider donating to keep the project going and motiv
 ## Backups
 This module includes the option to enable backups. Enabling this will backup the `ShooterGame/Saved` directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. Versioning, kms, and replication are disabled to save money.
 
->Note: Enabling this creates an additional S3 bucket. In my testing, this adds an additional 0.10 USD ( 10 cents ) a month on average depending on the duration of backup retention, how often you backup, and how often you restore from backup. https://calculator.aws/#/addService
+>Note: Enabling this creates an additional S3 bucket. In testing, this adds an additional 0.10 USD ( 10 cents ) a month on average depending on the duration of backup retention, how often you backup, and how often you restore from backup. https://calculator.aws/#/addService
 
 2 Files will be created on the ark server; `ark_backup_script.sh` on install and `ark_backup_log.log` when the first backup job runs. The backup log should show similiar to the one below if backup is a success:
 ```bash
@@ -40,7 +40,7 @@ An the backup should be visible in the AWS S3 bucket.
 - move data off EBS and restore from the target location OR
 - Restore from EBS snapshot
 - Price difference?
-- 8.9 MB
+- 8.9 MB 
 
 ### Compute
 - Can I make this stateless?
@@ -82,7 +82,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 - Using the GitHub option will simply instruct the user_data script that runs when the server starts to download Game.ini to the server and place it in `/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini`
 
 ## Troubleshooting
-- Monitoring the installation - You can view the user_data script that ran by connecting to your serve via SSH using the public key you provided, ubuntu user, and the IP address of the server. Example: `ssh -i .\ark_public_key ubuntu@34.225.216.87`. Once on the server you can view the progress of the user_data script that installs and configures ark using the command `journalctl -xu cloud-final`. Use the space bar to scroll through the output line by line or `shift+g` to scroll the end of the output. If there is an obvios reason that ark failed to install or start in the way you expect, you can most likely find it here.
+- Monitoring the installation - You can view the user_data script that ran by connecting to your server via SSH using the public key you provided, ubuntu user, and the IP address of the server. Example: `ssh -i .\ark_public_key ubuntu@34.225.216.87`. Once on the server you can view the progress of the user_data script that installs and configures ark using the command `journalctl -xu cloud-final`. Use the space bar to scroll through the output line by line or `shift+g` to scroll the end of the output. If there is an obvios reason that ark failed to install or start in the way you expect, you can most likely find it here.
 
 - Checking the ark service is running - You can run `systemctl status ark-island` to view the status of the ark server. The service should say `Active: active (running)`. If it does not, then the ark server failed to start or has stopped for some reason.
 
@@ -96,7 +96,9 @@ You can use an existing Game.ini so that the server starts with your custom sett
 ## Future Features Roadmap
 | Feature | Target Date |
 | ------- | ----------- |
-| Input for GE Proton | Jan 2024 |
+| RCON port | now |
+| port validation variable | now |
+| Input for GE Proton version | Jan 2024 |
 | Save interval | Jan 2024 |
 | Restart interval | Jan 2024 |
 | Backups - RPO interval, rolling histroy, restoring | Jan 2024 |

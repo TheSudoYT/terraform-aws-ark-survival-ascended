@@ -1,13 +1,5 @@
 module "ark_vpc" {
   source = "./modules/networking"
-
-  vpc_cidr_block = var.vpc_cidr_block
-  subnet_cidr_block = var.subnet_cidr_block
-  subnet_availability_zone = var.subnet_availability_zone
-  enable_rcon = var.enable_rcon
-  rcon_port = var.rcon_port
-  steam_query_port = var.steam_query_port
-  game_client_port = var.game_client_port
 }
 
 module "ark_compute" {
