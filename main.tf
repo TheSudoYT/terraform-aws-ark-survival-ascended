@@ -43,4 +43,5 @@ module "ark_backup" {
 
   create_backup_s3_bucket    = true
   s3_bucket_backup_retention = 7
+  force_destroy              = true
 }

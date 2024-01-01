@@ -246,23 +246,28 @@ cat > /ark-asa/ark_backup_script.sh <<EOD
 # Backup variables
 DIR_TO_BACKUP="/ark-asa/ShooterGame/Saved"
 S3_BUCKET_NAME="${backup_s3_bucket_name}"
-TIMESTAMP=$(date '+%Y-%m-%d-%H-%M-%S')
-BACKUP_FILENAME="${ark_session_name}_backup_$TIMESTAMP.tar.gz"
+
+generate_timestamp() {
+date '+%Y-%m-%d-%H-%M-%S'
+}
+
+TIMESTAMP="\$(generate_timestamp)"
+BACKUP_FILENAME="${ark_session_name}_backup_"\$TIMESTAMP".tar.gz"
 
 # Create backup
 echo "[INFO] Creating Ark Backup"
-tar -zcvf $BACKUP_FILENAME $DIR_TO_BACKUP
+tar -zcvf "\$BACKUP_FILENAME" "\$DIR_TO_BACKUP"
 
 # Upload backup to S3
 echo "[INFO] Uploading Ark Backup to s3"
-aws s3 cp $BACKUP_FILENAME s3://$S3_BUCKET_NAME/
+aws s3 cp "\$BACKUP_FILENAME" s3://"\$S3_BUCKET_NAME"/
 
 # Remove local backup file
 echo "[INFO] Removing Local Ark Backup File"
-rm $BACKUP_FILENAME
+rm "\$BACKUP_FILENAME"
 EOD
 
 chmod +x /ark-asa/ark_backup_script.sh
 
-(crontab -l ; echo "${backup_interval_cron_expression} /ark-asa/ark_backup_script.sh >> /ark-asa/ark_backup_log.log 2>&1") | crontab -
+(crontab -l -u steam 2>/dev/null; echo "${backup_interval_cron_expression} /ark-asa/ark_backup_script.sh >> /ark-asa/ark_backup_log.log 2>&1") | crontab -u steam -
 fi

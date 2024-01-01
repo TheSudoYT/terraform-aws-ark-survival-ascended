@@ -9,3 +9,9 @@ variable "s3_bucket_backup_retention" {
   type        = number
   default     = 7
 }
+
+variable "force_destroy" {
+  description = "True or False. Set to true if you want Terraform destroy commands to have the ability to destroy the backup bucket while it still containts backup files"
+  type        = bool
+  default     = false
+}

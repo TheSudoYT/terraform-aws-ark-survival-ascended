@@ -6,11 +6,41 @@ I do this in my free time. Consider donating to keep the project going and motiv
 
 
 ## Backups
-This module includes the option to enable backups. Enabling this will backup the ShooterGame/Saved directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. 
-- data is persisted on an EBS volume
+This module includes the option to enable backups. Enabling this will backup the `ShooterGame/Saved` directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. Versioning, kms, and replication are disabled to save money.
+
+>Note: Enabling this creates an additional S3 bucket. In my testing, this adds an additional 0.10 USD ( 10 cents ) a month on average depending on the duration of backup retention, how often you backup, and how often you restore from backup. https://calculator.aws/#/addService
+
+2 Files will be created on the ark server; `ark_backup_script.sh` on install and `ark_backup_log.log` when the first backup job runs. The backup log should show similiar to the one below if backup is a success:
+```bash
+ubuntu@ip-10-0-1-250:/ark-asa$ ls
+Engine  Manifest_DebugFiles_Win64.txt  Manifest_NonUFSFiles_Win64.txt  Manifest_UFSFiles_Win64.txt  ShooterGame  ark_backup_log.log  ark_backup_script.sh  compatibilitytools.d  linux64  steamapps  steamclient.so
+ubuntu@ip-10-0-1-250:/ark-asa$ cat ark_backup_log.log 
+[INFO] Creating Ark Backup
+tar: Removing leading `/' from member names
+/ark-asa/ShooterGame/Saved/
+/ark-asa/ShooterGame/Saved/SavedArks/
+/ark-asa/ShooterGame/Saved/SavedArks/TheIsland_WP/
+/ark-asa/ShooterGame/Saved/SavedArks/TheIsland_WP/TheIsland_WP.ark
+/ark-asa/ShooterGame/Saved/Logs/
+/ark-asa/ShooterGame/Saved/Logs/ShooterGame.log
+/ark-asa/ShooterGame/Saved/Logs/FailedWaterDinoSpawns.log
+/ark-asa/ShooterGame/Saved/Config/
+/ark-asa/ShooterGame/Saved/Config/CrashReportClient/
+/ark-asa/ShooterGame/Saved/Config/CrashReportClient/UECC-Windows-9D515DBA45100CBD707E679881FCDE73/
+/ark-asa/ShooterGame/Saved/Config/CrashReportClient/UECC-Windows-9D515DBA45100CBD707E679881FCDE73/CrashReportClient.ini
+/ark-asa/ShooterGame/Saved/Config/WindowsServer/
+/ark-asa/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
+/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini
+[INFO] Uploading Ark Backup to s3
+upload: ./ark-aws-ascended_backup_2024-01-01-18-47-04.tar.gz to s3://ark-backups-12345678912345/ark-aws-ascended_backup_2024-01-01-18-47-04.tar.gz
+[INFO] Removing Local Ark Backup File
+```
+
+An the backup should be visible in the AWS S3 bucket.
 - move data off EBS and restore from the target location OR
 - Restore from EBS snapshot
 - Price difference?
+- 8.9 MB
 
 ### Compute
 - Can I make this stateless?
@@ -51,6 +81,11 @@ You can use an existing Game.ini so that the server starts with your custom sett
 
 - Using the GitHub option will simply instruct the user_data script that runs when the server starts to download Game.ini to the server and place it in `/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini`
 
+## Troubleshooting
+- Monitoring the installation - You can view the user_data script that ran by connecting to your serve via SSH using the public key you provided, ubuntu user, and the IP address of the server. Example: `ssh -i .\ark_public_key ubuntu@34.225.216.87`. Once on the server you can view the progress of the user_data script that installs and configures ark using the command `journalctl -xu cloud-final`. Use the space bar to scroll through the output line by line or `shift+g` to scroll the end of the output. If there is an obvios reason that ark failed to install or start in the way you expect, you can most likely find it here.
+
+- Checking the ark service is running - You can run `systemctl status ark-island` to view the status of the ark server. The service should say `Active: active (running)`. If it does not, then the ark server failed to start or has stopped for some reason.
+
 ## Abandoned Features
 | Feature | Reason for Abandoning | Comparable Feature Implemented |
 | ------------- | ------------- | ------------- |
@@ -72,3 +107,4 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | Allow users to upload existing save game data when the server is started | Feb / March 2024 |
 | Paramterize all available inputs for servers such as rates, crafting resource requirements, supply crate drops, etc. | April 2024 |
 | Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
+| AWS SSM Support | Feb 2024 |
