@@ -1,55 +1,60 @@
 module "ark_vpc" {
   source = "./modules/networking"
 
-  vpc_cidr_block = var.vpc_cidr_block
-  subnet_cidr_block = var.subnet_cidr_block
+  vpc_cidr_block           = var.vpc_cidr_block
+  subnet_cidr_block        = var.subnet_cidr_block
   subnet_availability_zone = var.subnet_availability_zone
-  enable_rcon = var.enable_rcon
-  rcon_port = var.rcon_port
-  steam_query_port = var.steam_query_port
-  game_client_port = var.game_client_port
+  enable_rcon              = var.enable_rcon
+  rcon_port                = var.rcon_port
+  steam_query_port         = var.steam_query_port
+  game_client_port         = var.game_client_port
 }
 
 module "ark_compute" {
   source = "./modules/compute"
 
   // Infrastructure inputs
-  instance_type         = "t3.xlarge"
-  ark_security_group_id = module.ark_vpc.security_group_id
-  ark_subnet_id         = module.ark_vpc.subnet_id
-  create_ssh_key        = true
-  ssh_public_key        = "ark_public_key.pub"
+  instance_type            = var.instance_type
+  ark_security_group_id    = module.ark_vpc.security_group_id
+  ark_subnet_id            = module.ark_vpc.subnet_id
+  create_ssh_key           = var.create_ssh_key
+  ssh_public_key           = var.create_ssh_key == true ? var.ssh_public_key : ""
+  existing_ssh_key_name    = var.existing_ssh_key_name
+  ssh_key_name             = var.ssh_key_name
+  ssh_ingress_allowed_cidr = var.ssh_ingress_allowed_cidr
+  ami_id                   = var.ami_id
+  ebs_volume_size          = var.ebs_volume_size
   // Ark Application inputs
-  ark_session_name      = "ark-aws-ascended"
-  max_players           = "32"
-  steam_query_port      = 27015
-  game_client_port      = 7777
-  server_admin_password = "RockwellSucks"
-  is_password_protected = true
-  join_password         = "RockWellSucks"
+  ark_session_name      = var.ark_session_name
+  max_players           = var.max_players
+  steam_query_port      = var.steam_query_port
+  game_client_port      = var.game_client_port
+  server_admin_password = var.server_admin_password
+  is_password_protected = var.is_password_protected
+  join_password         = var.join_password
   // Custom GameUserSettings.ini inputs
-  use_custom_gameusersettings        = true
-  custom_gameusersettings_s3         = true
-  game_user_settings_ini_path        = "GameUserSettings.ini"
-  custom_gameusersettings_github     = false
-  custom_gameusersettings_github_url = ""
+  use_custom_gameusersettings        = var.use_custom_gameusersettings
+  custom_gameusersettings_s3         = var.custom_gameusersettings_s3
+  game_user_settings_ini_path        = var.game_user_settings_ini_path
+  custom_gameusersettings_github     = var.custom_gameusersettings_github
+  custom_gameusersettings_github_url = var.custom_gameusersettings_github_url
   // Custom Game.ini inputs
-  use_custom_game_ini       = true
-  custom_gameini_s3         = true
-  game_ini_path             = "Game.ini"
-  custom_gameini_github     = false
-  custom_gameini_github_url = ""
+  use_custom_game_ini       = var.use_custom_game_ini
+  custom_gameini_s3         = var.custom_gameini_s3
+  game_ini_path             = var.game_ini_path
+  custom_gameini_github     = var.custom_gameini_github
+  custom_gameini_github_url = var.custom_gameini_github_url
   // Backup inputs
-  enable_s3_backups               = true
-  backup_s3_bucket_name           = module.ark_backup.backup_s3_bucket_name
-  backup_s3_bucket_arn            = module.ark_backup.backup_s3_bucket_arn
-  backup_interval_cron_expression = "*/5 * * * *"
+  enable_s3_backups               = var.enable_s3_backups
+  backup_s3_bucket_name           = var.enable_s3_backups == true ? tostring(module.ark_backup.backup_s3_bucket_name) : ""
+  backup_s3_bucket_arn            = var.enable_s3_backups == true ? tostring(module.ark_backup.backup_s3_bucket_arn) : ""
+  backup_interval_cron_expression = var.backup_interval_cron_expression
 }
 
 module "ark_backup" {
   source = "./modules/backup"
 
-  create_backup_s3_bucket    = true
-  s3_bucket_backup_retention = 7
-  force_destroy              = true
+  create_backup_s3_bucket    = var.create_backup_s3_bucket
+  s3_bucket_backup_retention = var.s3_bucket_backup_retention
+  force_destroy              = var.force_destroy
 }

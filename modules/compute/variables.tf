@@ -45,11 +45,13 @@ variable "instance_type" {
 variable "ark_security_group_id" {
   description = "The ID of the security group to use with the EC2 instance"
   type        = string
+  default     = ""
 }
 
 variable "ark_subnet_id" {
   description = "The ID of the security group to use with the EC2 instance"
   type        = string
+  default     = ""
 }
 
 variable "ebs_volume_size" {

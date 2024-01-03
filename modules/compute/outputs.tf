@@ -38,5 +38,15 @@ output "session_name" {
   value = var.ark_session_name
 }
 
+output "custom_ini_s3_bucket_name" {
+  value = aws_s3_bucket.ark[*].id
+}
 
+output "custom_gameusersettings_file_name" {
+    value = aws_s3_object.gameusersettings[*].key
+}
+
+output "custom_game_file_name" {
+    value = aws_s3_object.gameini[*].key
+}
 
