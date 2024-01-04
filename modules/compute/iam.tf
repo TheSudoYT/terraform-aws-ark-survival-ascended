@@ -7,7 +7,7 @@ resource "aws_iam_role" "instance_role" {
 }
 
 resource "aws_iam_role_policy" "instance_role_policy" {
-  count = var.custom_gameusersettings_s3 == true || var.custom_gameini_s3 == true ? 1 : 0
+  count = var.use_custom_gameusersettings == true && var.custom_gameusersettings_s3 == true || var.use_custom_gameusersettings == true && var.custom_gameini_s3 == true ? 1 : 0
 
   name = "ark-instance-role-policy-${data.aws_region.current.name}"
   policy = templatefile(
@@ -26,7 +26,7 @@ resource "aws_iam_role_policy" "instance_role_policy" {
 
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  count = var.custom_gameusersettings_s3 == true || var.custom_gameini_s3 == true ? 1 : 0
+  count = var.use_custom_gameusersettings == true && var.custom_gameusersettings_s3 == true || var.use_custom_gameusersettings == true && var.custom_gameini_s3 == true ? 1 : 0
 
   name = "ark-instance-profile-${data.aws_region.current.name}"
   path = "/"

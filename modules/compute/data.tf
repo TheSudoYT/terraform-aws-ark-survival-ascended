@@ -31,7 +31,7 @@ data "template_file" "user_data_template" {
     // START GameUserSettings.ini inputs
     use_custom_gameusersettings    = "${var.use_custom_gameusersettings}"
     custom_gameusersettings_s3     = var.use_custom_gameusersettings == true ? "${var.custom_gameusersettings_s3}" : false
-    gameusersettings_bucket_arn    = var.custom_gameusersettings_s3 == true ? "s3://${aws_s3_bucket.ark[0].bucket}/${aws_s3_object.gameusersettings[0].key}" : null
+    gameusersettings_bucket_arn    = var.custom_gameusersettings_s3 == true && length(aws_s3_object.gameusersettings) > 0 ? "s3://${aws_s3_bucket.ark[0].bucket}/${aws_s3_object.gameusersettings[0].key}" : ""
     custom_gameusersettings_github = var.use_custom_gameusersettings == true ? "${var.custom_gameusersettings_github}" : false
     github_url                     = var.custom_gameusersettings_github == true ? "${var.custom_gameusersettings_github_url}" : ""
     game_user_settings_ini_path    = var.custom_gameusersettings_s3 == true ? "${var.game_user_settings_ini_path}" : ""
@@ -39,7 +39,7 @@ data "template_file" "user_data_template" {
     // START Game.ini inputs
     use_custom_game_ini   = "${var.use_custom_game_ini}"
     custom_gameini_s3     = var.use_custom_game_ini == true ? "${var.custom_gameini_s3}" : false
-    gameini_bucket_arn    = var.custom_gameini_s3 == true ? "s3://${aws_s3_bucket.ark[0].bucket}/${aws_s3_object.gameini[0].key}" : null
+    gameini_bucket_arn    = var.custom_gameini_s3 == true && length(aws_s3_object.gameini) > 0 ? "s3://${aws_s3_bucket.ark[0].bucket}/${aws_s3_object.gameini[0].key}" : ""
     custom_gameini_github = var.use_custom_game_ini == true ? "${var.custom_gameini_github}" : false
     github_url_gameini    = var.custom_gameini_github == true ? "${var.custom_gameini_github_url}" : ""
     game_ini_path         = var.custom_gameini_s3 == true ? "${var.game_ini_path}" : ""
