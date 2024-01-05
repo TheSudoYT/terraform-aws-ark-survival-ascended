@@ -2,7 +2,27 @@
 Ark Survival Ascended (ASA) Server Infrastructure Terraform module.
 
 ## Donate
-I do this in my free time. Consider donating to keep the project going and motivate me to maintain the repo, add new features, etc :)
+I do this in my free time. Consider donating to keep the project going and motivate me to maintain the repo, add new features, etc :) 
+
+![Support on Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white) 
+
+[Support on Patreon](https://patreon.com/ThSudo?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=creatorshare_creator&utm_content=join_link)
+
+![Support on By Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)
+
+[Support on BuyMeACoffee](https://www.buymeacoffee.com/TheSudo)
+
+![Subscribe](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
+
+[Subscribe on YouTube](https://www.youtube.com/c/TheSudo)
+
+# How to Use
+## Prerequisites
+You must have the following to use this Terraform module:
+- Terraform version >= 1.3.0 - [Install Terraform](https://developer.hashicorp.com/terraform/install)
+- An AWS account
+
+## Usage
 
 
 ## Backups
