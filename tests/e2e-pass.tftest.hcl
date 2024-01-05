@@ -39,7 +39,7 @@ provider "aws" {}
 // Validate GameUserSettings.ini and Game.ini are uploaded to S3 when desired
 run "validate_custom_ini_files_in_s3" {
 
-  command = plan
+  command = apply
 
   # Check that GameUserSettings.ini exists in S3
   assert {
@@ -52,6 +52,12 @@ run "validate_custom_ini_files_in_s3" {
     condition     = module.ark_compute.custom_game_file_name[0] == "Game.ini"
     error_message = "Invalid Game.ini in S3 or does not exist in S3 when its expected to."
   }
+
+  // assert {
+  //   condition     = data.http.example.status_code[0] == 200
+  //   error_message = "test"
+  // }
+
 }
 
 // Validate GameUserSettings.ini and Game.ini are downloaded from GitHub when desired
@@ -72,24 +78,4 @@ run "validate_custom_ini_files_in_github" {
   }
 }
 
-// Validate e2e without custom ini files declared. Ark uses default ini files its instatiated with.
-run "validate_no_custom_ini_files" {
-
-  command = plan
-
-  variables {
-    use_custom_gameusersettings        = false
-    custom_gameusersettings_s3         = false
-    game_user_settings_ini_path        = ""
-    custom_gameusersettings_github     = false
-    custom_gameusersettings_github_url = ""
-    use_custom_game_ini       = false
-    custom_gameini_s3         = false
-    game_ini_path             = ""
-    custom_gameini_github     = false
-    custom_gameini_github_url = ""
-  }
-
-
-}
 

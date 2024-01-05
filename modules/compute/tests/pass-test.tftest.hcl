@@ -1,7 +1,7 @@
 variables {
   // Infrastructure inputs
-  instance_type         = "t3.large"
-  create_ssh_key        = false
+  instance_type  = "t3.large"
+  create_ssh_key = false
   //ssh_public_key        = "../../ark_public_key.pub"
   // Ark Application inputs
   ark_session_name      = "ark-aws-ascended"
@@ -15,28 +15,28 @@ variables {
   use_custom_gameusersettings        = true
   custom_gameusersettings_s3         = true
   game_user_settings_ini_path        = "TestGameUserSettings.ini"
-  custom_gameusersettings_github     = true
+  custom_gameusersettings_github     = false
   custom_gameusersettings_github_url = "https://raw.githubusercontent.com/TheSudoYT/ark-aws-ascended-infra/initial/TestGameUserSettings.ini?token=GHSAT0AAAAAACLHVUVTQQZCUG376AYN5MWYZMVX54Q"
   // Custom Game.ini inputs
   use_custom_game_ini       = true
   custom_gameini_s3         = true
   game_ini_path             = "TestGame.ini"
-  custom_gameini_github     = true
+  custom_gameini_github     = false
   custom_gameini_github_url = "https://raw.githubusercontent.com/TheSudoYT/ark-aws-ascended-infra/initial/TestGame.ini?token=GHSAT0AAAAAACLHVUVSGK73KOM27224WCJWZMVYDPA"
   // Backup inputs
   enable_s3_backups               = false
   backup_s3_bucket_name           = ""
   backup_s3_bucket_arn            = ""
-  backup_interval_cron_expression = "*/5 * * * *"
-  create_backup_s3_bucket    = false
-  s3_bucket_backup_retention = 7
-  force_destroy              = true
+  backup_interval_cron_expression = "5 5 5 5 5"
+  create_backup_s3_bucket         = false
+  s3_bucket_backup_retention      = 7
+  force_destroy                   = true
 }
 
 provider "aws" {}
 
 // Validate GameUserSettings.ini and Game.ini object when using custom ini with s3
-run "validate_custom_ini_files_s3" {
+run "pass_validate_custom_ini_files_s3" {
 
   command = plan
 
@@ -46,11 +46,11 @@ run "validate_custom_ini_files_s3" {
     game_user_settings_ini_path        = "../../../TestGameUserSettings.ini"
     custom_gameusersettings_github     = false
     custom_gameusersettings_github_url = ""
-    use_custom_game_ini       = true
-    custom_gameini_s3         = true
-    game_ini_path             = "../../../TestGame.ini"
-    custom_gameini_github     = false
-    custom_gameini_github_url = ""
+    use_custom_game_ini                = true
+    custom_gameini_s3                  = true
+    game_ini_path                      = "../../../TestGame.ini"
+    custom_gameini_github              = false
+    custom_gameini_github_url          = ""
   }
 
   # Check that GameUserSettings.ini object expected to exist in s3
@@ -67,7 +67,7 @@ run "validate_custom_ini_files_s3" {
 }
 
 // Just make sure an s3 bucket is not created
-run "validate_custom_ini_files_github" {
+run "pass_validate_custom_ini_files_github" {
 
   command = plan
 
@@ -77,11 +77,11 @@ run "validate_custom_ini_files_github" {
     game_user_settings_ini_path        = "../../../TestGameUserSettings.ini"
     custom_gameusersettings_github     = true
     custom_gameusersettings_github_url = "https://raw.githubusercontent.com/TheSudoYT/ark-aws-ascended-infra/initial/TestGameUserSettings.ini?token=GHSAT0AAAAAACLHVUVTFCHETVPC3XAVTGICZMVYWWQ"
-    use_custom_game_ini       = true
-    custom_gameini_s3         = false
-    game_ini_path             = "../../../TestGame.ini"
-    custom_gameini_github     = true
-    custom_gameini_github_url = "https://raw.githubusercontent.com/TheSudoYT/ark-aws-ascended-infra/initial/TestGame.ini?token=GHSAT0AAAAAACLHVUVTSLPHAJ32H24IUCP4ZMVYWUA"
+    use_custom_game_ini                = true
+    custom_gameini_s3                  = false
+    game_ini_path                      = "../../../TestGame.ini"
+    custom_gameini_github              = true
+    custom_gameini_github_url          = "https://raw.githubusercontent.com/TheSudoYT/ark-aws-ascended-infra/initial/TestGame.ini?token=GHSAT0AAAAAACLHVUVTSLPHAJ32H24IUCP4ZMVYWUA"
   }
 
 
@@ -90,4 +90,46 @@ run "validate_custom_ini_files_github" {
     condition     = length(aws_s3_bucket.ark) == 0
     error_message = "S3 bucket attempting to be created when an S3 bucket is not expected to be created."
   }
+}
+
+// Steam query port passing
+run "pass_validate_steam_query_port_valid" {
+
+  command = plan
+
+  variables {
+    steam_query_port = 27015
+  }
+
+
+  # Check that GameUserSettings.ini object expected to exist in s3
+  assert {
+    condition     = var.steam_query_port < 27020 || var.steam_query_port > 27050
+    error_message = "Steam uses ports 27020 to 27050. Please choose a different query port."
+  }
+}
+
+// Validate e2e without custom ini files declared. Ark uses default ini files its instatiated with.
+run "pass_validate_no_custom_ini_files_s3" {
+
+  command = plan
+
+  variables {
+    use_custom_gameusersettings        = false
+    custom_gameusersettings_s3         = false
+    game_user_settings_ini_path        = ""
+    custom_gameusersettings_github     = false
+    custom_gameusersettings_github_url = ""
+    use_custom_game_ini       = false
+    custom_gameini_s3         = false
+    game_ini_path             = ""
+    custom_gameini_github     = false
+    custom_gameini_github_url = ""
+  }
+
+  assert {
+    condition     = length(aws_s3_bucket.ark) == 0
+    error_message = "An s3 bucket is being created for a .ini file when none is expected."
+  }
+
 }

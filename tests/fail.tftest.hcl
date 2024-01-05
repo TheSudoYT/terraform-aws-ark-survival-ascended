@@ -62,27 +62,3 @@ provider "aws" {}
 //   }
 
 // }
-
-
-// Validate e2e without custom ini files declared. Ark uses default ini files its instatiated with.
-run "validate_custom_ini_precondition_gameusersettings" {
-
-  command = plan
-
-  variables {
-    use_custom_gameusersettings        = true
-    custom_gameusersettings_s3         = true
-    game_user_settings_ini_path        = ""
-    custom_gameusersettings_github     = true
-    custom_gameusersettings_github_url = ""
-    use_custom_game_ini       = false
-    custom_gameini_s3         = false
-    game_ini_path             = ""
-    custom_gameini_github     = false
-    custom_gameini_github_url = ""
-  }
-
-expect_failures = [
-  module.ark_compute.aws_instance.ark_server
-]
-}

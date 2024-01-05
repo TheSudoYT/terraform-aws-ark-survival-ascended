@@ -58,3 +58,13 @@ module "ark_backup" {
   s3_bucket_backup_retention = var.s3_bucket_backup_retention
   force_destroy              = var.force_destroy
 }
+
+# maybe try just using data to look it up instead of getting a return
+  # data "http" "example" {
+  #   count = var.custom_gameusersettings_s3 == true || var.custom_gameini_s3 == true ? 1 : 0
+  #   url = "s3://${module.ark_compute.gameusersettings_s3_bucket[0]}/${module.ark_compute.custom_gameusersettings_file_name[0]}"
+  # }
+
+  # locals {
+    
+  # }
