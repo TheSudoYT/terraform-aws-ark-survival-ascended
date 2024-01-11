@@ -9,7 +9,7 @@ cd modules
 
 for dir in */; do
     cd "$dir" || continue 
-    if [ -d "main.tf" ]; then
+    if [ -f "main.tf" ]; then
         echo "Running terraform init in $dir"
         terraform init
         echo "Running terraform test in $dir"
