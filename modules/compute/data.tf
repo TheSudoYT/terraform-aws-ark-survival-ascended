@@ -22,6 +22,8 @@ data "template_file" "user_data_template" {
   template = file("${path.module}/templates/user_data_script.sh.tpl")
   vars = {
     max_players           = "${var.max_players}"
+    enable_rcon = "${var.enable_rcon}"
+    rcon_port = var.enable_rcon == true ? "${var.rcon_port}" : null
     steam_query_port      = "${var.steam_query_port}"
     game_client_port      = "${var.game_client_port}"
     server_admin_password = "${var.server_admin_password}"
@@ -49,6 +51,18 @@ data "template_file" "user_data_template" {
     backup_s3_bucket_name           = var.backup_s3_bucket_name
     backup_interval_cron_expression = var.backup_interval_cron_expression
     # Can't use a local file and render into the template to be placed into a file because the allowable length of user_data will be exceeded
-    #gameusersettings_contents   = var.use_custom_gameusersettings == true ? file("${var.game_user_settings_ini_path}") : null
+    #gameusersettings_contents   = var.use_custom_gameusersettings == true ? file("${var.game_user_settings_ini_path}") : null  
+    }
+
+  lifecycle {
+    precondition {
+      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false  && var.rcon_port == null
+      error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
+    }
+
+      precondition {
+      condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
+      error_message = "server_admin_password must be set when enable_rcon = true"
+    }
   }
 }

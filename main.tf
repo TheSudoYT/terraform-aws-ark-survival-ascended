@@ -29,6 +29,8 @@ module "ark_compute" {
   max_players           = var.max_players
   steam_query_port      = var.steam_query_port
   game_client_port      = var.game_client_port
+  enable_rcon = var.enable_rcon
+  rcon_port = var.rcon_port
   server_admin_password = var.server_admin_password
   is_password_protected = var.is_password_protected
   join_password         = var.join_password
@@ -46,8 +48,8 @@ module "ark_compute" {
   custom_gameini_github_url = var.custom_gameini_github_url
   // Backup inputs
   enable_s3_backups               = var.enable_s3_backups
-  backup_s3_bucket_name           = var.enable_s3_backups == true ? tostring(module.ark_backup.backup_s3_bucket_name) : ""
-  backup_s3_bucket_arn            = var.enable_s3_backups == true ? tostring(module.ark_backup.backup_s3_bucket_arn) : ""
+  backup_s3_bucket_name           = var.enable_s3_backups == true ? module.ark_backup.backup_s3_bucket_name[0] : ""
+  backup_s3_bucket_arn            = var.enable_s3_backups == true ? module.ark_backup.backup_s3_bucket_arn[0] : ""
   backup_interval_cron_expression = var.backup_interval_cron_expression
 }
 

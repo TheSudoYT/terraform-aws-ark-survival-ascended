@@ -158,6 +158,18 @@ variable "game_client_port" {
   default     = 7777
 }
 
+variable "enable_rcon" {
+  description = "True or False. Enable RCON or not"
+  type        = bool
+  default     = false
+}
+
+variable "rcon_port" {
+  description = "The port number that RCON listens on if enabled"
+  type        = number
+  default     = null
+}
+
 variable "server_admin_password" {
   description = "The admin password for the Ark server to perform admin commands"
   type        = string

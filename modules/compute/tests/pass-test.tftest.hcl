@@ -6,6 +6,8 @@ variables {
   // Ark Application inputs
   ark_session_name      = "ark-aws-ascended"
   max_players           = "32"
+  enable_rcon = false
+  rcon_port = null
   steam_query_port      = 27015
   game_client_port      = 7777
   server_admin_password = "RockwellSucks"
@@ -132,4 +134,54 @@ run "pass_validate_no_custom_ini_files_s3" {
     error_message = "An s3 bucket is being created for a .ini file when none is expected."
   }
 
+}
+
+run "pass_validate_rcon_false_password" {
+
+  command = plan
+
+  variables {
+  enable_rcon = false
+  rcon_port = null
+  steam_query_port      = 27015
+  game_client_port      = 7777
+  server_admin_password = "RockwellSucks"
+  }
+
+  // Test enable_rcon = false with null rcon_port
+  assert {
+      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false  && var.rcon_port == null
+      error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
+  }
+
+  // Test enable_rcon = false with server_admin_password set
+  assert {
+      condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
+      error_message = "server_admin_password must be set when enable_rcon = true"
+  }
+}
+
+run "pass_validate_rcon_true_password" {
+
+  command = plan
+
+  variables {
+  enable_rcon = true
+  rcon_port = 27011
+  steam_query_port      = 27015
+  game_client_port      = 7777
+  server_admin_password = "RockwellSucks"
+  }
+
+  // Test enable_rcon = true with defined rcon_port
+  assert {
+      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false  && var.rcon_port == null
+      error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
+  }
+
+  // Test enable_rcon = true with server_admin_password set
+  assert {
+      condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
+      error_message = "server_admin_password must be set when enable_rcon = true"
+  }
 }

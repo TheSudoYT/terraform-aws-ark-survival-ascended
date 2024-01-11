@@ -79,3 +79,4 @@ run "validate_custom_ini_files_in_github" {
 }
 
 
+// Querry Battlemetrics API

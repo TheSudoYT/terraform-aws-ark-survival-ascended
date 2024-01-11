@@ -26,3 +26,6 @@ Get-ChildItem -Directory | ForEach-Object {
     }
     Set-Location -Path ..
 }
+
+#Notes:
+# powershell -ExecutionPolicy Bypass -File powershell-test.ps1

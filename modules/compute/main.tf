@@ -20,12 +20,12 @@ resource "aws_instance" "ark_server" {
   lifecycle {
     precondition {
       condition     = var.use_custom_gameusersettings == true ? var.use_custom_gameusersettings == true && var.custom_gameusersettings_s3 == true && var.custom_gameusersettings_github == false || var.use_custom_gameusersettings == true && var.custom_gameusersettings_s3 == false && var.custom_gameusersettings_github == true : var.use_custom_gameusersettings == false && var.custom_gameusersettings_s3 == false && var.custom_gameusersettings_github == false
-      error_message = "Cannot use a custom GameUserSettings.ini file from s3 and github at the same time."
+      error_message = "Cannot use a custom GameUserSettings.ini file from s3 and github at the same time OR you have custom_gameusersettings_s3 defined but use_custom_gameusersettings false."
     }
 
     precondition {
       condition     = var.use_custom_game_ini == true ? var.use_custom_game_ini == true && var.custom_gameini_s3 == true && var.custom_gameini_github == false || var.use_custom_game_ini == true && var.custom_gameini_s3 == false && var.custom_gameini_github == true : var.use_custom_game_ini == false && var.custom_gameini_s3 == false && var.custom_gameini_github == false
-      error_message = "Cannot use a custom Game.ini file from s3 and github at the same time."
+      error_message = "Cannot use a custom Game.ini file from s3 and github at the same time OR you have custom_game_s3 defined but use_custom_game_ini false."
     }
   }
 

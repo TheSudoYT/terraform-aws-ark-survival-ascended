@@ -81,6 +81,10 @@ ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServ
 %{ if is_password_protected == "true" ~}
 -ServerPassword=${join_password} \
 %{ endif ~}
+%{ if enable_rcon == "true" ~}
+-RCONEnabled=${enable_rcon} \
+-RCONPort=${rcon_port} \
+%{ endif ~}
 
 Restart=on-failure
 RestartSec=20s

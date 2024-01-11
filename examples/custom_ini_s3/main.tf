@@ -3,11 +3,13 @@ module "asa" {
 
   // Infrastructure inputs
   instance_type  = "t3.large"
-  create_ssh_key = false
-  //ssh_public_key        = ../..ark_public_key.pub"
+  create_ssh_key = true
+  ssh_public_key        = "../../ark_public_key.pub"
   // Ark Application inputs
   ark_session_name      = "ark-aws-ascended"
   max_players           = "32"
+  enable_rcon = true
+  rcon_port = 27011
   steam_query_port      = 27015
   game_client_port      = 7777
   server_admin_password = "RockwellSucks"
@@ -20,7 +22,7 @@ module "asa" {
   custom_gameusersettings_github     = false
   custom_gameusersettings_github_url = "https://raw.githubusercontent.com/TheSudoYT/ark-aws-ascended-infra/initial/TestGameUserSettings.ini?token=GHSAT0AAAAAACLHVUVTFCHETVPC3XAVTGICZMVYWWQ"
   // Custom Game.ini inputs
-  use_custom_game_ini       = false
+  use_custom_game_ini       = true
   custom_gameini_s3         = true
   game_ini_path             = "../../TestGame.ini"
   custom_gameini_github     = false
@@ -30,7 +32,7 @@ module "asa" {
   backup_s3_bucket_name           = ""
   backup_s3_bucket_arn            = ""
   backup_interval_cron_expression = "*/5 * * * *"
-  create_backup_s3_bucket         = false
+  create_backup_s3_bucket         = true
   s3_bucket_backup_retention      = 7
   force_destroy                   = true
 }

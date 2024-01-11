@@ -23,7 +23,7 @@ You must have the following to use this Terraform module:
 - An AWS account
 
 ## Usage
-
+Took 20 minutes on a t3.large
 
 ## Backups
 This module includes the option to enable backups. Enabling this will backup the `ShooterGame/Saved` directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. Versioning, kms, and replication are disabled to save money.
@@ -130,3 +130,4 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | Paramterize all available inputs for servers such as rates, crafting resource requirements, supply crate drops, etc. | April 2024 |
 | Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
 | AWS SSM Support | Feb 2024 |
+| Autoscaling Group Support | Feb 2024 |
