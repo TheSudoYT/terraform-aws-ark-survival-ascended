@@ -11,7 +11,7 @@ apt-get install -y curl lib32gcc1 lsof git awscli
 
 # Install Proton from Glorious Eggroll to allow windows games to run on linux
 echo "[INFO] DOWNLOADING PROTON FROM GE"
-PROTON_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-21/GE-Proton8-21.tar.gz"
+PROTON_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${ge_proton_version}/GE-Proton${ge_proton_version}.tar.gz"
 PROTON_TGZ="$(basename "$PROTON_URL")"
 PROTON_NAME="$(basename "$PROTON_TGZ" ".tar.gz")"
 wget "$PROTON_URL" -O "/opt/steam/$PROTON_TGZ"

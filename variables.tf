@@ -238,3 +238,9 @@ variable "force_destroy" {
   type        = bool
   default     = false
 }
+
+variable "ge_proton_version" {
+  description = "The version of GE Proton to use when installing Ark. Example: 8-21 (https://github.com/GloriousEggroll/proton-ge-custom/releases)"
+  type        = string
+  default     = "8-21"
+}

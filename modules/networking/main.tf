@@ -62,7 +62,7 @@ resource "aws_security_group" "ark_security_group" {
   }
   lifecycle {
     precondition {
-      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false  && var.rcon_port == null
+      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false && var.rcon_port == null
       error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
     }
   }

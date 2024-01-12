@@ -139,7 +139,6 @@ variable "max_players" {
   default     = "32"
 }
 
-// TO DO: Add validation. Query Port cannot be between 27020 and 27050 due to Steam using those ports.
 variable "steam_query_port" {
   description = "The query port for steam server browser"
   type        = number
@@ -210,4 +209,10 @@ variable "backup_interval_cron_expression" {
   #   condition     = can(regex("^(*|(\\/[0-5]?[0-9]|[0-5]?[0-9])(\\,(\\/[0-5]?[0-9]|[0-5]?[0-9]))) (\\|(\\/[0-1]?[0-9]|2[0-3]|[0-1]?[0-9]|2[0-3])(\\,(\\/[0-1]?[0-9]|2[0-3]|[0-1]?[0-9]|2[0-3]))) (\\|(\\/[1-9]|[12][0-9]|3[01]|[1-9]|[12][0-9]|3[01])(\\,(\\/[1-9]|[12][0-9]|3[01]|[1-9]|[12][0-9]|3[01]))) (\\|(\\/[1-9]|1[0-2]|[1-9]|1[0-2])(\\,(\\/[1-9]|1[0-2]|[1-9]|1[0-2]))) (\\|(\\/[0-6]|[0-6])(\\,(\\/[0-6]|[0-6]))*)$", var.backup_interval_cron_expression))
   #   error_message = "The backup_interval_cron_expression must be a valid cron expression."
   # }
+}
+
+variable "ge_proton_version" {
+  description = "The version of GE Proton to use when installing Ark. Example: 8-21 (https://github.com/GloriousEggroll/proton-ge-custom/releases)"
+  type        = string
+  default     = "8-21"
 }

@@ -1,7 +1,7 @@
 variables {
-  create_backup_s3_bucket         = false
-  s3_bucket_backup_retention      = 7
-  force_destroy                   = true
+  create_backup_s3_bucket    = false
+  s3_bucket_backup_retention = 7
+  force_destroy              = true
 }
 
 provider "aws" {}
@@ -11,11 +11,11 @@ run "pass-validate-no-s3-bucket" {
 
   command = plan
 
-variables {
-  create_backup_s3_bucket         = false
-  s3_bucket_backup_retention      = 7
-  force_destroy                   = true
-}
+  variables {
+    create_backup_s3_bucket    = false
+    s3_bucket_backup_retention = 7
+    force_destroy              = true
+  }
 
   assert {
     condition     = length(aws_s3_bucket.ark_backup_bucket) == 0

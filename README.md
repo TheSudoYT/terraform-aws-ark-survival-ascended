@@ -116,9 +116,9 @@ You can use an existing Game.ini so that the server starts with your custom sett
 ## Future Features Roadmap
 | Feature | Target Date |
 | ------- | ----------- |
-| RCON port | now |
-| port validation variable | now |
-| Input for GE Proton version | Jan 2024 |
+| RCON port | :white_check_mark: |
+| port validation variable | :white_check_mark: |
+| Input for GE Proton version | :white_check_mark: |
 | Save interval | Jan 2024 |
 | Restart interval | Jan 2024 |
 | Backups - RPO interval, rolling histroy, restoring | Jan 2024 |

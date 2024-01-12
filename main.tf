@@ -14,6 +14,7 @@ module "ark_compute" {
   source = "./modules/compute"
 
   // Infrastructure inputs
+  ge_proton_version        = var.ge_proton_version
   instance_type            = var.instance_type
   ark_security_group_id    = module.ark_vpc.security_group_id
   ark_subnet_id            = module.ark_vpc.subnet_id
@@ -29,8 +30,8 @@ module "ark_compute" {
   max_players           = var.max_players
   steam_query_port      = var.steam_query_port
   game_client_port      = var.game_client_port
-  enable_rcon = var.enable_rcon
-  rcon_port = var.rcon_port
+  enable_rcon           = var.enable_rcon
+  rcon_port             = var.rcon_port
   server_admin_password = var.server_admin_password
   is_password_protected = var.is_password_protected
   join_password         = var.join_password
@@ -62,11 +63,11 @@ module "ark_backup" {
 }
 
 # maybe try just using data to look it up instead of getting a return
-  # data "http" "example" {
-  #   count = var.custom_gameusersettings_s3 == true || var.custom_gameini_s3 == true ? 1 : 0
-  #   url = "s3://${module.ark_compute.gameusersettings_s3_bucket[0]}/${module.ark_compute.custom_gameusersettings_file_name[0]}"
-  # }
+# data "http" "example" {
+#   count = var.custom_gameusersettings_s3 == true || var.custom_gameini_s3 == true ? 1 : 0
+#   url = "s3://${module.ark_compute.gameusersettings_s3_bucket[0]}/${module.ark_compute.custom_gameusersettings_file_name[0]}"
+# }
 
-  # locals {
-    
-  # }
+# locals {
+
+# }

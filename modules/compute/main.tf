@@ -52,3 +52,14 @@ resource "aws_instance" "ark_server" {
 resource "aws_eip" "ark_server_ip" {
   instance = aws_instance.ark_server.id
 }
+
+check "ge_proton_version_check" {
+  data "http" "ge_proton" {
+    url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/tag/GE-Proton${var.ge_proton_version}"
+  }
+
+  assert {
+    condition     = data.http.ge_proton.status_code == 200
+    error_message = "${data.http.ge_proton.url} returned an unhealthy status code for version ${var.ge_proton_version}"
+  }
+}

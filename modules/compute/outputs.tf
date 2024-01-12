@@ -43,11 +43,11 @@ output "custom_ini_s3_bucket_name" {
 }
 
 output "custom_gameusersettings_file_name" {
-    value = aws_s3_object.gameusersettings[*].key
+  value = aws_s3_object.gameusersettings[*].key
 }
 
 output "custom_game_file_name" {
-    value = aws_s3_object.gameini[*].key
+  value = aws_s3_object.gameini[*].key
 }
 
 // the contents of the file

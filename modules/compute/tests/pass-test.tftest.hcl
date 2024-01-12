@@ -1,13 +1,14 @@
 variables {
   // Infrastructure inputs
-  instance_type  = "t3.large"
-  create_ssh_key = false
+  ge_proton_version = "8-27"
+  instance_type     = "t3.large"
+  create_ssh_key    = false
   //ssh_public_key        = "../../ark_public_key.pub"
   // Ark Application inputs
   ark_session_name      = "ark-aws-ascended"
   max_players           = "32"
-  enable_rcon = false
-  rcon_port = null
+  enable_rcon           = false
+  rcon_port             = null
   steam_query_port      = 27015
   game_client_port      = 7777
   server_admin_password = "RockwellSucks"
@@ -122,11 +123,11 @@ run "pass_validate_no_custom_ini_files_s3" {
     game_user_settings_ini_path        = ""
     custom_gameusersettings_github     = false
     custom_gameusersettings_github_url = ""
-    use_custom_game_ini       = false
-    custom_gameini_s3         = false
-    game_ini_path             = ""
-    custom_gameini_github     = false
-    custom_gameini_github_url = ""
+    use_custom_game_ini                = false
+    custom_gameini_s3                  = false
+    game_ini_path                      = ""
+    custom_gameini_github              = false
+    custom_gameini_github_url          = ""
   }
 
   assert {
@@ -141,23 +142,23 @@ run "pass_validate_rcon_false_password" {
   command = plan
 
   variables {
-  enable_rcon = false
-  rcon_port = null
-  steam_query_port      = 27015
-  game_client_port      = 7777
-  server_admin_password = "RockwellSucks"
+    enable_rcon           = false
+    rcon_port             = null
+    steam_query_port      = 27015
+    game_client_port      = 7777
+    server_admin_password = "RockwellSucks"
   }
 
   // Test enable_rcon = false with null rcon_port
   assert {
-      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false  && var.rcon_port == null
-      error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
+    condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false && var.rcon_port == null
+    error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
   }
 
   // Test enable_rcon = false with server_admin_password set
   assert {
-      condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
-      error_message = "server_admin_password must be set when enable_rcon = true"
+    condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
+    error_message = "server_admin_password must be set when enable_rcon = true"
   }
 }
 
@@ -166,22 +167,41 @@ run "pass_validate_rcon_true_password" {
   command = plan
 
   variables {
-  enable_rcon = true
-  rcon_port = 27011
-  steam_query_port      = 27015
-  game_client_port      = 7777
-  server_admin_password = "RockwellSucks"
+    enable_rcon           = true
+    rcon_port             = 27011
+    steam_query_port      = 27015
+    game_client_port      = 7777
+    server_admin_password = "RockwellSucks"
   }
 
   // Test enable_rcon = true with defined rcon_port
   assert {
-      condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false  && var.rcon_port == null
-      error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
+    condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false && var.rcon_port == null
+    error_message = "rcon_port is defined when enable_rcon = false. rcon_port must be null unless enable_rcon = true."
   }
 
   // Test enable_rcon = true with server_admin_password set
   assert {
-      condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
-      error_message = "server_admin_password must be set when enable_rcon = true"
+    condition     = var.enable_rcon == true && var.server_admin_password != "" || var.enable_rcon == false
+    error_message = "server_admin_password must be set when enable_rcon = true"
+  }
+}
+
+run "pass_validate_proton_version" {
+
+  command = plan
+
+  module {
+    source = "./tests/setup"
+  }
+
+  variables {
+    ge_proton_version = "8-27"
+  }
+
+
+  assert {
+    condition     = data.http.ge_proton.status_code == 200
+    error_message = "${data.http.ge_proton.url} returned an unhealthy status code for version ${var.ge_proton_version}"
   }
 }
