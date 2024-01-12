@@ -219,12 +219,236 @@ variable "ge_proton_version" {
 
 variable "auto_save_interval" {
   description = "Set interval for automatic saves. Setting this to 0 will cause constant saving."
-  type        = string
-  default     = "15.0"
+  type        = number
+  default     = 15.0
 
   # validation {
   #   condition     = can(regex("^[0-9]*\\.?[0-9]+$", var.auto_save_interval))
   #   error_message = "Invalid auto_save_interval value. Must be a float number. This pattern allows float numbers like 15.0, 3.14, etc."
   # }
 
+}
+
+variable "use_battleye" {
+  type = bool
+  description = "True or False. True will set the -noBattlEye flag."
+  default = false
+}
+
+// placeholder
+variable "taming_speed_multiplier" {
+  description = "Specifies the scaling factor for creature taming speed. Higher values make taming faster."
+  type        = number
+  default     = 1.0
+}
+
+
+variable "xp_multiplier" {
+  description = "Specifies the scaling factor for the experience received by players, tribes and tames for various actions. The default value 1 provides the same amounts of experience as in the single player experience (and official public servers). Higher values increase XP amounts awarded for various actions; lower values decrease it."
+  type        = number
+  default     = 1.0
+}
+
+variable "server_pve" {
+  description = "If True, disables PvP and enables PvE."
+  type        = bool
+  default     = false
+}
+
+variable "admin_logging" {
+  description = "If True, logs all admin commands to in-game chat."
+  type        = bool
+  default     = false
+}
+
+variable "allow_anyone_baby_imprint_cuddle" {
+  description = "If True, allows anyone to take care of a baby creatures (cuddle etc.), not just whomever imprinted on it."
+  type        = bool
+  default     = false
+}
+
+variable "allow_flyer_carry_pve" {
+  description = "If True, allows flying creatures to pick up wild creatures in PvE."
+  type        = bool
+  default     = false
+}
+
+variable "allow_raid_dino_feeding" {
+  description = "If True, allows Titanosaurs to be permanently tamed (namely allow them to be fed). Note: in The Island only spawns a maximum of 3 Titanosaurs, so 3 tamed ones should ultimately block any more ones from spawning."
+  type        = bool
+  default     = false
+}
+
+variable "allow_third_person_player" {
+  description = "If False, disables third person camera allowed by default on all dedicated servers."
+  type        = bool
+  default     = true
+}
+
+variable "always_allow_structure_pickup" {
+  description = "If True disables the timer on the quick pick-up system."
+  type        = bool
+  default     = false
+}
+
+variable "clamp_resource_harvest_damage" {
+  description = "If True, limit the damage caused by a tame to a resource on harvesting based on resource remaining health. Note: enabling this setting may result in sensible resource harvesting reduction using high damage tools or creatures."
+  type        = bool
+  default     = false
+}
+
+variable "day_cycle_speed_scale" {
+  description = "Specifies the scaling factor for the passage of time in the ARK during the day. This value determines the length of each day, relative to the length of each night (as specified by NightTimeSpeedScale). Lowering this value increases the length of each day."
+  type        = number
+  default     = 1.0
+}
+
+variable "night_time_speed_scale" {
+  description = "Specifies the scaling factor for the passage of time in the ARK during night time. This value determines the length of each night, relative to the length of each day (as specified by DayTimeSpeedScale) Lowering this value increases the length of each night."
+  type        = number
+  default     = 1.0
+}
+
+variable "day_time_speed_scale" {
+  description = "Specifies the scaling factor for the passage of time in the ARK during the day. This value determines the length of each day, relative to the length of each night (as specified by NightTimeSpeedScale). Lowering this value increases the length of each day."
+  type        = number
+  default     = 1.0
+}
+
+variable "difficulty_offset" {
+  description = "Specifies the difficulty level."
+  type        = number
+  default     = 1.0
+}
+
+variable "dino_character_food_drain_multiplier" {
+  description = "Specifies the scaling factor for creatures' food consumption. Higher values increase food consumption (creatures get hungry faster). It also affects the taming-times."
+  type        = number
+  default     = 1.0
+}
+
+variable "dino_character_health_recovery_multiplier" {
+  description = "Specifies the scaling factor for creatures' health recovery. Higher values increase the recovery rate (creatures heal faster)."
+  type        = number
+  default     = 1.0
+}
+
+variable "dino_character_stamina_drain_multiplier" {
+  description = "Specifies the scaling factor for creatures' stamina consumption. Higher values increase stamina consumption (creatures get tired faster)."
+  type        = number
+  default     = 1.0
+}
+
+variable "dino_damage_multiplier" {
+  description = "Specifies the scaling factor for the damage wild creatures deal with their attacks. The default value 1 provides normal damage. Higher values increase damage. Lower values decrease it."
+  type        = number
+  default     = 1.0
+}
+
+variable "dino_resistance_multiplier" {
+  description = "Specifies the scaling factor for the resistance to damage wild creatures receive when attacked. The default value 1 provides normal damage. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack. A value of 0.5 results in a creature taking half damage while a value of 2.0 would result in a creature taking double normal damage."
+  type        = number
+  default     = 1.0
+}
+
+variable "disable_dino_decay_pve" {
+  description = "If True, disables the creature decay in PvE mode. Note: after patch 273.691, in PvE mode the creature auto-unclaim after decay period has been disabled."
+  type        = bool
+  default     = false
+}
+
+variable "disable_imprint_dino_buff" {
+  description = "If True, disables the creature imprinting player Stat Bonus. Where whomever specifically imprinted on the creature, and raised it to have an Imprinting Quality, gets extra Damage/Resistance buff."
+  type        = bool
+  default     = false
+}
+
+variable "disable_pve_gamma" {
+  description = "If True, prevents use of console command gamma in PvE mode."
+  type        = bool
+  default     = false
+}
+
+variable "enable_pvp_gamma" {
+  description = "If True, allows use of console command gamma in PvP mode."
+  type        = bool
+  default     = false
+}
+
+variable "disable_structure_decay_pve" {
+  description = "If True, disables the gradual auto-decay of player structures."
+  type        = bool
+  default     = false
+}
+
+variable "disable_weather_fog" {
+  description = "If True, disables fog."
+  type        = bool
+  default     = false
+}
+
+variable "dont_notify_player_joined" {
+  description = "If True, globally disables player joins notifications."
+  type        = bool
+  default     = false
+}
+
+variable "enable_extra_structure_prevention_volumes" {
+  description = "If True, disables building in specific resource-rich areas, in particular setup on The Island around the major mountains."
+  type        = bool
+  default     = false
+}
+
+variable "harvest_ammount_multiplier" {
+  description = "Specifies the scaling factor for yields from all harvesting activities (chopping down trees, picking berries, carving carcasses, mining rocks, etc.). Higher values increase the amount of materials harvested with each strike."
+  type        = number
+  default     = 1.0
+}
+
+variable "harvest_health_multiplier" {
+  description = "Specifies the scaling factor for the health of items that can be harvested (trees, rocks, carcasses, etc.). Higher values increase the amount of damage (i.e., number of strikes) such objects can withstand before being destroyed, which results in higher overall harvest yields."
+  type        = number
+  default     = 1.0
+}
+
+variable "item_stack_size_multiplier" {
+  description = "Allow increasing or decreasing global item stack size, this means all default stack sizes will be multiplied by the value given (excluding items that have a stack size of 1 by default)."
+  type        = number
+  default     = 1.0
+}
+
+variable "kick_idle_player_period" {
+  description = "Time in seconds after which characters that have not moved or interacted will be kicked (if -EnableIdlePlayerKick as command line parameter is set). Note: although at code level it is defined as a floating-point number, it is suggested to use an integer instead."
+  type        = number
+  default     = 3600.0
+}
+
+variable "max_personal_tamed_dinos" {
+  description = "Sets a per-tribe creature tame limit (500 on official PvE servers, 300 in official PvP servers). The default value of 0 disables such limit."
+  type        = number
+  default     = 0
+}
+
+variable "max_platform_saddle_structure_limit" {
+  description = "Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK."
+  type        = number
+  default     = 75
+}
+
+variable "max_tamed_dinos" {
+  description = "Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK."
+  type        = number
+  default     = 5000.0
+}
+
+variable "non_permanent_diseases" {
+  description = "If True, makes permanent diseases not permanent. Players will lose them if on re-spawn."
+  type        = bool
+  default     = false
+}
+
+variable "override_official_difficulty" {
+  description = "Allows you to override the default server difficulty level of 4 with 5 to match the new official server difficulty level. Default value of 0.0 disables the override. A value of 5.0 will allow common creatures to spawn up to level 150. Originally (247.95) available only as command line option."
+  type        = number
+  default     = 0.0
 }

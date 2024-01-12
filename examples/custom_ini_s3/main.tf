@@ -2,12 +2,13 @@ module "asa" {
   source = "../../"
 
   // Infrastructure inputs
-  auto_save_interval = "20.0"
   ge_proton_version  = "8-27"
   instance_type      = "t3.xlarge"
   create_ssh_key     = true
   ssh_public_key     = "../../ark_public_key.pub"
   // Ark Application inputs
+  use_battleye = false
+  auto_save_interval = 20.0
   ark_session_name      = "ark-aws-ascended"
   max_players           = "32"
   enable_rcon           = true

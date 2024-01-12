@@ -86,6 +86,9 @@ ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServ
 -RCONEnabled=${enable_rcon} \
 -RCONPort=${rcon_port} \
 %{ endif ~}
+%{ if use_battleye != "true" ~}
+-NoBattlEye \
+%{ endif ~}
 
 Restart=on-failure
 RestartSec=20s

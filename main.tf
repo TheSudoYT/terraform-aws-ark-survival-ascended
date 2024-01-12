@@ -14,7 +14,6 @@ module "ark_compute" {
   source = "./modules/compute"
 
   // Infrastructure inputs
-  auto_save_interval       = var.auto_save_interval
   ge_proton_version        = var.ge_proton_version
   instance_type            = var.instance_type
   ark_security_group_id    = module.ark_vpc.security_group_id
@@ -27,6 +26,8 @@ module "ark_compute" {
   ami_id                   = var.ami_id
   ebs_volume_size          = var.ebs_volume_size
   // Ark Application inputs
+  use_battleye = var.use_battleye
+  auto_save_interval       = var.auto_save_interval
   ark_session_name      = var.ark_session_name
   max_players           = var.max_players
   steam_query_port      = var.steam_query_port

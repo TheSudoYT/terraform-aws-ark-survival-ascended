@@ -119,7 +119,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | RCON port | :white_check_mark: |
 | port validation variable | :white_check_mark: |
 | Input for GE Proton version | :white_check_mark: |
-| Save interval | Jan 2024 |
+| Save interval | :white_check_mark: |
 | -noBattlEye | Jan 2024 |
 | lifecycle ignore ssh 22 | meh |
 | Restart interval | Jan 2024 |
