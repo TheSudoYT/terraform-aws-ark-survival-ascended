@@ -73,7 +73,8 @@ WorkingDirectory=/ark-asa/ShooterGame/Binaries/Win64
 Environment=XDG_RUNTIME_DIR=/run/user/$(id -u)
 Environment="STEAM_COMPAT_CLIENT_INSTALL_PATH=$STEAMDIR"
 Environment="STEAM_COMPAT_DATA_PATH=$STEAMDIR/steamapps/compatdata/2430930"
-ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServer.exe TheIsland_WP?listen?SessionName=${ark_session_name} \
+ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServer.exe TheIsland_WP?listen?SessionName=${ark_session_name}%{ if auto_save_interval != "15.0" ~}
+?AutoSavePeriodMinutes=${auto_save_interval}%{ endif ~} \
 -ServerAdminPassword=${server_admin_password} \
 -Port=${game_client_port} \
 -QueryPort=${steam_query_port} \
@@ -84,9 +85,6 @@ ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServ
 %{ if enable_rcon == "true" ~}
 -RCONEnabled=${enable_rcon} \
 -RCONPort=${rcon_port} \
-%{ endif ~}
-%{ if auto_save_interval != "15.0" ~}
--AutoSavePeriodMinutes=${auto_save_interval} \
 %{ endif ~}
 
 Restart=on-failure
