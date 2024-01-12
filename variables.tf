@@ -244,3 +244,15 @@ variable "ge_proton_version" {
   type        = string
   default     = "8-21"
 }
+
+variable "auto_save_interval" {
+  description = "Set interval for automatic saves. Must be a float. pattern allows float numbers like 15.0, 3.14, etc. Setting this to 0 will cause constant saving."
+  type        = string
+  default     = "15.0"
+
+  #   validation {
+  # condition     = can(regex("^[0-9]+\\\\.[0-9]+$", var.auto_save_interval))
+  #     error_message = "Invalid auto_save_interval value. Must be a float number. This pattern allows float numbers like 15.0, 3.14, etc."
+  #   }
+
+}

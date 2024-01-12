@@ -13,6 +13,7 @@ resource "aws_security_group_rule" "allow_ssh" {
   protocol          = "tcp"
   cidr_blocks       = var.ssh_ingress_allowed_cidr
   security_group_id = var.ark_security_group_id
+
 }
 
 resource "aws_instance" "ark_server" {

@@ -120,6 +120,8 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | port validation variable | :white_check_mark: |
 | Input for GE Proton version | :white_check_mark: |
 | Save interval | Jan 2024 |
+| -noBattlEye | Jan 2024 |
+| lifecycle ignore ssh 22 | meh |
 | Restart interval | Jan 2024 |
 | Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
 | Inputs for platform type | Jan 2024 |

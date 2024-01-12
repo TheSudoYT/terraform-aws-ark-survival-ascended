@@ -21,6 +21,7 @@ data "aws_region" "current" {}
 data "template_file" "user_data_template" {
   template = file("${path.module}/templates/user_data_script.sh.tpl")
   vars = {
+    auto_save_interval    = "${var.auto_save_interval}"
     ge_proton_version     = "${var.ge_proton_version}"
     max_players           = "${var.max_players}"
     enable_rcon           = "${var.enable_rcon}"

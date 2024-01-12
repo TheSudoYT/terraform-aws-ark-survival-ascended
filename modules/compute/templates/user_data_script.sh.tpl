@@ -85,6 +85,9 @@ ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServ
 -RCONEnabled=${enable_rcon} \
 -RCONPort=${rcon_port} \
 %{ endif ~}
+%{ if auto_save_interval != "15.0" ~}
+-AutoSavePeriodMinutes=${auto_save_interval} \
+%{ endif ~}
 
 Restart=on-failure
 RestartSec=20s

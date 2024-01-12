@@ -14,6 +14,7 @@ module "ark_compute" {
   source = "./modules/compute"
 
   // Infrastructure inputs
+  auto_save_interval       = var.auto_save_interval
   ge_proton_version        = var.ge_proton_version
   instance_type            = var.instance_type
   ark_security_group_id    = module.ark_vpc.security_group_id
