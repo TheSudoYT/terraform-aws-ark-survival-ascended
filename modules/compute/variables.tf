@@ -452,3 +452,165 @@ variable "override_official_difficulty" {
   type        = number
   default     = 0.0
 }
+
+variable "override_structure_platform_prevention" {
+  description = "If True, turrets becomes be buildable and functional on platform saddles. Since 247.999 applies on spike structure too. Note: despite patch notes, in ShooterGameServer it's coded OverrideStructurePlatformPrevention with two r."
+  type        = bool
+  default     = false
+}
+
+variable "oxygen_swim_speed_multiplier" {
+  description = "Use this to set how swim speed is multiplied by level spent in oxygen. The value was reduced by 80% in 256.0."
+  type        = number
+  default     = 1.0
+}
+
+variable "per_platform_max_structure_multiplier" {
+  description = "Higher value increases (from a percentage scale) max number of items place-able on saddles and rafts."
+  type        = number
+  default     = 1.0
+}
+
+variable "platform_saddle_build_area_bounds_multiplier" {
+  description = "Increasing the number allows structures being placed further away from the platform."
+  type        = number
+  default     = 1.0
+}
+
+variable "player_character_food_drain_multiplier" {
+  description = "Specifies the scaling factor for player characters' food consumption. Higher values increase food consumption (player characters get hungry faster)."
+  type        = number
+  default     = 1.0
+}
+
+variable "player_character_health_recovery_multiplier" {
+  description = "Specifies the scaling factor for player characters' health recovery. Higher values increase the recovery rate (player characters heal faster)."
+  type        = number
+  default     = 1.0
+}
+
+variable "player_character_stamina_drain_multiplier" {
+  description = "Specifies the scaling factor for player characters' stamina consumption. Higher values increase stamina consumption (player characters get tired faster)."
+  type        = number
+  default     = 1.0
+}
+
+variable "player_character_water_drain_multiplier" {
+  description = "Specifies the scaling factor for player characters' water consumption. Higher values increase water consumption (player characters get thirsty faster)."
+  type        = number
+  default     = 1.0
+}
+
+variable "player_damage_multiplier" {
+  description = "Specifies the scaling factor for the damage players deal with their attacks. The default value 1 provides normal damage. Higher values increase damage. Lower values decrease it."
+  type        = number
+  default     = 1.0
+}
+
+variable "player_resistance_multiplier" {
+  description = "Specifies the scaling factor for the resistance to damage players receive when attacked. The default value 1 provides normal damage. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack. A value of 0.5 results in a player taking half damage while a value of 2.0 would result in taking double normal damage."
+  type        = number
+  default     = 1.0
+}
+
+variable "prevent_diseases" {
+  description = "If True, completely diseases on the server. Thus far just Swamp Fever."
+  type        = bool
+  default     = false
+}
+
+variable "prevent_mate_boost" {
+  description = "If True, disables creature mate boosting."
+  type        = bool
+  default     = false
+}
+
+variable "prevent_offline_pvp" {
+  description = "If True, enables the Offline Raiding Prevention (ORP). When all tribe members are logged off, tribe characters, creature and structures become invulnerable. Creature starvation still applies, moreover, characters and creature can still die if drowned. Despite the name, it works on both PvE and PvP game modes. Due to performance reason, it is recommended to set a minimum interval with PreventOfflinePvPInterval option before ORP becomes active. ORP also helps lowering memory and CPU usage on a server. Enabled by default on Official PvE since 258.3"
+  type        = bool
+  default     = false
+}
+
+variable "prevent_offline_pvp_interval" {
+  description = "Seconds to wait before a ORP becomes active for tribe/players and relative creatures/structures (10 seconds in official PvE servers). Note: although at code level it is defined as a floating-point number, it is suggested to use an integer instead."
+  type        = number
+  default     = 0.0
+}
+
+variable "prevent_spawn_animations" {
+  description = "If True, player characters (re)spawn without the wake-up animation."
+  type        = bool
+  default     = false
+}
+
+variable "prevent_tribe_alliances" {
+  description = "If True, prevents tribes from creating Alliances."
+  type        = bool
+  default     = false
+}
+
+variable "pve_allow_structures_at_supply_drops" {
+  description = "If True, allows building near supply drop points in PvE mode."
+  type        = bool
+  default     = false
+}
+
+variable "raid_dino_character_food_drain_multiplier" {
+  description = "Affects how quickly the food drains on such raid dinos (e.g.: Titanosaurus)"
+  type        = number
+  default     = 1.0
+}
+
+variable "random_supply_crate_pionts" {
+  description = "If True, supply drops are in random locations. Note: This setting is known to cause artifacts becoming inaccessible on Ragnarok if active."
+  type        = bool
+  default     = false
+}
+
+variable "rcon_server_game_log_buffer" {
+  description = "Determines how many lines of game logs are send over the RCON. Note: despite being coded as a float it's suggested to treat it as integer."
+  type        = number
+  default     = 600.0
+}
+
+variable "resource_respawn_period_multiplier" {
+  description = "Specifies the scaling factor for the re-spawn rate for resource nodes (trees, rocks, bushes, etc.). Lower values cause nodes to re-spawn more frequently."
+  type        = number
+  default     = 1.0
+}
+
+variable "server_hardcore" {
+  description = "If True, enables Hardcore mode (player characters revert to level 1 upon death)"
+  type        = bool
+  default     = false
+}
+
+variable "structure_pickup_hold_duration" {
+  description = "Specifies the quick pick-up hold duration, a value of 0 results in instant pick-up."
+  type        = number
+  default     = 0.5
+}
+
+variable "structure_pickup_time_after_placement" {
+  description = "Amount of time in seconds after placement that quick pick-up is available."
+  type        = number
+  default     = 30.0
+}
+
+variable "structure_prevent_resource_radius_multiplier" {
+  description = "Same as ResourceNoReplenishRadiusStructures in Game.ini. If both settings are set both multiplier will be applied. Can be useful when cannot change the Game.ini file as it works as a command line option too."
+  type        = number
+  default     = 1.0
+}
+
+variable "structure_resistance_multiplier" {
+  description = "Specifies the scaling factor for the resistance to damage structures receive when attacked. The default value 1 provides normal damage. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack. A value of 0.5 results in a structure taking half damage while a value of 2.0 would result in a structure taking double normal damage."
+  type        = number
+  default     = 1.0
+}
+
+variable "the_max_structure_in_range" {
+  description = "Specifies the maximum number of structures that can be constructed within a certain (currently hard-coded) range. Replaces the old value NewMaxStructuresInRange"
+  type        = number
+  default     = 10500
+}

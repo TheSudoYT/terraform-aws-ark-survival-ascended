@@ -120,8 +120,9 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | port validation variable | :white_check_mark: |
 | Input for GE Proton version | :white_check_mark: |
 | Save interval | :white_check_mark: |
-| -noBattlEye | Jan 2024 |
+| :white_check_mark: | Jan 2024 |
 | lifecycle ignore ssh 22 | meh |
+| Parametrize Game.ini options | Jan 2024 |
 | Restart interval | Jan 2024 |
 | Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
 | Inputs for platform type | Jan 2024 |
@@ -129,7 +130,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | Allow users to define which map to use | Jan 2024 |
 | Allow users to launch a cluster of multiple maps | Feb 2024 |
 | Allow users to upload existing save game data when the server is started | Feb / March 2024 |
-| Paramterize all available inputs for servers such as rates, crafting resource requirements, supply crate drops, etc. | April 2024 |
+| Parameterize missing inputs | April 2024 or whenever someone requests a feature |
 | Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
 | AWS SSM Support | Feb 2024 |
 | Autoscaling Group Support | Feb 2024 |
