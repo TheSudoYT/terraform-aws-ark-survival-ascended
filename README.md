@@ -19,7 +19,7 @@ I do this in my free time. Consider donating to keep the project going and motiv
 # How to Use
 ## Prerequisites
 You must have the following to use this Terraform module:
-- Terraform version >= 1.3.0 - [Install Terraform](https://developer.hashicorp.com/terraform/install)
+- Terraform version >= 1.5.0 - [Install Terraform](https://developer.hashicorp.com/terraform/install)
 - An AWS account
 
 ## Usage
