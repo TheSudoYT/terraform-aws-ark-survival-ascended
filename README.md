@@ -67,7 +67,6 @@ An the backup should be visible in the AWS S3 bucket.
 - 8.9 MB 
 
 ### Compute
-- Can I make this stateless?
 
 ### Networking
 
