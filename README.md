@@ -23,6 +23,10 @@ You must have the following to use this Terraform module:
 - An AWS account
 
 ## Usage
+1. Choose your inputs - `GameUserSettings.ini` inputs use default values unless you provide a value other than the default value. Ark will use the settings from a custom GameUserSettings.ini file if you choose to use one. Modifying an input that is a GameUserSettings.ini setting while also using a custom GameUserSettings.ini file will result in that specific setting being overwritten in your custom file.
+2. Initialize Terraform - Run `terraform init` to download the module and providers.
+3. Create the Ark server and Infrastructure - Run `terraform apply` to start deploying the infrastructure.
+
 Took 20 minutes on a t3.large
 
 ## Backups
@@ -120,9 +124,9 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | port validation variable | :white_check_mark: |
 | Input for GE Proton version | :white_check_mark: |
 | Save interval | :white_check_mark: |
-| :white_check_mark: | Jan 2024 |
+| Paramaterize most of GUS.ini | :white_check_mark: |
 | lifecycle ignore ssh 22 | meh |
-| Parametrize Game.ini options | Jan 2024 |
+| Parametrize Game.ini options | Jan 2024
 | Restart interval | Jan 2024 |
 | Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
 | Inputs for platform type | Jan 2024 |

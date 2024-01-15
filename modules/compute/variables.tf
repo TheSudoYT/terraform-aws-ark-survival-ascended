@@ -230,9 +230,9 @@ variable "auto_save_interval" {
 }
 
 variable "use_battleye" {
-  type = bool
+  type        = bool
   description = "True or False. True will set the -noBattlEye flag."
-  default = false
+  default     = false
 }
 
 // placeholder
