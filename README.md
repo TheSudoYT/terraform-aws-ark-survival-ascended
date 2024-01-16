@@ -16,6 +16,11 @@ I do this in my free time. Consider donating to keep the project going and motiv
 
 [Subscribe on YouTube](https://www.youtube.com/c/TheSudo)
 
+# About
+This module allows you to quickly deploy an Ark Survival Ascended server on AWS. Ark will run using GloriousEggroll Proton. A desired version of GE Proton can be chosen using the `ge_proton_version` input. 
+
+Key Features
+
 # How to Use
 ## Prerequisites
 You must have the following to use this Terraform module:

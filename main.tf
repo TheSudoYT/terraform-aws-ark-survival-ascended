@@ -13,7 +13,7 @@ module "ark_vpc" {
 module "ark_compute" {
   source = "./modules/compute"
 
-  // Infrastructure inputs
+  # Infrastructure inputs
   ge_proton_version        = var.ge_proton_version
   instance_type            = var.instance_type
   ark_security_group_id    = module.ark_vpc.security_group_id
@@ -25,7 +25,7 @@ module "ark_compute" {
   ssh_ingress_allowed_cidr = var.ssh_ingress_allowed_cidr
   ami_id                   = var.ami_id
   ebs_volume_size          = var.ebs_volume_size
-  // Ark Application inputs
+  # Ark Application inputs
   use_battleye          = var.use_battleye
   auto_save_interval    = var.auto_save_interval
   ark_session_name      = var.ark_session_name
@@ -37,19 +37,19 @@ module "ark_compute" {
   server_admin_password = var.server_admin_password
   is_password_protected = var.is_password_protected
   join_password         = var.join_password
-  // Custom GameUserSettings.ini inputs
+  # Custom GameUserSettings.ini inputs
   use_custom_gameusersettings        = var.use_custom_gameusersettings
   custom_gameusersettings_s3         = var.custom_gameusersettings_s3
   game_user_settings_ini_path        = var.game_user_settings_ini_path
   custom_gameusersettings_github     = var.custom_gameusersettings_github
   custom_gameusersettings_github_url = var.custom_gameusersettings_github_url
-  // Custom Game.ini inputs
+  # Custom Game.ini inputs
   use_custom_game_ini       = var.use_custom_game_ini
   custom_gameini_s3         = var.custom_gameini_s3
   game_ini_path             = var.game_ini_path
   custom_gameini_github     = var.custom_gameini_github
   custom_gameini_github_url = var.custom_gameini_github_url
-  // Backup inputs
+  # Backup inputs
   enable_s3_backups               = var.enable_s3_backups
   backup_s3_bucket_name           = var.enable_s3_backups == true ? module.ark_backup.backup_s3_bucket_name[0] : ""
   backup_s3_bucket_arn            = var.enable_s3_backups == true ? module.ark_backup.backup_s3_bucket_arn[0] : ""
@@ -137,5 +137,5 @@ module "ark_backup" {
 
 # }
 
-// Notes
+# Notes
 # terraform turns floats into integers. When specifying a number input of 1.0 terraform converts it to 1.
