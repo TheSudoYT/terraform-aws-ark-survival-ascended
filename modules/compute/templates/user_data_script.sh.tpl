@@ -125,7 +125,7 @@ retrieve_obj_from_github() {
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    wget -O "$dst" "$src"
+    curl "$src" --create-dirs -o "$dst"
     chown steam:steam /ark-asa/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
   fi
 }
@@ -187,7 +187,7 @@ retrieve_obj_from_github_gameini() {
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    wget -O "$dst" "$src"
+    curl "$src" --create-dirs -o "$dst"
   fi
 }
 

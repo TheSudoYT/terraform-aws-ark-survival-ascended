@@ -235,7 +235,6 @@ variable "use_battleye" {
   default     = false
 }
 
-// placeholder
 variable "taming_speed_multiplier" {
   description = "Specifies the scaling factor for creature taming speed. Higher values make taming faster."
   type        = number

@@ -1,148 +1,3 @@
-# ark-aws-ascended-infra
-Ark Survival Ascended (ASA) Server Infrastructure Terraform module.
-
-## Donate
-I do this in my free time. Consider donating to keep the project going and motivate me to maintain the repo, add new features, etc :) 
-
-![Support on Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white) 
-
-[Support on Patreon](https://patreon.com/ThSudo?utm_medium=clipboard_copy&utm_source=copyLink&utm_campaign=creatorshare_creator&utm_content=join_link)
-
-![Support on By Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)
-
-[Support on BuyMeACoffee](https://www.buymeacoffee.com/TheSudo)
-
-![Subscribe](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
-
-[Subscribe on YouTube](https://www.youtube.com/c/TheSudo)
-
-# About
-This module allows you to quickly deploy an Ark Survival Ascended server on AWS. Ark will run using GloriousEggroll Proton. A desired version of GE Proton can be chosen using the `ge_proton_version` input. 
-
-Key Features
-
-# How to Use
-## Prerequisites
-You must have the following to use this Terraform module:
-- Terraform version >= 1.5.0 - [Install Terraform](https://developer.hashicorp.com/terraform/install)
-- An AWS account
-
-## Usage
-1. Choose your inputs - `GameUserSettings.ini` inputs use default values unless you provide a value other than the default value. Ark will use the settings from a custom GameUserSettings.ini file if you choose to use one. Modifying an input that is a GameUserSettings.ini setting while also using a custom GameUserSettings.ini file will result in that specific setting being overwritten in your custom file.
-2. Initialize Terraform - Run `terraform init` to download the module and providers.
-3. Create the Ark server and Infrastructure - Run `terraform apply` to start deploying the infrastructure.
-
-Took 20 minutes on a t3.large
-
-## Backups
-This module includes the option to enable backups. Enabling this will backup the `ShooterGame/Saved` directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. Versioning, kms, and replication are disabled to save money.
-
->Note: Enabling this creates an additional S3 bucket. In testing, this adds an additional 0.10 USD ( 10 cents ) a month on average depending on the duration of backup retention, how often you backup, and how often you restore from backup. https://calculator.aws/#/addService
-
-2 Files will be created on the ark server; `ark_backup_script.sh` on install and `ark_backup_log.log` when the first backup job runs. The backup log should show similiar to the one below if backup is a success:
-```bash
-ubuntu@ip-10-0-1-250:/ark-asa$ ls
-Engine  Manifest_DebugFiles_Win64.txt  Manifest_NonUFSFiles_Win64.txt  Manifest_UFSFiles_Win64.txt  ShooterGame  ark_backup_log.log  ark_backup_script.sh  compatibilitytools.d  linux64  steamapps  steamclient.so
-ubuntu@ip-10-0-1-250:/ark-asa$ cat ark_backup_log.log 
-[INFO] Creating Ark Backup
-tar: Removing leading `/' from member names
-/ark-asa/ShooterGame/Saved/
-/ark-asa/ShooterGame/Saved/SavedArks/
-/ark-asa/ShooterGame/Saved/SavedArks/TheIsland_WP/
-/ark-asa/ShooterGame/Saved/SavedArks/TheIsland_WP/TheIsland_WP.ark
-/ark-asa/ShooterGame/Saved/Logs/
-/ark-asa/ShooterGame/Saved/Logs/ShooterGame.log
-/ark-asa/ShooterGame/Saved/Logs/FailedWaterDinoSpawns.log
-/ark-asa/ShooterGame/Saved/Config/
-/ark-asa/ShooterGame/Saved/Config/CrashReportClient/
-/ark-asa/ShooterGame/Saved/Config/CrashReportClient/UECC-Windows-9D515DBA45100CBD707E679881FCDE73/
-/ark-asa/ShooterGame/Saved/Config/CrashReportClient/UECC-Windows-9D515DBA45100CBD707E679881FCDE73/CrashReportClient.ini
-/ark-asa/ShooterGame/Saved/Config/WindowsServer/
-/ark-asa/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
-/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini
-[INFO] Uploading Ark Backup to s3
-upload: ./ark-aws-ascended_backup_2024-01-01-18-47-04.tar.gz to s3://ark-backups-12345678912345/ark-aws-ascended_backup_2024-01-01-18-47-04.tar.gz
-[INFO] Removing Local Ark Backup File
-```
-
-An the backup should be visible in the AWS S3 bucket.
-- move data off EBS and restore from the target location OR
-- Restore from EBS snapshot
-- Price difference?
-- 8.9 MB 
-
-### Compute
-
-### Networking
-
-## Using an Existing GameUserSettings.ini
-You can use an existing GameUserSettings.ini so that the server starts with your custom settings. The following inputs are required to do this:
-
->Note: Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
-
-| Input | Description |
-| ------------- | ------------- |
-| use_custom_gameusersettings = true | Must be set to pass a custom GameUserSettings.ini to the server on startup |
-| custom_gameusersettings_s3 = true | Cannot be set when `custom_gameusersettings_github = true`. Set to true if you would like to upload an existing GameUserSettings.ini to an S3 bucket during terraform apply. Setting this to true will create an S3 bucket and upload the file from your PC to the S3 bucket. It will then download the file from the S3 bucket on server startup. You MUST also set `game_user_settings_ini_path` as a path on your local system relative to the terraform working directory. It is easiest to just place GameUserSettings.ini in the root of your terraform working directory and just provide `game_user_settings_ini_path = GameUserSettings.ini`. |
-| game_user_settings_ini_path = "path/on/my/pc" | A path on your local system relative to the terraform working directory. It is easiest to just place GameUserSettings.ini in the root of your terraform working directory and just provide `game_user_settings_ini_path = GameUserSettings.ini`. Only used when `custom_gameusersettings_s3 = true`. |
-| custom_gameusersettings_github = true | Cannot be set when `custom_gameusersettings_s3 = true`. Set to true if you would like to download an existing GameUserSettings.ini to the server from a GitHub URL. Must also provide `custom_gameusersettings_github_url = "https://my.url.com` with a valid URL to a public GitHub repo. |
-| custom_gameusersettings_github_url = "https://my.url.com | A valid URL to a public GitHub repo to download an existing GameUserSettings.ini from onto the server during startup. Must have `custom_gameusersettings_github = true` and `use_custom_gameusersettings = true` to use.|
-
-- Using the S3 option will instruct terraform to create an S3 bucket along with an EC2 instance profile that will have permissions to assume an IAM role that is also created. This role contains a policy to allow only the EC2 instance to access the S3 bucket to download GameUserSettings.ini. This also instructs the user_data script that runs when the server starts to download GameUserSettings.ini from that S3 bucket and place it in `/ark-asa/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini`
-
-- Using the GitHub option will simply instruct the user_data script that runs when the server starts to download GameUserSettings.ini to the server and place it in `/ark-asa/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini`
-
-## Using an Existing Game.ini
-You can use an existing Game.ini so that the server starts with your custom settings. The following inputs are required to do this:
-
->Note: Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
-
-| Input | Description |
-| ------------- | ------------- |
-| use_custom_game_ini = true | Must be set to pass a custom Game.ini to the server on startup |
-| custom_gameini_s3 = true | Cannot be set when `custom_gameini_github = true`. Set to true if you would like to upload an existing Gameini.ini to an S3 bucket during terraform apply. Setting this to true will create an S3 bucket and upload the file from your PC to the S3 bucket. It will then download the file from the S3 bucket on server startup. You MUST also set `game_ini_path` as a path on your local system relative to the terraform working directory. It is easiest to just place Game.ini in the root of your terraform working directory and just provide `game_ini_path = Game.ini`. |
-| game_ini_path = "path/on/my/pc" | A path on your local system relative to the terraform working directory. It is easiest to just place Game.ini in the root of your terraform working directory and just provide `game_ini_path = Game.ini`. Only used when `custom_gameini_s3 = true`. |
-| custom_gameini_github = true | Cannot be set when `custom_gameini_s3 = true`. Set to true if you would like to download an existing Game.ini to the server from a GitHub URL. Must also provide `custom_gameini_github_url = "https://my.url.com` with a valid URL to a public GitHub repo. |
-| custom_gameini_github_url = "https://my.url.com | A valid URL to a public GitHub repo to download an existing Game.ini from onto the server during startup. Must have `custom_gameini_github = true` and `use_custom_game_ini = true` to use.|
-
-- Using the S3 option will instruct terraform to create an S3 bucket along with an EC2 instance profile that will have permissions to assume an IAM role that is also created. This role contains a policy to allow only the EC2 instance to access the S3 bucket to download Game.ini. This also instructs the user_data script that runs when the server starts to download Game.ini from that S3 bucket and place it in `/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini`
-
-- Using the GitHub option will simply instruct the user_data script that runs when the server starts to download Game.ini to the server and place it in `/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini`
-
-## Troubleshooting
-- Monitoring the installation - You can view the user_data script that ran by connecting to your server via SSH using the public key you provided, ubuntu user, and the IP address of the server. Example: `ssh -i .\ark_public_key ubuntu@34.225.216.87`. Once on the server you can view the progress of the user_data script that installs and configures ark using the command `journalctl -xu cloud-final`. Use the space bar to scroll through the output line by line or `shift+g` to scroll the end of the output. If there is an obvios reason that ark failed to install or start in the way you expect, you can most likely find it here.
-
-- Checking the ark service is running - You can run `systemctl status ark-island` to view the status of the ark server. The service should say `Active: active (running)`. If it does not, then the ark server failed to start or has stopped for some reason.
-
-## Abandoned Features
-| Feature | Reason for Abandoning | Comparable Feature Implemented |
-| ------------- | ------------- | ------------- |
-| Allow users to pass in GameUserSettings.ini from their local machine by providing the path to the file relative to the terraform working directory.  | Impossible without exceeding the allowable length of user_data.  | Using the AWS CLI and an EC2 instance profile to download GameUserSettings.ini from S3 or another remote location such as GitHub. |
-| KMS Encryption  | It can get expensive and this is Ark not a bank or government system.  | None |
-| S3 Replication  | Again, it can get expensive and this is Ark not a bank or government system.  | None |
-
-## Future Features Roadmap
-| Feature | Target Date |
-| ------- | ----------- |
-| RCON port | :white_check_mark: |
-| port validation variable | :white_check_mark: |
-| Input for GE Proton version | :white_check_mark: |
-| Save interval | :white_check_mark: |
-| Paramaterize most of GUS.ini | :white_check_mark: |
-| lifecycle ignore ssh 22 | meh |
-| Parametrize Game.ini options | Jan 2024
-| Restart interval | Jan 2024 |
-| Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
-| Inputs for platform type | Jan 2024 |
-| Inputs for mods list(string) | Jan 2024 |
-| Allow users to define which map to use | Jan 2024 |
-| Allow users to launch a cluster of multiple maps | Feb 2024 |
-| Allow users to upload existing save game data when the server is started | Feb / March 2024 |
-| Parameterize missing inputs | April 2024 or whenever someone requests a feature |
-| Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
-| AWS SSM Support | Feb 2024 |
-| Autoscaling Group Support | Feb 2024 |
-
 ## Requirements
 
 | Name | Version |
@@ -152,19 +7,35 @@ You can use an existing Game.ini so that the server starts with your custom sett
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
+| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ark_backup"></a> [ark\_backup](#module\_ark\_backup) | ./modules/backup | n/a |
-| <a name="module_ark_compute"></a> [ark\_compute](#module\_ark\_compute) | ./modules/compute | n/a |
-| <a name="module_ark_vpc"></a> [ark\_vpc](#module\_ark\_vpc) | ./modules/networking | n/a |
+No modules.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_eip.ark_server_ip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_iam_instance_profile.instance_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_role.instance_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.instance_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_instance.ark_server](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_key_pair.ssh_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+| [aws_s3_bucket.ark](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_versioning.ark](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
+| [aws_s3_object.gameini](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_s3_object.gameusersettings](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_security_group_rule.allow_ssh](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_iam_policy_document.ark_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [template_file.user_data_template](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
@@ -180,12 +51,11 @@ No resources.
 | <a name="input_ark_security_group_id"></a> [ark\_security\_group\_id](#input\_ark\_security\_group\_id) | The ID of the security group to use with the EC2 instance | `string` | `""` | no |
 | <a name="input_ark_session_name"></a> [ark\_session\_name](#input\_ark\_session\_name) | The name of the Ark server as it appears in the list of servers when users look for a server to join | `string` | `"ark-aws-ascended"` | no |
 | <a name="input_ark_subnet_id"></a> [ark\_subnet\_id](#input\_ark\_subnet\_id) | The ID of the security group to use with the EC2 instance | `string` | `""` | no |
-| <a name="input_auto_save_interval"></a> [auto\_save\_interval](#input\_auto\_save\_interval) | Set interval for automatic saves. Must be a float. pattern allows float numbers like 15.0, 3.14, etc. Setting this to 0 will cause constant saving. | `number` | `15` | no |
+| <a name="input_auto_save_interval"></a> [auto\_save\_interval](#input\_auto\_save\_interval) | Set interval for automatic saves. Setting this to 0 will cause constant saving. | `number` | `15` | no |
 | <a name="input_backup_interval_cron_expression"></a> [backup\_interval\_cron\_expression](#input\_backup\_interval\_cron\_expression) | How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/) | `string` | `""` | no |
 | <a name="input_backup_s3_bucket_arn"></a> [backup\_s3\_bucket\_arn](#input\_backup\_s3\_bucket\_arn) | The ARN of the s3 bucket that you would like to use for ShooterGame/Saved directory backups | `string` | `""` | no |
 | <a name="input_backup_s3_bucket_name"></a> [backup\_s3\_bucket\_name](#input\_backup\_s3\_bucket\_name) | The name of the S3 bucket to backup the ShooterGame/Saved directory to | `string` | `""` | no |
 | <a name="input_clamp_resource_harvest_damage"></a> [clamp\_resource\_harvest\_damage](#input\_clamp\_resource\_harvest\_damage) | If True, limit the damage caused by a tame to a resource on harvesting based on resource remaining health. Note: enabling this setting may result in sensible resource harvesting reduction using high damage tools or creatures. | `bool` | `false` | no |
-| <a name="input_create_backup_s3_bucket"></a> [create\_backup\_s3\_bucket](#input\_create\_backup\_s3\_bucket) | True or False. Do you want to create an S3 bucket to FTP backups into | `bool` | `false` | no |
 | <a name="input_create_ssh_key"></a> [create\_ssh\_key](#input\_create\_ssh\_key) | True or False. Determines if an SSH key is created in AWS | `bool` | `true` | no |
 | <a name="input_custom_gameini_github"></a> [custom\_gameini\_github](#input\_custom\_gameini\_github) | True or False. Set true if use\_custom\_gameini is true and you want to download them from github. Must be a public repo. | `bool` | `false` | no |
 | <a name="input_custom_gameini_github_url"></a> [custom\_gameini\_github\_url](#input\_custom\_gameini\_github\_url) | The URL to the Game.ini file on a public GitHub repo. Used when custom\_gameini\_github and use\_custom\_game\_ini both == true. | `string` | `""` | no |
@@ -213,7 +83,6 @@ No resources.
 | <a name="input_enable_rcon"></a> [enable\_rcon](#input\_enable\_rcon) | True or False. Enable RCON or not | `bool` | `false` | no |
 | <a name="input_enable_s3_backups"></a> [enable\_s3\_backups](#input\_enable\_s3\_backups) | True or False. Set to true to enable backing up of the ShooterGame/Saved directory to S3 | `bool` | `false` | no |
 | <a name="input_existing_ssh_key_name"></a> [existing\_ssh\_key\_name](#input\_existing\_ssh\_key\_name) | The name of an EXISTING SSH key for use with the EC2 instance | `string` | `null` | no |
-| <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | True or False. Set to true if you want Terraform destroy commands to have the ability to destroy the backup bucket while it still containts backup files | `bool` | `false` | no |
 | <a name="input_game_client_port"></a> [game\_client\_port](#input\_game\_client\_port) | The port that the game client listens on | `number` | `7777` | no |
 | <a name="input_game_ini_path"></a> [game\_ini\_path](#input\_game\_ini\_path) | Path to Game.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use\_custom\_game\_ini = true | `string` | `""` | no |
 | <a name="input_game_user_settings_ini_path"></a> [game\_user\_settings\_ini\_path](#input\_game\_user\_settings\_ini\_path) | Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use\_custom\_gameusersettings = true | `string` | `""` | no |
@@ -254,7 +123,6 @@ No resources.
 | <a name="input_rcon_port"></a> [rcon\_port](#input\_rcon\_port) | The port number that RCON listens on if enabled | `number` | `null` | no |
 | <a name="input_rcon_server_game_log_buffer"></a> [rcon\_server\_game\_log\_buffer](#input\_rcon\_server\_game\_log\_buffer) | Determines how many lines of game logs are send over the RCON. Note: despite being coded as a float it's suggested to treat it as integer. | `number` | `600` | no |
 | <a name="input_resource_respawn_period_multiplier"></a> [resource\_respawn\_period\_multiplier](#input\_resource\_respawn\_period\_multiplier) | Specifies the scaling factor for the re-spawn rate for resource nodes (trees, rocks, bushes, etc.). Lower values cause nodes to re-spawn more frequently. | `number` | `1` | no |
-| <a name="input_s3_bucket_backup_retention"></a> [s3\_bucket\_backup\_retention](#input\_s3\_bucket\_backup\_retention) | Lifecycle rule. The number of days to keep backups in S3 before they are deleted | `number` | `7` | no |
 | <a name="input_server_admin_password"></a> [server\_admin\_password](#input\_server\_admin\_password) | The admin password for the Ark server to perform admin commands | `string` | `"adminandypassword"` | no |
 | <a name="input_server_hardcore"></a> [server\_hardcore](#input\_server\_hardcore) | If True, enables Hardcore mode (player characters revert to level 1 upon death) | `bool` | `false` | no |
 | <a name="input_server_pve"></a> [server\_pve](#input\_server\_pve) | If True, disables PvP and enables PvE. | `bool` | `false` | no |
@@ -266,16 +134,29 @@ No resources.
 | <a name="input_structure_pickup_time_after_placement"></a> [structure\_pickup\_time\_after\_placement](#input\_structure\_pickup\_time\_after\_placement) | Amount of time in seconds after placement that quick pick-up is available. | `number` | `30` | no |
 | <a name="input_structure_prevent_resource_radius_multiplier"></a> [structure\_prevent\_resource\_radius\_multiplier](#input\_structure\_prevent\_resource\_radius\_multiplier) | Same as ResourceNoReplenishRadiusStructures in Game.ini. If both settings are set both multiplier will be applied. Can be useful when cannot change the Game.ini file as it works as a command line option too. | `number` | `1` | no |
 | <a name="input_structure_resistance_multiplier"></a> [structure\_resistance\_multiplier](#input\_structure\_resistance\_multiplier) | Specifies the scaling factor for the resistance to damage structures receive when attacked. The default value 1 provides normal damage. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack. A value of 0.5 results in a structure taking half damage while a value of 2.0 would result in a structure taking double normal damage. | `number` | `1` | no |
-| <a name="input_subnet_availability_zone"></a> [subnet\_availability\_zone](#input\_subnet\_availability\_zone) | The AZ of the subnet to be created within the VPC | `string` | `"us-east-1a"` | no |
-| <a name="input_subnet_cidr_block"></a> [subnet\_cidr\_block](#input\_subnet\_cidr\_block) | The CIDR block of the  subnet to be created within the VPC | `string` | `"10.0.1.0/24"` | no |
 | <a name="input_taming_speed_multiplier"></a> [taming\_speed\_multiplier](#input\_taming\_speed\_multiplier) | Specifies the scaling factor for creature taming speed. Higher values make taming faster. | `number` | `1` | no |
 | <a name="input_the_max_structure_in_range"></a> [the\_max\_structure\_in\_range](#input\_the\_max\_structure\_in\_range) | Specifies the maximum number of structures that can be constructed within a certain (currently hard-coded) range. Replaces the old value NewMaxStructuresInRange | `number` | `10500` | no |
 | <a name="input_use_battleye"></a> [use\_battleye](#input\_use\_battleye) | True or False. True will set the -noBattlEye flag. | `bool` | `false` | no |
 | <a name="input_use_custom_game_ini"></a> [use\_custom\_game\_ini](#input\_use\_custom\_game\_ini) | True or False. Set true if you want to provide your own Game.ini file when the server is started. Required if game\_user\_settings\_ini\_path is defined | `bool` | `false` | no |
 | <a name="input_use_custom_gameusersettings"></a> [use\_custom\_gameusersettings](#input\_use\_custom\_gameusersettings) | True or False. Set true if you want to provide your own GameUserSettings.ini file when the server is started. Required if game\_user\_settings\_ini\_path is defined | `bool` | `false` | no |
-| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | The CIDR block of the VPC to be created | `string` | `"10.0.0.0/16"` | no |
 | <a name="input_xp_multiplier"></a> [xp\_multiplier](#input\_xp\_multiplier) | Specifies the scaling factor for the experience received by players, tribes and tames for various actions. The default value 1 provides the same amounts of experience as in the single player experience (and official public servers). Higher values increase XP amounts awarded for various actions; lower values decrease it. | `number` | `1` | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_admin_commands_password"></a> [admin\_commands\_password](#output\_admin\_commands\_password) | n/a |
+| <a name="output_custom_game_file_name"></a> [custom\_game\_file\_name](#output\_custom\_game\_file\_name) | n/a |
+| <a name="output_custom_gameusersettings_file_name"></a> [custom\_gameusersettings\_file\_name](#output\_custom\_gameusersettings\_file\_name) | n/a |
+| <a name="output_custom_ini_s3_bucket_name"></a> [custom\_ini\_s3\_bucket\_name](#output\_custom\_ini\_s3\_bucket\_name) | n/a |
+| <a name="output_game_client_port"></a> [game\_client\_port](#output\_game\_client\_port) | n/a |
+| <a name="output_gameusersettings_s3_bucket"></a> [gameusersettings\_s3\_bucket](#output\_gameusersettings\_s3\_bucket) | The downloadable uri of the file |
+| <a name="output_gameusersettings_s3_content"></a> [gameusersettings\_s3\_content](#output\_gameusersettings\_s3\_content) | the contents of the file |
+| <a name="output_join_password"></a> [join\_password](#output\_join\_password) | n/a |
+| <a name="output_max_players"></a> [max\_players](#output\_max\_players) | n/a |
+| <a name="output_server_is_password_protected"></a> [server\_is\_password\_protected](#output\_server\_is\_password\_protected) | n/a |
+| <a name="output_server_using_custom_gameini"></a> [server\_using\_custom\_gameini](#output\_server\_using\_custom\_gameini) | n/a |
+| <a name="output_server_using_custom_gameusersettingsini"></a> [server\_using\_custom\_gameusersettingsini](#output\_server\_using\_custom\_gameusersettingsini) | n/a |
+| <a name="output_session_name"></a> [session\_name](#output\_session\_name) | n/a |
+| <a name="output_ssh_key_name"></a> [ssh\_key\_name](#output\_ssh\_key\_name) | n/a |
+| <a name="output_steam_query_port"></a> [steam\_query\_port](#output\_steam\_query\_port) | n/a |
