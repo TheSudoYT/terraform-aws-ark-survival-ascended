@@ -30,11 +30,15 @@ variable "rcon_port" {
   default     = null
 }
 
-// TO DO: Add validation. Query Port cannot be between 27020 and 27050 due to Steam using those ports.
 variable "steam_query_port" {
   description = "The query port for steam server browser"
   type        = number
   default     = 27015
+
+  validation {
+    condition     = var.steam_query_port < 27020 || var.steam_query_port > 27050
+    error_message = "Steam uses ports 27020 to 27050. Please choose a different query port."
+  }
 }
 
 variable "game_client_port" {
