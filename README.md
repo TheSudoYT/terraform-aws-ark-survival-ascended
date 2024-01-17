@@ -19,7 +19,25 @@ I do this in my free time. Consider donating to keep the project going and motiv
 # About
 This module allows you to quickly deploy an Ark Survival Ascended server on AWS. Ark will run using GloriousEggroll Proton. A desired version of GE Proton can be chosen using the `ge_proton_version` input. 
 
-Key Features
+### Key Features
+- Ark SA running on Ubuntu with GE Proton
+- The ability to use an existing GameUserSettings.ini and Game.ini
+- Most GameUserSettings.ini settings are configurable inputs for creating a brand new configuration
+- Ability to store backups in S3 at a defined interval
+
+### Planned Features Roadmap
+| Feature | Target Date |
+| ------- | ----------- |
+| Inputs for mods list(string) | Jan 2024 |
+| Inputs for platform type | Jan 2024 |
+| Replace stand alone EC2 instance with Autoscaling group | Feb 2024 |
+| Parametrize Game.ini options | Feb 2024
+| Configurable Restart interval | Feb 2024 |
+| Restore from backups and use existing save games | Feb 2024 |
+| Allow users to define which map to use | Feb 2024 |
+| Allow users to launch a cluster of multiple maps | March 2024 |
+| Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
+| AWS SSM Support for SSH | March 2024 |
 
 # How to Use
 ## Prerequisites
@@ -28,11 +46,30 @@ You must have the following to use this Terraform module:
 - An AWS account
 
 ## Usage
-1. Choose your inputs - `GameUserSettings.ini` inputs use default values unless you provide a value other than the default value. Ark will use the settings from a custom GameUserSettings.ini file if you choose to use one. Modifying an input that is a GameUserSettings.ini setting while also using a custom GameUserSettings.ini file will result in that specific setting being overwritten in your custom file.
+1. Create a file named `main.tf` ( or anything ending in .tf)
+2. Add the following as a minimum. See all available inputs in the "Inputs" section of this README. Inputs not defined will use their default values.
+```hcl
+module "ark-survival-ascended" {
+  source  = "TheSudoYT/ark-survival-ascended/aws"
+
+  ge_proton_version = "8-27"
+  instance_type     = "t3.xlarge"
+  create_ssh_key    = true
+  ssh_public_key    = "../../ark_public_key.pub"
+  ark_session_name      = "ark-aws-ascended"
+  max_players           = "32"
+  is_password_protected = true
+  join_password         = "RockWellSucks"
+  enable_s3_backups               = false
+
+}
+```
+1. Choose your inputs - `GameUserSettings.ini` inputs use default values unless you provide a value OTHER than the default value. Ark will use the settings from a custom GameUserSettings.ini file if you choose to use one. Modifying an input that is a GameUserSettings.ini setting while also using a custom GameUserSettings.ini file will result in that specific setting being overwritten in your custom file.
 2. Initialize Terraform - Run `terraform init` to download the module and providers.
 3. Create the Ark server and Infrastructure - Run `terraform apply` to start deploying the infrastructure.
 
-Took 20 minutes on a t3.large
+> [!NOTE]
+> In testing it takes approximately 15 to 20 minutes on a t3.xlarge for steam to download and configure ark.
 
 ## Backups
 This module includes the option to enable backups. Enabling this will backup the `ShooterGame/Saved` directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. Versioning, kms, and replication are disabled to save money.
@@ -78,7 +115,8 @@ An the backup should be visible in the AWS S3 bucket.
 ## Using an Existing GameUserSettings.ini
 You can use an existing GameUserSettings.ini so that the server starts with your custom settings. The following inputs are required to do this:
 
->Note: Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
+> [!NOTE]
+> Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
 
 | Input | Description |
 | ------------- | ------------- |
@@ -95,7 +133,8 @@ You can use an existing GameUserSettings.ini so that the server starts with your
 ## Using an Existing Game.ini
 You can use an existing Game.ini so that the server starts with your custom settings. The following inputs are required to do this:
 
->Note: Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
+> [!NOTE]
+> Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
 
 | Input | Description |
 | ------------- | ------------- |
@@ -121,7 +160,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | KMS Encryption  | It can get expensive and this is Ark not a bank or government system.  | None |
 | S3 Replication  | Again, it can get expensive and this is Ark not a bank or government system.  | None |
 
-## Future Features Roadmap
+## Future Features Roadmap (TO DO)
 | Feature | Target Date |
 | ------- | ----------- |
 | RCON port | :white_check_mark: |
@@ -129,6 +168,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | Input for GE Proton version | :white_check_mark: |
 | Save interval | :white_check_mark: |
 | Paramaterize most of GUS.ini | :white_check_mark: |
+| Add terraform-test to CI precommit and PR | now |
 | lifecycle ignore ssh 22 | meh |
 | Parametrize Game.ini options | Jan 2024
 | Restart interval | Jan 2024 |
@@ -142,6 +182,13 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
 | AWS SSM Support | Feb 2024 |
 | Autoscaling Group Support | Feb 2024 |
+
+## Examples
+- [Using a Custom GameUserSettings and Game.ini From S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
+- [Using a Custom GameUserSettings and Game.ini From GitHub](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
+- [Enabling backups to S3]()
+- [Vanilla Ark with Default Settings]()
+- [All Inputs]() Combines custom INI files with inputs that overwrite the custom settings
 
 ## Requirements
 
