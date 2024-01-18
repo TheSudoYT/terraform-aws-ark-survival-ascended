@@ -23,7 +23,7 @@ repos:
           - '--args=--only=terraform_standard_module_structure'
           - '--args=--only=terraform_workspace_remote'
         files: ^(.*\/)?tests(\/.*\.(tf|tfvars))?$
-        exclude: ''
+        #exclude: ''
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
