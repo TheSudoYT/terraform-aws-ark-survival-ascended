@@ -91,17 +91,17 @@ variable "instance_type" {
   default     = "t3.xlarge"
 }
 
-variable "ark_security_group_id" {
-  description = "The ID of the security group to use with the EC2 instance"
-  type        = string
-  default     = ""
-}
+# variable "ark_security_group_id" {
+#   description = "The ID of the security group to use with the EC2 instance"
+#   type        = string
+#   default     = ""
+# }
 
-variable "ark_subnet_id" {
-  description = "The ID of the security group to use with the EC2 instance"
-  type        = string
-  default     = ""
-}
+# variable "ark_subnet_id" {
+#   description = "The ID of the security group to use with the EC2 instance"
+#   type        = string
+#   default     = ""
+# }
 
 variable "ebs_volume_size" {
   description = "The size of the EBS volume attached to the EC2 instance"
@@ -645,4 +645,3 @@ variable "the_max_structure_in_range" {
   type        = number
   default     = 10500
 }
-

@@ -9,14 +9,14 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 1. Update the README.md with details of changes including example hcl blocks and [example files](./examples) if appropriate.
 2. Run pre-commit hooks `pre-commit run -a`.
-3. Once all outstanding comments and checklist items have been addressed, your contribution will be merged! Merged PRs will be included in the next release. The terraform-aws-vpc maintainers take care of updating the CHANGELOG as they merge.
+3. Once all outstanding comments and checklist items have been addressed, your contribution will be merged! Merged PRs will be included in the next release. The repo maintainers take care of updating the CHANGELOG as they merge.
 
 ## Checklists for contributions
 
 - [ ] Add / Edit unit tests where applicable that are compatible with `terraform-test`. Contain tests as close to the resource being tested as possible. See `/test` and `/modules/*/tests` for tests. All tests can be run using the `bash-test.sh` or `powershell-test.sh` scripts run from the root directory. 
 - [ ] Add [semantics prefix](#semantic-pull-requests) to your PR or Commits (at least one of your commit groups)
 - [ ] CI tests are passing
-- [ ] README.md has been updated after any changes to variables and outputs. See https://github.com/terraform-aws-modules/terraform-aws-vpc/#doc-generation
+- [ ] README.md has been updated after any changes to variables and outputs. Use `terraform-docs markdown` [terraform-docs](https://terraform-docs.io/)
 - [ ] Run pre-commit hooks `pre-commit run -a`
 
 ## Semantic Pull Requests
