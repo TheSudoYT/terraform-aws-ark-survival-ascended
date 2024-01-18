@@ -22,7 +22,7 @@ repos:
           - '--args=--only=terraform_required_providers'
           - '--args=--only=terraform_standard_module_structure'
           - '--args=--only=terraform_workspace_remote'
-        exclude: (^/modules/*/tests/*\+)$
+        exclude: /modules/*/tests/*
           
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
