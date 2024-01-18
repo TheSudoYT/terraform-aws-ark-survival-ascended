@@ -4,11 +4,16 @@ terraform {
       source  = "hashicorp/http"
       version = "3.4.0"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0.0"
+    }
   }
 }
 
 variable "ge_proton_version" {
-  type = string
+  type        = string
+  description = "The GE proton version to test"
 }
 
 data "http" "ge_proton" {

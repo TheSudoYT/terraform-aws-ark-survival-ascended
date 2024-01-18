@@ -645,4 +645,3 @@ variable "the_max_structure_in_range" {
   type        = number
   default     = 10500
 }
-

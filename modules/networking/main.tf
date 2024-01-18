@@ -1,5 +1,5 @@
 locals {
-  // raw UDP port is always 1 above the game client port
+  # raw UDP port is always 1 above the game client port
   computed_raw_udp_port = var.game_client_port + 1
 }
 
@@ -16,7 +16,7 @@ resource "aws_subnet" "ark_subnet" {
 resource "aws_security_group" "ark_security_group" {
   vpc_id = aws_vpc.ark_vpc.id
 
-  // Allow outbound connections to the internet
+  # Allow outbound connections to the internet
   egress {
     from_port        = 0
     to_port          = 0
@@ -25,7 +25,7 @@ resource "aws_security_group" "ark_security_group" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  // Game client port
+  # Game client port
   ingress {
     from_port   = var.game_client_port
     to_port     = var.game_client_port
@@ -33,7 +33,7 @@ resource "aws_security_group" "ark_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  // Raw UDP Socket port. Always game client port +1
+  # Raw UDP Socket port. Always game client port +1
   ingress {
     from_port   = local.computed_raw_udp_port
     to_port     = local.computed_raw_udp_port
@@ -41,8 +41,8 @@ resource "aws_security_group" "ark_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  // Query port for steam's server browser
-  // Query Port cannot be between 27020 and 27050 due to Steam using those ports
+  # Query port for steam's server browser
+  # Query Port cannot be between 27020 and 27050 due to Steam using those ports
   ingress {
     from_port   = var.steam_query_port
     to_port     = var.steam_query_port
@@ -50,7 +50,7 @@ resource "aws_security_group" "ark_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  // RCON port if enabled
+  # RCON port if enabled
   dynamic "ingress" {
     for_each = var.enable_rcon ? [1] : []
     content {
