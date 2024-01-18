@@ -1,7 +1,8 @@
-name: Run terraform test Script
+
+name: Terraform Test
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - master
@@ -9,6 +10,9 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    permissions:
+        id-token: write
+        contents: read
 
     steps:
     - name: Checkout
@@ -17,7 +21,17 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-    - name: Run Script
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActions
+        aws-region: us-east-1
+
+    - name: Fetch the caller identity
+      run: |
+        aws sts get-caller-identity
+
+    - name: Run terraform test script
       run: |
         chmod +x ./bash-test.sh
         ./bash-test.sh

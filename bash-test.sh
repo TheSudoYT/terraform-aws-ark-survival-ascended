@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 echo "Running terraform init in root directory"
 terraform init

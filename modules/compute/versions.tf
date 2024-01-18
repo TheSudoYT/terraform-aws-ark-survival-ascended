@@ -7,11 +7,11 @@ terraform {
     }
     template = {
       source  = "hashicorp/template"
-      version = "2.2.0"
+      version = ">=2.2.0"
     }
     http = {
       source  = "hashicorp/http"
-      version = "3.4.1"
+      version = ">=3.4.1"
     }
   }
 }
