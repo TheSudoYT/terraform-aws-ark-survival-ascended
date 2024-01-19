@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.2.0...v1.3.0) (2024-01-19)
+
+
+### Features
+
+* **crossplay:** Input added `supported_server_platforms` to Enable Platform Selection ([#7](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/issues/7)) ([190d78d](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/190d78d166cb2bbea1017f4d17df8e2c448ccdac))
+
 ## [1.2.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.1.0...v1.2.0) (2024-01-19)
 
 
