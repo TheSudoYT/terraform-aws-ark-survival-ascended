@@ -88,6 +88,9 @@ ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServ
 %{ if use_battleye != "true" ~}
 -NoBattlEye \
 %{ endif ~}
+%{ if length(mod_list) > 0 ~}
+-mods=${mod_list} \
+%{ endif ~}
 
 Restart=on-failure
 RestartSec=20s

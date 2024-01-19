@@ -24,6 +24,7 @@ This module allows you to quickly deploy an Ark Survival Ascended server on AWS.
 - The ability to use an existing GameUserSettings.ini and Game.ini
 - Most GameUserSettings.ini settings are configurable inputs for creating a brand new configuration
 - Ability to store backups in S3 at a defined interval
+- Ability to add mods
 
 ### Supported Maps
 | Map Name | Systemd Service Name |
@@ -33,7 +34,6 @@ This module allows you to quickly deploy an Ark Survival Ascended server on AWS.
 ### Planned Features Roadmap
 | Feature | Target Date |
 | ------- | ----------- |
-| Inputs for mods list(string) | Jan 2024 |
 | Inputs for platform type | Jan 2024 |
 | Replace stand alone EC2 instance with Autoscaling group | Feb 2024 |
 | Parametrize Game.ini options | Feb 2024
@@ -119,6 +119,11 @@ upload: ./ark-aws-ascended_backup_2024-01-01-18-47-04.tar.gz to s3://ark-backups
 
 The backup should be visible in the AWS S3 bucket after the first specified backup interval time frame passes.
 
+## Mods
+Mods can be added using the `mod_list` input. This is a list of strings. Example: `mod_list              = ["935813", "900062"]`
+
+Future support for map mods planned.
+
 ## Using an Existing GameUserSettings.ini
 You can use an existing GameUserSettings.ini so that the server starts with your custom settings. The following inputs are required to do this:
 
@@ -160,43 +165,20 @@ You can use an existing Game.ini so that the server starts with your custom sett
 
 - Checking the ark service is running - You can run `systemctl status ark-island` to view the status of the ark server. The service should say `Active: active (running)`. If it does not, then the ark server failed to start or has stopped for some reason.
 
+## Examples
+- [Using a Custom GameUserSettings and Game.ini From S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
+- [Using a Custom GameUserSettings and Game.ini From GitHub](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
+- [Enabling backups to S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/backups_enabled)
+- [Using Default Ark Settings](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/vanilla_ark_default_settings)
+- [Adding Mods](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/with_mods)
+- [All Inputs]() Combines custom INI files with inputs that overwrite the custom settings
+
 ## Abandoned Features
 | Feature | Reason for Abandoning | Comparable Feature Implemented |
 | ------------- | ------------- | ------------- |
 | Allow users to pass in GameUserSettings.ini from their local machine by providing the path to the file relative to the terraform working directory.  | Impossible without exceeding the allowable length of user_data.  | Using the AWS CLI and an EC2 instance profile to download GameUserSettings.ini from S3 or another remote location such as GitHub. |
 | KMS Encryption  | It can get expensive and this is Ark not a bank or government system.  | None |
 | S3 Replication  | Again, it can get expensive and this is Ark not a bank or government system.  | None |
-
-## Future Features Roadmap (TO DO)
-| Feature | Target Date |
-| ------- | ----------- |
-| RCON port | :white_check_mark: |
-| port validation variable | :white_check_mark: |
-| Input for GE Proton version | :white_check_mark: |
-| Save interval | :white_check_mark: |
-| Paramaterize most of GUS.ini | :white_check_mark: |
-| What happens if the session name is taken? | idk |
-| Add terraform-test to CI precommit and PR | now |
-| lifecycle ignore ssh 22 | meh |
-| Parametrize Game.ini options | Jan 2024
-| Restart interval | Jan 2024 |
-| Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
-| Inputs for platform type | Jan 2024 |
-| Inputs for mods list(string) | Jan 2024 |
-| Allow users to define which map to use | Jan 2024 |
-| Allow users to launch a cluster of multiple maps | Feb 2024 |
-| Allow users to upload existing save game data when the server is started | Feb / March 2024 |
-| Parameterize missing inputs | April 2024 or whenever someone requests a feature |
-| Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
-| AWS SSM Support | Feb 2024 |
-| Autoscaling Group Support | Feb 2024 |
-
-## Examples
-- [Using a Custom GameUserSettings and Game.ini From S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
-- [Using a Custom GameUserSettings and Game.ini From GitHub](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
-- [Enabling backups to S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/backups_enabled)
-- [Using Default Ark Settings](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/vanilla_ark_default_settings)
-- [All Inputs]() Combines custom INI files with inputs that overwrite the custom settings
 
 ## Requirements
 
@@ -232,11 +214,9 @@ No resources.
 | <a name="input_allow_third_person_player"></a> [allow\_third\_person\_player](#input\_allow\_third\_person\_player) | If False, disables third person camera allowed by default on all dedicated servers. | `bool` | `true` | no |
 | <a name="input_always_allow_structure_pickup"></a> [always\_allow\_structure\_pickup](#input\_always\_allow\_structure\_pickup) | If True disables the timer on the quick pick-up system. | `bool` | `false` | no |
 | <a name="input_ami_id"></a> [ami\_id](#input\_ami\_id) | The AMI ID to use. Not providing one will result in the latest version of Ubuntu Focal 20.04 being used | `string` | `null` | no |
-| <a name="input_ark_security_group_id"></a> [ark\_security\_group\_id](#input\_ark\_security\_group\_id) | The ID of the security group to use with the EC2 instance | `string` | `""` | no |
 | <a name="input_ark_session_name"></a> [ark\_session\_name](#input\_ark\_session\_name) | The name of the Ark server as it appears in the list of servers when users look for a server to join | `string` | `"ark-aws-ascended"` | no |
-| <a name="input_ark_subnet_id"></a> [ark\_subnet\_id](#input\_ark\_subnet\_id) | The ID of the security group to use with the EC2 instance | `string` | `""` | no |
 | <a name="input_auto_save_interval"></a> [auto\_save\_interval](#input\_auto\_save\_interval) | Set interval for automatic saves. Must be a float. pattern allows float numbers like 15.0, 3.14, etc. Setting this to 0 will cause constant saving. | `number` | `15` | no |
-| <a name="input_backup_interval_cron_expression"></a> [backup\_interval\_cron\_expression](#input\_backup\_interval\_cron\_expression) | How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/) | `string` | `""` | no |
+| <a name="input_backup_interval_cron_expression"></a> [backup\_interval\_cron\_expression](#input\_backup\_interval\_cron\_expression) | How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/) | `string` | `"0 23 * * *"` | no |
 | <a name="input_backup_s3_bucket_arn"></a> [backup\_s3\_bucket\_arn](#input\_backup\_s3\_bucket\_arn) | The ARN of the s3 bucket that you would like to use for ShooterGame/Saved directory backups | `string` | `""` | no |
 | <a name="input_backup_s3_bucket_name"></a> [backup\_s3\_bucket\_name](#input\_backup\_s3\_bucket\_name) | The name of the S3 bucket to backup the ShooterGame/Saved directory to | `string` | `""` | no |
 | <a name="input_clamp_resource_harvest_damage"></a> [clamp\_resource\_harvest\_damage](#input\_clamp\_resource\_harvest\_damage) | If True, limit the damage caused by a tame to a resource on harvesting based on resource remaining health. Note: enabling this setting may result in sensible resource harvesting reduction using high damage tools or creatures. | `bool` | `false` | no |
@@ -284,6 +264,7 @@ No resources.
 | <a name="input_max_platform_saddle_structure_limit"></a> [max\_platform\_saddle\_structure\_limit](#input\_max\_platform\_saddle\_structure\_limit) | Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK. | `number` | `75` | no |
 | <a name="input_max_players"></a> [max\_players](#input\_max\_players) | The number of max players the server allows | `string` | `"32"` | no |
 | <a name="input_max_tamed_dinos"></a> [max\_tamed\_dinos](#input\_max\_tamed\_dinos) | Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK. | `number` | `5000` | no |
+| <a name="input_mod_list"></a> [mod\_list](#input\_mod\_list) | A list of mod IDs to add to the server. List of strings. Example: mod\_list = ['935813', '900062'] | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_night_time_speed_scale"></a> [night\_time\_speed\_scale](#input\_night\_time\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during night time. This value determines the length of each night, relative to the length of each day (as specified by DayTimeSpeedScale) Lowering this value increases the length of each night. | `number` | `1` | no | 
 | <a name="input_non_permanent_diseases"></a> [non\_permanent\_diseases](#input\_non\_permanent\_diseases) | If True, makes permanent diseases not permanent. Players will lose them if on re-spawn. | `bool` | `false` | no |
 | <a name="input_override_official_difficulty"></a> [override\_official\_difficulty](#input\_override\_official\_difficulty) | Allows you to override the default server difficulty level of 4 with 5 to match the new official server difficulty level. Default value of 0.0 disables the override. A value of 5.0 will allow common creatures to spawn up to level 150. Originally (247.95) available only as command line option. | `number` | `0` | no |
@@ -333,6 +314,23 @@ No resources.
 
 ## Outputs
 
-No outputs.
+No outputs
 
-test
+## Future Features Roadmap (TO DO)
+| Feature | Target Date |
+| ------- | ----------- |
+| What happens if the session name is taken? | idk |
+| Add terraform-test to CI precommit and PR | now |
+| lifecycle ignore ssh 22 | meh |
+| Parametrize Game.ini options | Jan 2024
+| Restart interval | Jan 2024 |
+| Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
+| Inputs for platform type | Jan 2024 |
+| Inputs for mods list(string) | Jan 2024 |
+| Allow users to define which map to use | Jan 2024 |
+| Allow users to launch a cluster of multiple maps | Feb 2024 |
+| Allow users to upload existing save game data when the server is started | Feb / March 2024 |
+| Parameterize missing inputs | April 2024 or whenever someone requests a feature |
+| Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
+| AWS SSM Support | Feb 2024 |
+| Autoscaling Group Support | Feb 2024 |

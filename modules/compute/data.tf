@@ -21,6 +21,7 @@ data "aws_region" "current" {}
 data "template_file" "user_data_template" {
   template = file("${path.module}/templates/user_data_script.sh.tpl")
   vars = {
+    mod_list              = join(",", var.mod_list)
     use_battleye          = "${var.use_battleye}"
     auto_save_interval    = "${var.auto_save_interval}"
     ge_proton_version     = "${var.ge_proton_version}"

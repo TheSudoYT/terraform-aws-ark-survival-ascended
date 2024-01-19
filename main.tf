@@ -26,6 +26,7 @@ module "ark_compute" {
   ami_id                   = var.ami_id
   ebs_volume_size          = var.ebs_volume_size
   # Ark Application inputs
+  mod_list              = var.mod_list
   use_battleye          = var.use_battleye
   auto_save_interval    = var.auto_save_interval
   ark_session_name      = var.ark_session_name
