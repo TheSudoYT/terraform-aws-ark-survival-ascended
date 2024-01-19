@@ -124,6 +124,19 @@ Mods can be added using the `mod_list` input. This is a list of strings. Example
 
 Future support for map mods planned.
 
+# Enabling Crossplay and Choosing Platforms
+Use the `supported_server_platforms` input to define which platforms can connect to your server. 
+
+> [!WARNING]
+> Always be mindful of using mods with multiple platforms. Some mods are not supported by all platforms. Check your mod details for more information.
+
+> [!WARNING]
+> I have only tested this with PC and ALL. I have only tested PS5 connections when configured as ALL.
+
+```HCL
+  supported_server_platforms = ["All"]
+```
+
 ## Using an Existing GameUserSettings.ini
 You can use an existing GameUserSettings.ini so that the server starts with your custom settings. The following inputs are required to do this:
 
