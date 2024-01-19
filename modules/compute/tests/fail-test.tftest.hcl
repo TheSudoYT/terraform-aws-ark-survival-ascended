@@ -212,3 +212,16 @@ run "fail_validate_proton_version" {
   ]
 
 }
+
+run "fail_validate_server_platforms" {
+
+  command = plan
+
+  variables {
+    supported_server_platforms = ["PC", "PS5", "XSX", "WINGDK", "ALL", "POOP"]
+  }
+
+  expect_failures = [
+    var.supported_server_platforms
+  ]
+}

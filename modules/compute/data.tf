@@ -21,19 +21,20 @@ data "aws_region" "current" {}
 data "template_file" "user_data_template" {
   template = file("${path.module}/templates/user_data_script.sh.tpl")
   vars = {
-    mod_list              = join(",", var.mod_list)
-    use_battleye          = "${var.use_battleye}"
-    auto_save_interval    = "${var.auto_save_interval}"
-    ge_proton_version     = "${var.ge_proton_version}"
-    max_players           = "${var.max_players}"
-    enable_rcon           = "${var.enable_rcon}"
-    rcon_port             = var.enable_rcon == true ? "${var.rcon_port}" : null
-    steam_query_port      = "${var.steam_query_port}"
-    game_client_port      = "${var.game_client_port}"
-    server_admin_password = "${var.server_admin_password}"
-    ark_session_name      = "${var.ark_session_name}"
-    is_password_protected = "${var.is_password_protected}"
-    join_password         = "${var.join_password}"
+    mod_list                   = join(",", var.mod_list)
+    supported_server_platforms = join(",", var.supported_server_platforms)
+    use_battleye               = "${var.use_battleye}"
+    auto_save_interval         = "${var.auto_save_interval}"
+    ge_proton_version          = "${var.ge_proton_version}"
+    max_players                = "${var.max_players}"
+    enable_rcon                = "${var.enable_rcon}"
+    rcon_port                  = var.enable_rcon == true ? "${var.rcon_port}" : null
+    steam_query_port           = "${var.steam_query_port}"
+    game_client_port           = "${var.game_client_port}"
+    server_admin_password      = "${var.server_admin_password}"
+    ark_session_name           = "${var.ark_session_name}"
+    is_password_protected      = "${var.is_password_protected}"
+    join_password              = "${var.join_password}"
     # START GameUserSettings.ini inputs
     use_custom_gameusersettings    = "${var.use_custom_gameusersettings}"
     custom_gameusersettings_s3     = var.use_custom_gameusersettings == true ? "${var.custom_gameusersettings_s3}" : false

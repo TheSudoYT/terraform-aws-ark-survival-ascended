@@ -26,18 +26,19 @@ module "ark_compute" {
   ami_id                   = var.ami_id
   ebs_volume_size          = var.ebs_volume_size
   # Ark Application inputs
-  mod_list              = var.mod_list
-  use_battleye          = var.use_battleye
-  auto_save_interval    = var.auto_save_interval
-  ark_session_name      = var.ark_session_name
-  max_players           = var.max_players
-  steam_query_port      = var.steam_query_port
-  game_client_port      = var.game_client_port
-  enable_rcon           = var.enable_rcon
-  rcon_port             = var.rcon_port
-  server_admin_password = var.server_admin_password
-  is_password_protected = var.is_password_protected
-  join_password         = var.join_password
+  mod_list                   = var.mod_list
+  supported_server_platforms = var.supported_server_platforms
+  use_battleye               = var.use_battleye
+  auto_save_interval         = var.auto_save_interval
+  ark_session_name           = var.ark_session_name
+  max_players                = var.max_players
+  steam_query_port           = var.steam_query_port
+  game_client_port           = var.game_client_port
+  enable_rcon                = var.enable_rcon
+  rcon_port                  = var.rcon_port
+  server_admin_password      = var.server_admin_password
+  is_password_protected      = var.is_password_protected
+  join_password              = var.join_password
   # Custom GameUserSettings.ini inputs
   use_custom_gameusersettings        = var.use_custom_gameusersettings
   custom_gameusersettings_s3         = var.custom_gameusersettings_s3
