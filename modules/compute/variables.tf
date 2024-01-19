@@ -202,7 +202,7 @@ variable "backup_s3_bucket_name" {
 variable "backup_interval_cron_expression" {
   description = "How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/)"
   type        = string
-  default     = ""
+  default     = "* */23 * * *"
 
   # Ill try this again later
   # validation {
