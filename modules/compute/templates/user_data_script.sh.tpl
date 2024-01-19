@@ -91,6 +91,10 @@ ExecStart=$STEAMDIR/compatibilitytools.d/$PROTON_NAME/proton run ArkAscendedServ
 %{ if length(mod_list) > 0 ~}
 -mods=${mod_list} \
 %{ endif ~}
+%{ if supported_server_platforms != "PC"  ~}
+-ServerPlatform=${supported_server_platforms} \
+%{ endif ~}
+
 
 Restart=on-failure
 RestartSec=20s

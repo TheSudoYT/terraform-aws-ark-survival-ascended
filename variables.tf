@@ -652,3 +652,15 @@ variable "mod_list" {
   type        = list(string)
   default     = [""]
 }
+
+### Platform Types ###
+variable "supported_server_platforms" {
+  description = "Allows the server to accept specified platforms. Options are PC for Steam, PS5 for PlayStation 5, XSX for XBOX, WINGDK for Microsoft Store, ALL for crossplay between PC and all consoles. Note: Steam dedicated server supports only PC and ALL options. Example: supported_server_platforms = ['PC', 'PS5']"
+  type        = list(string)
+  default     = ["PC"]
+
+  validation {
+    condition     = alltrue([for v in var.supported_server_platforms : contains(["PC", "PS5", "XSX", "WINGDK", "ALL"], v)])
+    error_message = "Each supported server platform must be one of 'PC', 'PS5', 'XSX', 'WINGDK', or 'ALL'."
+  }
+}

@@ -205,3 +205,17 @@ run "pass_validate_proton_version" {
     error_message = "${data.http.ge_proton.url} returned an unhealthy status code for version ${var.ge_proton_version}"
   }
 }
+
+run "pass_validate_server_platforms" {
+
+  command = plan
+
+  variables {
+    supported_server_platforms = ["PC", "PS5", "XSX", "WINGDK", "ALL"]
+  }
+
+  assert {
+    condition     = alltrue([for v in var.supported_server_platforms : contains(["PC", "PS5", "XSX", "WINGDK", "ALL"], v)])
+    error_message = "Each supported server platform must be one of 'PC', 'PS5', 'XSX', 'WINGDK', or 'ALL'."
+  }
+}

@@ -171,6 +171,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 - [Enabling backups to S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/backups_enabled)
 - [Using Default Ark Settings](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/vanilla_ark_default_settings)
 - [Adding Mods](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/with_mods)
+- [Supporting Additional Platforms (PS5, Xbox, etc.)](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/enable_additional_platforms)
 - [All Inputs]() Combines custom INI files with inputs that overwrite the custom settings
 
 ## Abandoned Features
