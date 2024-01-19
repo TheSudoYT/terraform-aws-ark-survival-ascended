@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.0.1...v1.1.0) (2024-01-19)
+
+
+### Features
+
+* Adding Examples, Fixing a Bug, Updating Docs ([#5](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/issues/5)) ([1b62b5d](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/1b62b5d16d20988dbe9b5083722ee22e7e13e76a))
+
 ### [1.0.1](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.0.0...v1.0.1) (2024-01-16)
 
 
