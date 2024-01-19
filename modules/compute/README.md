@@ -4,13 +4,15 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
+| <a name="requirement_http"></a> [http](#requirement\_http) | >=3.4.1 |
+| <a name="requirement_template"></a> [template](#requirement\_template) | >=2.2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
-| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0.0 |
+| <a name="provider_template"></a> [template](#provider\_template) | >=2.2.0 |
 
 ## Modules
 
@@ -52,7 +54,7 @@ No modules.
 | <a name="input_ark_session_name"></a> [ark\_session\_name](#input\_ark\_session\_name) | The name of the Ark server as it appears in the list of servers when users look for a server to join | `string` | `"ark-aws-ascended"` | no |
 | <a name="input_ark_subnet_id"></a> [ark\_subnet\_id](#input\_ark\_subnet\_id) | The ID of the security group to use with the EC2 instance | `string` | `""` | no |
 | <a name="input_auto_save_interval"></a> [auto\_save\_interval](#input\_auto\_save\_interval) | Set interval for automatic saves. Setting this to 0 will cause constant saving. | `number` | `15` | no |
-| <a name="input_backup_interval_cron_expression"></a> [backup\_interval\_cron\_expression](#input\_backup\_interval\_cron\_expression) | How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/) | `string` | `""` | no |
+| <a name="input_backup_interval_cron_expression"></a> [backup\_interval\_cron\_expression](#input\_backup\_interval\_cron\_expression) | How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/) | `string` | `"0 23 * * *"` | no |
 | <a name="input_backup_s3_bucket_arn"></a> [backup\_s3\_bucket\_arn](#input\_backup\_s3\_bucket\_arn) | The ARN of the s3 bucket that you would like to use for ShooterGame/Saved directory backups | `string` | `""` | no |
 | <a name="input_backup_s3_bucket_name"></a> [backup\_s3\_bucket\_name](#input\_backup\_s3\_bucket\_name) | The name of the S3 bucket to backup the ShooterGame/Saved directory to | `string` | `""` | no |
 | <a name="input_clamp_resource_harvest_damage"></a> [clamp\_resource\_harvest\_damage](#input\_clamp\_resource\_harvest\_damage) | If True, limit the damage caused by a tame to a resource on harvesting based on resource remaining health. Note: enabling this setting may result in sensible resource harvesting reduction using high damage tools or creatures. | `bool` | `false` | no |
@@ -98,6 +100,7 @@ No modules.
 | <a name="input_max_platform_saddle_structure_limit"></a> [max\_platform\_saddle\_structure\_limit](#input\_max\_platform\_saddle\_structure\_limit) | Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK. | `number` | `75` | no |
 | <a name="input_max_players"></a> [max\_players](#input\_max\_players) | The number of max players the server allows | `string` | `"32"` | no |
 | <a name="input_max_tamed_dinos"></a> [max\_tamed\_dinos](#input\_max\_tamed\_dinos) | Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK. | `number` | `5000` | no |
+| <a name="input_mod_list"></a> [mod\_list](#input\_mod\_list) | A list of mod IDs to add to the server. List of strings. Example: mod\_list = ['935813', '900062'] | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_night_time_speed_scale"></a> [night\_time\_speed\_scale](#input\_night\_time\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during night time. This value determines the length of each night, relative to the length of each day (as specified by DayTimeSpeedScale) Lowering this value increases the length of each night. | `number` | `1` | no | 
 | <a name="input_non_permanent_diseases"></a> [non\_permanent\_diseases](#input\_non\_permanent\_diseases) | If True, makes permanent diseases not permanent. Players will lose them if on re-spawn. | `bool` | `false` | no |
 | <a name="input_override_official_difficulty"></a> [override\_official\_difficulty](#input\_override\_official\_difficulty) | Allows you to override the default server difficulty level of 4 with 5 to match the new official server difficulty level. Default value of 0.0 disables the override. A value of 5.0 will allow common creatures to spawn up to level 150. Originally (247.95) available only as command line option. | `number` | `0` | no |
@@ -145,18 +148,18 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_admin_commands_password"></a> [admin\_commands\_password](#output\_admin\_commands\_password) | n/a |
-| <a name="output_custom_game_file_name"></a> [custom\_game\_file\_name](#output\_custom\_game\_file\_name) | n/a |
-| <a name="output_custom_gameusersettings_file_name"></a> [custom\_gameusersettings\_file\_name](#output\_custom\_gameusersettings\_file\_name) | n/a |
-| <a name="output_custom_ini_s3_bucket_name"></a> [custom\_ini\_s3\_bucket\_name](#output\_custom\_ini\_s3\_bucket\_name) | n/a |
-| <a name="output_game_client_port"></a> [game\_client\_port](#output\_game\_client\_port) | n/a |
-| <a name="output_gameusersettings_s3_bucket"></a> [gameusersettings\_s3\_bucket](#output\_gameusersettings\_s3\_bucket) | The downloadable uri of the file |
-| <a name="output_gameusersettings_s3_content"></a> [gameusersettings\_s3\_content](#output\_gameusersettings\_s3\_content) | the contents of the file |
-| <a name="output_join_password"></a> [join\_password](#output\_join\_password) | n/a |
-| <a name="output_max_players"></a> [max\_players](#output\_max\_players) | n/a |
-| <a name="output_server_is_password_protected"></a> [server\_is\_password\_protected](#output\_server\_is\_password\_protected) | n/a |
-| <a name="output_server_using_custom_gameini"></a> [server\_using\_custom\_gameini](#output\_server\_using\_custom\_gameini) | n/a |
-| <a name="output_server_using_custom_gameusersettingsini"></a> [server\_using\_custom\_gameusersettingsini](#output\_server\_using\_custom\_gameusersettingsini) | n/a |
-| <a name="output_session_name"></a> [session\_name](#output\_session\_name) | n/a |
-| <a name="output_ssh_key_name"></a> [ssh\_key\_name](#output\_ssh\_key\_name) | n/a |
-| <a name="output_steam_query_port"></a> [steam\_query\_port](#output\_steam\_query\_port) | n/a |
+| <a name="output_admin_commands_password"></a> [admin\_commands\_password](#output\_admin\_commands\_password) | The configured admin command password. |
+| <a name="output_custom_game_file_name"></a> [custom\_game\_file\_name](#output\_custom\_game\_file\_name) | The custom gameusersettings file name that was uploaded to s3 if use custom Game.ini with s3 was configured. |
+| <a name="output_custom_gameusersettings_file_name"></a> [custom\_gameusersettings\_file\_name](#output\_custom\_gameusersettings\_file\_name) | The custom gameusersettings file name that was uploaded to s3 if use custom GUS ini with s3 was configured. |
+| <a name="output_custom_ini_s3_bucket_name"></a> [custom\_ini\_s3\_bucket\_name](#output\_custom\_ini\_s3\_bucket\_name) | The ID of the S3 bucket that was created if use custom ini with s3 was configured. |
+| <a name="output_game_client_port"></a> [game\_client\_port](#output\_game\_client\_port) | The configured game client port. |
+| <a name="output_gameusersettings_s3_bucket"></a> [gameusersettings\_s3\_bucket](#output\_gameusersettings\_s3\_bucket) | The download URI of the gameusersettings.ini from s3 ( experimental ). |
+| <a name="output_gameusersettings_s3_content"></a> [gameusersettings\_s3\_content](#output\_gameusersettings\_s3\_content) | The contents of the GameUserSettings.ini ( experimental ). |
+| <a name="output_join_password"></a> [join\_password](#output\_join\_password) | The server join password required to join. |
+| <a name="output_max_players"></a> [max\_players](#output\_max\_players) | The configured max players. |
+| <a name="output_server_is_password_protected"></a> [server\_is\_password\_protected](#output\_server\_is\_password\_protected) | Is the server password protected. |
+| <a name="output_server_using_custom_gameini"></a> [server\_using\_custom\_gameini](#output\_server\_using\_custom\_gameini) | Is the server using custom Game.ini. |
+| <a name="output_server_using_custom_gameusersettingsini"></a> [server\_using\_custom\_gameusersettingsini](#output\_server\_using\_custom\_gameusersettingsini) | Is the server using custom GameUserSettings.ini. |
+| <a name="output_session_name"></a> [session\_name](#output\_session\_name) | The configured session name. |
+| <a name="output_ssh_key_name"></a> [ssh\_key\_name](#output\_ssh\_key\_name) | The name of the SSH key generated by Terraform. |
+| <a name="output_steam_query_port"></a> [steam\_query\_port](#output\_steam\_query\_port) | The configured steam query port. |

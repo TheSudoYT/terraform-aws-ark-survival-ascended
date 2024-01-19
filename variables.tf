@@ -645,3 +645,10 @@ variable "the_max_structure_in_range" {
   type        = number
   default     = 10500
 }
+
+### Mods ###
+variable "mod_list" {
+  description = "A list of mod IDs to add to the server. List of strings. Example: mod_list = ['935813', '900062']"
+  type        = list(string)
+  default     = [""]
+}
