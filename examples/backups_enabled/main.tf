@@ -1,5 +1,5 @@
 module "asa" {
-  source = "../../"
+  source = "TheSudoYT/ark-survival-ascended/aws"
 
   # Infrastructure inputs
   ge_proton_version = "8-27"

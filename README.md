@@ -25,6 +25,11 @@ This module allows you to quickly deploy an Ark Survival Ascended server on AWS.
 - Most GameUserSettings.ini settings are configurable inputs for creating a brand new configuration
 - Ability to store backups in S3 at a defined interval
 
+### Supported Maps
+| Map Name | Systemd Service Name |
+| -------- | --------------- |
+| The Island | ark-island |
+
 ### Planned Features Roadmap
 | Feature | Target Date |
 | ------- | ----------- |
@@ -46,7 +51,7 @@ You must have the following to use this Terraform module:
 - An AWS account
 
 ## Usage
-1. Create a file named `main.tf` ( or anything ending in .tf)
+1. Create a file named `main.tf`
 2. Add the following as a minimum. See all available inputs in the "Inputs" section of this README. Inputs not defined will use their default values.
 ```hcl
 module "ark-survival-ascended" {
@@ -61,20 +66,28 @@ module "ark-survival-ascended" {
   is_password_protected = true
   join_password         = "RockWellSucks"
   enable_s3_backups               = false
-
 }
 ```
-1. Choose your inputs - `GameUserSettings.ini` inputs use default values unless you provide a value OTHER than the default value. Ark will use the settings from a custom GameUserSettings.ini file if you choose to use one. Modifying an input that is a GameUserSettings.ini setting while also using a custom GameUserSettings.ini file will result in that specific setting being overwritten in your custom file.
-2. Initialize Terraform - Run `terraform init` to download the module and providers.
-3. Create the Ark server and Infrastructure - Run `terraform apply` to start deploying the infrastructure.
+3. Choose your inputs - `GameUserSettings.ini` inputs use default values unless you provide a value OTHER than the default value. Ark will use the settings from a custom GameUserSettings.ini file if you choose to use one. Modifying an input that is a GameUserSettings.ini setting while also using a custom GameUserSettings.ini file will result in that specific setting being overwritten in your custom file.
+4. Initialize Terraform - Run `terraform init` to download the module and providers.
+5. Create the Ark server and Infrastructure - Run `terraform apply` to start deploying the infrastructure.
 
+## Accessing the Server
 > [!NOTE]
 > In testing it takes approximately 15 to 20 minutes on a t3.xlarge for steam to download and configure ark.
+
+The terraform apply will complete, but the server will not appear in the server list until this completes. You can SSH into your server `ssh -i my_ark_key.pem ubuntu@1.2.3.4` and use `journalctl -xu cloud-final` to monitor the install. See the troubleshooting section of the README if you continue to have problems.
+
+> [!NOTE]
+> In testing it takes approximately 3 to 5 minutes for your server to appear on the server list after installation is complete.
+
+
 
 ## Backups
 This module includes the option to enable backups. Enabling this will backup the `ShooterGame/Saved` directory to an S3 bucket at the interval specified using cron. Backups will be retained in S3 based on the number of days specified by the input `s3_bucket_backup_retention`. This is to save money. Versioning, kms, and replication are disabled to save money.
 
->Note: Enabling this creates an additional S3 bucket. In testing, this adds an additional 0.10 USD ( 10 cents ) a month on average depending on the duration of backup retention, how often you backup, and how often you restore from backup. https://calculator.aws/#/addService
+> [!NOTE] 
+> Enabling this creates an additional S3 bucket. In testing, this adds an additional 0.10 USD ( 10 cents ) a month on average depending on the duration of backup retention, how often you backup, and how often you restore from backup. https://calculator.aws/#/addService
 
 2 Files will be created on the ark server; `ark_backup_script.sh` on install and `ark_backup_log.log` when the first backup job runs. The backup log should show similiar to the one below if backup is a success:
 ```bash
@@ -102,21 +115,13 @@ upload: ./ark-aws-ascended_backup_2024-01-01-18-47-04.tar.gz to s3://ark-backups
 [INFO] Removing Local Ark Backup File
 ```
 
-An the backup should be visible in the AWS S3 bucket.
-- move data off EBS and restore from the target location OR
-- Restore from EBS snapshot
-- Price difference?
-- 8.9 MB 
-
-### Compute
-
-### Networking
+The backup should be visible in the AWS S3 bucket after the first specified backup interval time frame passes.
 
 ## Using an Existing GameUserSettings.ini
 You can use an existing GameUserSettings.ini so that the server starts with your custom settings. The following inputs are required to do this:
 
 > [!NOTE]
-> Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
+> Terraform Module inputs that are also `key=value` pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
 
 | Input | Description |
 | ------------- | ------------- |
@@ -134,7 +139,7 @@ You can use an existing GameUserSettings.ini so that the server starts with your
 You can use an existing Game.ini so that the server starts with your custom settings. The following inputs are required to do this:
 
 > [!NOTE]
-> Terraform Module inputs that are also key=value pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
+> Terraform Module inputs that are also `key=value` pairs in the .ini files overwrite the .ini file options. For example, the `ark_session_name` input will overwrite the value for SessionName in your GameUserSettings.ini file if you provided a custom one.
 
 | Input | Description |
 | ------------- | ------------- |
@@ -168,6 +173,7 @@ You can use an existing Game.ini so that the server starts with your custom sett
 | Input for GE Proton version | :white_check_mark: |
 | Save interval | :white_check_mark: |
 | Paramaterize most of GUS.ini | :white_check_mark: |
+| What happens if the session name is taken? | idk |
 | Add terraform-test to CI precommit and PR | now |
 | lifecycle ignore ssh 22 | meh |
 | Parametrize Game.ini options | Jan 2024
@@ -186,8 +192,8 @@ You can use an existing Game.ini so that the server starts with your custom sett
 ## Examples
 - [Using a Custom GameUserSettings and Game.ini From S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
 - [Using a Custom GameUserSettings and Game.ini From GitHub](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/custom_ini_with_s3)
-- [Enabling backups to S3]()
-- [Vanilla Ark with Default Settings]()
+- [Enabling backups to S3](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/backups_enabled)
+- [Using Default Ark Settings](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/tree/main/examples/vanilla_ark_default_settings)
 - [All Inputs]() Combines custom INI files with inputs that overwrite the custom settings
 
 ## Requirements
