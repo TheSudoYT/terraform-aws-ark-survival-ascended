@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.1.0...v1.2.0) (2024-01-19)
+
+
+### Features
+
+* **mods:** mod_list input added. Mods can now be added to the server ([#6](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/issues/6)) ([9fbf954](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/9fbf9549f819d38e40ecbb3ba46bcf72f4c58335))
+
 ## [1.1.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.0.1...v1.1.0) (2024-01-19)
 
 
