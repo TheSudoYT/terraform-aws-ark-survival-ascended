@@ -51,8 +51,8 @@ module "ark_compute" {
   custom_gameini_github_url = var.custom_gameini_github_url
   # Backup inputs
   enable_s3_backups                            = var.enable_s3_backups
-  backup_s3_bucket_name                        = var.enable_s3_backups == true ? module.ark_backup.backup_s3_bucket_name[0] : ""
-  backup_s3_bucket_arn                         = var.enable_s3_backups == true ? module.ark_backup.backup_s3_bucket_arn[0] : ""
+  backup_s3_bucket_name                        = var.enable_s3_backups == true && var.create_backup_s3_bucket == false ? module.ark_backup.backup_s3_bucket_name[0] : var.backup_s3_bucket_name
+  backup_s3_bucket_arn                         = var.enable_s3_backups == true && var.create_backup_s3_bucket == false ? module.ark_backup.backup_s3_bucket_arn[0] : var.backup_s3_bucket_arn
   backup_interval_cron_expression              = var.backup_interval_cron_expression
   taming_speed_multiplier                      = var.taming_speed_multiplier
   xp_multiplier                                = var.xp_multiplier
