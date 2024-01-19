@@ -53,7 +53,7 @@ data "template_file" "user_data_template" {
     # END Game.ini inputs
     # START backup related inputs
     enable_s3_backups               = var.enable_s3_backups
-    backup_s3_bucket_name           = var.backup_s3_bucket_name
+    backup_s3_bucket_name           = "${var.backup_s3_bucket_name}"
     backup_interval_cron_expression = var.enable_s3_backups == true ? var.backup_interval_cron_expression : ""
     # END backup related inputs
     taming_speed_multiplier                      = "${var.taming_speed_multiplier}"
