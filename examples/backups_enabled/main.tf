@@ -18,7 +18,10 @@ module "asa" {
   server_admin_password      = "RockwellSucks"
   is_password_protected      = true
   join_password              = "RockWellSucks"
+  enable_s3_backups          = true
   create_backup_s3_bucket    = true
   s3_bucket_backup_retention = 7
   force_destroy              = true
+  backup_s3_bucket_arn       = ""
+  backup_s3_bucket_name      = ""
 }
