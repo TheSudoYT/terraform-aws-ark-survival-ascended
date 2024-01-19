@@ -81,6 +81,8 @@ The terraform apply will complete, but the server will not appear in the server 
 > [!NOTE]
 > In testing it takes approximately 3 to 5 minutes for your server to appear on the server list after installation is complete.
 
+Ensure you tick the `show player servers` box to view your server:
+![Show Player Servers](docs/images/show_player_servers.jpg)
 
 
 ## Backups
