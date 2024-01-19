@@ -231,6 +231,7 @@ handle_gameini ${use_custom_game_ini} ${custom_gameini_s3} ${custom_gameini_gith
 fi
 
 chown -R steam:steam /ark-asa/ShooterGame/Saved
+chmod -R 775 /ark-asa/ShooterGame/Saved
 # Upload custom GameUserSettings.ini if user has use_custom_gameusersettings true and game_user_settings_ini_path defined
 # %{ if use_custom_gameusersettings == "true" && custom_gameusersettings_s3 == "true" ~}
 # retrieve_obj_from_s3 "${gameusersettings_bucket_arn}"
@@ -247,6 +248,7 @@ echo "[INFO] STARTING ARK-ISLAND.SERVICE"
 systemctl start ark-island
 
 if [[ ${enable_s3_backups} == "true" ]]; then
+echo "[INFO] S3 BBACKUPS ENABLED. CREATING /ark-asa/ark_backup_script.sh"
 cat > /ark-asa/ark_backup_script.sh <<EOD
 #!/bin/bash
 
