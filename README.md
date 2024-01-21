@@ -34,7 +34,6 @@ This module allows you to quickly deploy an Ark Survival Ascended server on AWS.
 ### Planned Features Roadmap
 | Feature | Target Date |
 | ------- | ----------- |
-| Inputs for platform type | Jan 2024 |
 | Replace stand alone EC2 instance with Autoscaling group | Feb 2024 |
 | Parametrize Game.ini options | Feb 2024
 | Configurable Restart interval | Feb 2024 |

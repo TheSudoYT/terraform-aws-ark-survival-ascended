@@ -119,6 +119,10 @@ module "ark_compute" {
   structure_prevent_resource_radius_multiplier = var.structure_prevent_resource_radius_multiplier
   structure_resistance_multiplier              = var.structure_resistance_multiplier
   the_max_structure_in_range                   = var.the_max_structure_in_range
+  start_from_backup                            = var.start_from_backup
+  backup_files_storage_type                    = var.backup_files_storage_type
+  backup_files_local_path                      = var.backup_files_local_path
+  backup_files_s3_bucket_uri                   = var.backup_files_s3_bucket_uri
 }
 
 module "ark_backup" {

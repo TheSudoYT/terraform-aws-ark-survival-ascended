@@ -227,6 +227,47 @@ handle_gameini() {
     fi
 }
 
+# Function for getting save game files from S3
+retrieve_obj_from_s3_backup() {
+  local src="$1"
+  local dst="/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini"
+
+  echo "[INFO] GETTING Game.ini FROM S3"
+
+  if [[ "$src" == "" ]]; then
+    echo "[ERROR] Did not detect a valid path."
+    exit_script 10
+  else
+    echo "[INFO] Copying $src to $dst..."
+    aws s3 cp "$src" "$dst"
+  fi
+}
+
+handle_start_from_backup() {
+    local start_from_backup="$1"
+    local backup_files_storage_type="$2"
+    local backup_files_local_path="$3"
+    local backup_files_s3_bucket_uri="$4"
+
+    echo "[INFO] CHECKING FOR START_FROM_BACKUP OPTIONS"
+    echo "[INFO] start_from_backup SET TO $start_from_backup"
+    echo "[INFO] backup_files_storage_type SET TO $backup_files_storage_type"
+    echo "[INFO] backup_files_local_path SET TO $backup_files_local_path"
+    echo "[INFO] backup_files_s3_bucket_uri SET TO $backup_files_s3_bucket_uri"
+
+    if [[ $start_from_backup == "true" ]]; then
+        if [[ $backup_files_storage_type == "local" ]]; then
+            echo "[INFO] custom_gameini_s3 == true"
+            retrieve_obj_from_s3_backup "$gameini_bucket_arn"
+        elif [[ $custom_gameini_github == "true" ]]; then
+            echo "[INFO] custom_gameini_github == true"
+            retrieve_obj_from_github_gameini "$github_url_gameini"
+        else
+            echo "Error: Invalid configuration for use_custom_game_ini."
+        fi
+    fi
+}
+
 if [[ ${use_custom_gameusersettings} == "true" ]]; then
 echo "[INFO] CUSTOM GameUserSettings.INI REQUESTED FOR USE"
 handle_gameusersettings ${use_custom_gameusersettings} ${custom_gameusersettings_s3} ${custom_gameusersettings_github} ${gameusersettings_bucket_arn} ${github_url}
@@ -236,6 +277,7 @@ if [[ ${use_custom_game_ini} == "true" ]]; then
 echo "[INFO] CUSTOM Game.INI REQUESTED FOR USE"
 handle_gameini ${use_custom_game_ini} ${custom_gameini_s3} ${custom_gameini_github} ${gameini_bucket_arn} ${github_url_gameini}
 fi
+
 
 chown -R steam:steam /ark-asa/ShooterGame/Saved
 chmod -R 775 /ark-asa/ShooterGame/Saved

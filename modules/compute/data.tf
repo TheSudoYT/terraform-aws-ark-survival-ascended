@@ -56,6 +56,12 @@ data "template_file" "user_data_template" {
     backup_s3_bucket_name           = "${var.backup_s3_bucket_name}"
     backup_interval_cron_expression = var.enable_s3_backups == true ? var.backup_interval_cron_expression : ""
     # END backup related inputs
+    # START start from existing save game data
+    start_from_backup          = "${var.start_from_backup}"
+    backup_files_storage_type  = "${var.backup_files_storage_type}"
+    backup_files_local_path    = var.start_from_backup == true && var.backup_files_storage_type == "local" ? "${var.backup_files_local_path}" : ""
+    backup_files_s3_bucket_uri = var.start_from_backup == true && var.backup_files_storage_type == "s3" ? "${var.backup_files_s3_bucket_uri}" : ""
+    # END start from existing save game data
     taming_speed_multiplier                      = "${var.taming_speed_multiplier}"
     xp_multiplier                                = "${var.xp_multiplier}"
     server_pve                                   = "${var.server_pve}"
