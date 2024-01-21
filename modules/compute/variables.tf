@@ -646,7 +646,7 @@ variable "backup_files_storage_type" {
   default     = "local"
 
   validation {
-    condition     = var.storage_type == "local" || var.storage_type == "s3"
+    condition     = var.backup_files_storage_type == "local" || var.backup_files_storage_type == "s3"
     error_message = "Invalid storage type. The only valid inputs are 'local' or 's3'."
   }
 

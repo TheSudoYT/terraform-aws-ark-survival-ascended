@@ -227,19 +227,22 @@ handle_gameini() {
     fi
 }
 
+##
+# DONT FORGET TO PARAMETERIZE THE MAP NAME WHEN YOU DO MULTIPLE MAPS!! ##
+#####
 # Function for getting save game files from S3
 retrieve_obj_from_s3_backup() {
   local src="$1"
-  local dst="/ark-asa/ShooterGame/Saved/Config/WindowsServer/Game.ini"
+  local dst="/ark-asa/ShooterGame/Saved/SavedArks/TheIsland_WP"
 
-  echo "[INFO] GETTING Game.ini FROM S3"
+  echo "[INFO] GETTING SAVE BACKUP FILES FROM S3"
 
   if [[ "$src" == "" ]]; then
     echo "[ERROR] Did not detect a valid path."
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    aws s3 cp "$src" "$dst"
+    aws s3 sync "$src" "$dst"
   fi
 }
 
@@ -247,7 +250,8 @@ handle_start_from_backup() {
     local start_from_backup="$1"
     local backup_files_storage_type="$2"
     local backup_files_local_path="$3"
-    local backup_files_s3_bucket_uri="$4"
+    local backup_files_bootstrap_bucket_name="$4"
+    local backup_files_s3_bucket_uri="$5"
 
     echo "[INFO] CHECKING FOR START_FROM_BACKUP OPTIONS"
     echo "[INFO] start_from_backup SET TO $start_from_backup"
@@ -257,16 +261,22 @@ handle_start_from_backup() {
 
     if [[ $start_from_backup == "true" ]]; then
         if [[ $backup_files_storage_type == "local" ]]; then
-            echo "[INFO] custom_gameini_s3 == true"
-            retrieve_obj_from_s3_backup "$gameini_bucket_arn"
-        elif [[ $custom_gameini_github == "true" ]]; then
-            echo "[INFO] custom_gameini_github == true"
-            retrieve_obj_from_github_gameini "$github_url_gameini"
+            echo "[INFO] backup_files_storage_type == local"
+            retrieve_obj_from_s3_backup "$backup_files_bootstrap_bucket_name"
+        elif [[ $backup_files_storage_type == "s3" ]]; then
+            echo "[INFO] backup_files_storage_type == s3"
+            # to do
+            retrieve_obj_from_existing_s3 "$backup_files_s3_bucket_uri"
         else
-            echo "Error: Invalid configuration for use_custom_game_ini."
+            echo "Error: Invalid configuration for start_from_backup"
         fi
     fi
 }
+
+if [[ ${start_from_backup} == "true" ]]; then
+echo "[INFO] START FROM EXISTING SAVE DATA/BACKUP REQUESTED FOR USE"
+handle_start_from_backup ${start_from_backup} ${backup_files_storage_type} ${backup_files_local_path} ${backup_files_bootstrap_bucket_name} ${backup_files_s3_bucket_uri}
+fi
 
 if [[ ${use_custom_gameusersettings} == "true" ]]; then
 echo "[INFO] CUSTOM GameUserSettings.INI REQUESTED FOR USE"
