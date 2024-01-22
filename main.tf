@@ -53,8 +53,8 @@ module "ark_compute" {
   custom_gameini_github_url = var.custom_gameini_github_url
   # Backup inputs
   enable_s3_backups                            = var.enable_s3_backups
-  backup_s3_bucket_name                        = var.enable_s3_backups == true && var.create_backup_s3_bucket == false ? module.ark_backup.backup_s3_bucket_name[0] : var.backup_s3_bucket_name
-  backup_s3_bucket_arn                         = var.enable_s3_backups == true && var.create_backup_s3_bucket == false ? module.ark_backup.backup_s3_bucket_arn[0] : var.backup_s3_bucket_arn
+  backup_s3_bucket_name                        = var.enable_s3_backups == true && var.create_backup_s3_bucket == true ? module.ark_backup.backup_s3_bucket_name[0] : var.backup_s3_bucket_name
+  backup_s3_bucket_arn                         = var.enable_s3_backups == true && var.create_backup_s3_bucket == true ? module.ark_backup.backup_s3_bucket_arn[0] : var.backup_s3_bucket_arn
   backup_interval_cron_expression              = var.backup_interval_cron_expression
   taming_speed_multiplier                      = var.taming_speed_multiplier
   xp_multiplier                                = var.xp_multiplier
@@ -119,6 +119,11 @@ module "ark_compute" {
   structure_prevent_resource_radius_multiplier = var.structure_prevent_resource_radius_multiplier
   structure_resistance_multiplier              = var.structure_resistance_multiplier
   the_max_structure_in_range                   = var.the_max_structure_in_range
+  start_from_backup                            = var.start_from_backup
+  backup_files_storage_type                    = var.backup_files_storage_type
+  backup_files_local_path                      = var.backup_files_local_path
+  existing_backup_files_bootstrap_bucket_arn   = var.existing_backup_files_bootstrap_bucket_arn
+  existing_backup_files_bootstrap_bucket_name  = var.existing_backup_files_bootstrap_bucket_name
 }
 
 module "ark_backup" {

@@ -53,9 +53,18 @@ data "template_file" "user_data_template" {
     # END Game.ini inputs
     # START backup related inputs
     enable_s3_backups               = var.enable_s3_backups
-    backup_s3_bucket_name           = var.backup_s3_bucket_name
+    backup_s3_bucket_name           = "${var.backup_s3_bucket_name}"
     backup_interval_cron_expression = var.enable_s3_backups == true ? var.backup_interval_cron_expression : ""
     # END backup related inputs
+    # START start from existing save game data
+    start_from_backup                           = "${var.start_from_backup}"
+    backup_files_storage_type                   = "${var.backup_files_storage_type}"
+    backup_files_bootstrap_bucket_arn           = var.start_from_backup == true && var.backup_files_storage_type == "local" ? "${aws_s3_bucket.ark_bootstrap[0].arn}" : "na"
+    backup_files_bootstrap_bucket_name          = var.start_from_backup == true && var.backup_files_storage_type == "local" ? "s3://${aws_s3_bucket.ark_bootstrap[0].bucket}" : "na"
+    backup_files_local_path                     = var.start_from_backup == true && var.backup_files_storage_type == "local" ? "${var.backup_files_local_path}" : "na"
+    existing_backup_files_bootstrap_bucket_arn  = var.start_from_backup == true && var.backup_files_storage_type == "s3" ? "${var.existing_backup_files_bootstrap_bucket_arn}" : "na"
+    existing_backup_files_bootstrap_bucket_name = var.start_from_backup == true && var.backup_files_storage_type == "s3" ? "s3://${var.existing_backup_files_bootstrap_bucket_name}" : "na"
+    # END start from existing save game data
     taming_speed_multiplier                      = "${var.taming_speed_multiplier}"
     xp_multiplier                                = "${var.xp_multiplier}"
     server_pve                                   = "${var.server_pve}"

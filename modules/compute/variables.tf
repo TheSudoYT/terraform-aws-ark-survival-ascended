@@ -110,13 +110,13 @@ variable "custom_gameini_github_url" {
 }
 
 variable "game_user_settings_ini_path" {
-  description = "Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_gameusersettings = true"
+  description = "Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_gameusersettings = true and custom_game_usersettings_s3 = true."
   type        = string
   default     = ""
 }
 
 variable "game_ini_path" {
-  description = "Path to Game.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_game_ini = true"
+  description = "Path to Game.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use_custom_game_ini = true and custom_game_ini_s3 = true."
   type        = string
   default     = ""
 }
@@ -631,4 +631,43 @@ variable "supported_server_platforms" {
     condition     = alltrue([for v in var.supported_server_platforms : contains(["PC", "PS5", "XSX", "WINGDK", "ALL"], v)])
     error_message = "Each supported server platform must be one of 'PC', 'PS5', 'XSX', 'WINGDK', or 'ALL'."
   }
+}
+
+## Restore from backups
+variable "start_from_backup" {
+  description = "True of False. Set true to start the server from an existing Ark save. Requires existing save game files."
+  type        = bool
+  default     = false
+}
+
+variable "backup_files_storage_type" {
+  description = "The location of your save game files that you wish to start the server with. Supported options are `local` or `s3'. `local` means the save game files exist somewhere on the host you are running terraform apply from. `s3` means the files exist in an s3 bucket."
+  type        = string
+  default     = "local"
+
+  validation {
+    condition     = var.backup_files_storage_type == "local" || var.backup_files_storage_type == "s3"
+    error_message = "Invalid storage type. The only valid inputs are 'local' or 's3'."
+  }
+
+}
+
+# if backup_files_storage_type local && start_from_backup = true
+variable "backup_files_local_path" {
+  description = "Path to existing save game files relative to your Terraform working directory. Will be uploaded to the server. Required if `backup_files_storage_path = local` "
+  type        = string
+  default     = ""
+}
+
+# if backup_files_storage_type s3 && start_from_backup = true
+variable "existing_backup_files_bootstrap_bucket_arn" {
+  description = "The ARN of an existing S3 bucket with ARK save game data. Files will be downloaded to the server. Objects must be in the root of the S3 bucket and not compressed."
+  type        = string
+  default     = ""
+}
+
+variable "existing_backup_files_bootstrap_bucket_name" {
+  description = "The Name of an existing S3 bucket with ARK save game data. Files will be downloaded to the server. Objects must be in the root of the S3 bucket and not compressed."
+  type        = string
+  default     = ""
 }

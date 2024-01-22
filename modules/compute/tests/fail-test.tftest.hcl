@@ -34,6 +34,11 @@ variables {
   create_backup_s3_bucket         = false
   s3_bucket_backup_retention      = 7
   force_destroy                   = true
+  start_from_backup               = true
+  backup_files_storage_type       = "local"
+  backup_files_local_path         = "../../assets"
+  #existing_backup_files_bootstrap_bucket_arn  = "arn:aws:s3:::ark-existing-s3-bucket-bootstrap"
+  #existing_backup_files_bootstrap_bucket_name = "ark-existing-s3-bucket-bootstrap"
 }
 
 provider "aws" {}
