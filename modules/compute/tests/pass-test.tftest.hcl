@@ -34,6 +34,11 @@ variables {
   create_backup_s3_bucket         = false
   s3_bucket_backup_retention      = 7
   force_destroy                   = true
+  start_from_backup               = true
+  backup_files_storage_type       = "local"
+  backup_files_local_path         = "../../assets"
+  #existing_backup_files_bootstrap_bucket_arn  = "arn:aws:s3:::ark-existing-s3-bucket-bootstrap"
+  #existing_backup_files_bootstrap_bucket_name = "ark-existing-s3-bucket-bootstrap"
 }
 
 provider "aws" {}
@@ -218,4 +223,43 @@ run "pass_validate_server_platforms" {
     condition     = alltrue([for v in var.supported_server_platforms : contains(["PC", "PS5", "XSX", "WINGDK", "ALL"], v)])
     error_message = "Each supported server platform must be one of 'PC', 'PS5', 'XSX', 'WINGDK', or 'ALL'."
   }
+}
+
+
+run "pass_validate_start_from_backup_local" {
+
+  command = plan
+
+  variables {
+    start_from_backup                           = true
+    backup_files_storage_type                   = "local"
+    backup_files_local_path                     = "../../../assets"
+    existing_backup_files_bootstrap_bucket_arn  = ""
+    existing_backup_files_bootstrap_bucket_name = ""
+  }
+
+  assert {
+    condition     = length(aws_s3_bucket.ark_bootstrap) == 1
+    error_message = "An s3 bucket is not being created for a backupfiles to be uploaded to when one is expected."
+  }
+
+}
+
+run "pass_validate_start_from_backup_s3" {
+
+  command = plan
+
+  variables {
+    start_from_backup                           = true
+    backup_files_storage_type                   = "s3"
+    backup_files_local_path                     = ""
+    existing_backup_files_bootstrap_bucket_arn  = "arn:aws:s3:::ark-existing-s3-bucket-bootstrap"
+    existing_backup_files_bootstrap_bucket_name = "ark-existing-s3-bucket-bootstrap"
+  }
+
+  assert {
+    condition     = length(aws_s3_bucket.ark_bootstrap) == 0
+    error_message = "An s3 bucket is not being created for a backupfiles to be uploaded to when one is expected."
+  }
+
 }

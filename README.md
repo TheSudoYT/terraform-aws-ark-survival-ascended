@@ -25,6 +25,7 @@ This module allows you to quickly deploy an Ark Survival Ascended server on AWS.
 - Most GameUserSettings.ini settings are configurable inputs for creating a brand new configuration
 - Ability to store backups in S3 at a defined interval
 - Ability to add mods
+- Ability to start from existing save data
 
 ### Supported Maps
 | Map Name | Systemd Service Name |
@@ -37,7 +38,6 @@ This module allows you to quickly deploy an Ark Survival Ascended server on AWS.
 | Replace stand alone EC2 instance with Autoscaling group | Feb 2024 |
 | Parametrize Game.ini options | Feb 2024
 | Configurable Restart interval | Feb 2024 |
-| Restore from backups and use existing save games | Feb 2024 |
 | Allow users to define which map to use | Feb 2024 |
 | Allow users to launch a cluster of multiple maps | March 2024 |
 | Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
@@ -135,6 +135,28 @@ Use the `supported_server_platforms` input to define which platforms can connect
 ```HCL
   supported_server_platforms = ["All"]
 ```
+
+## Using Existing Save Backups and Migrating From Existing Servers
+You can use existing save data from an existing server when starting the server. This is useful if you are migrating from another hosting platform or recreating the server. The following inputs are required to do this:
+
+> [!WARNING]
+> When `backup_files_storage_type = "s3"` using The objects in the S3 bucket must not be compressed and must be in the root of the S3 bucket. The bucket's root directroy will be synced to the SaveGame directory.
+
+> [!WARNING]
+> When `backup_files_storage_type = "local"` using The objects/files in the directory you specify with `backup_files_local_path` must not be compressed. Terraform will iterate through each file in that directory and upload it to the root of an S3 bucket it creates.
+
+
+| Input | Description |
+| ------------- | ------------- |
+| `start_from_backup = "true"` | Must be set to inform Terraform that you wish to start the server with existing save data. |
+| `backup_files_storage_type = "local" or "s3"` | Valid inputs are "local" or "s3". Must be set if `start_from_backup = true`. |
+| `backup_files_local_path = "/directory/on/my/pc"` | If `backup_files_storage_type = "local"` then you must provide a path on your local host relative to the terraform working directory. |
+| `existing_backup_files_bootstrap_bucket_arn` | If `backup_files_storage_type = "s3"` then you must provide the ARN of an existing S3 bucket that contains the save game files in the root of the S3 bucket, uncompressed. |
+| `existing_backup_files_bootstrap_bucket_name` | If `backup_files_storage_type = "s3"` then you must provide the Name of an existing S3 bucket that contains the save game files in the root of the S3 bucket, uncompressed |
+
+- `backup_files_storage_type = "local"` will instruct terraform to create an S3 bucket named `ark-bootstrap-local-saves-region-accID` and upload the save files from your local PC `backup_files_local_path` directory specified to that bucket. The user_data script on the EC2 instance will download the files from that S3 bucket when the server starts and place them in the `/ark-asa/ShooterGame/Saved/SaveGames` directory.
+
+- `backup_files_storage_type = "s3"` Is informing terraform that you have an existing S3 bucket somewhere that contains the save game data. The EC2 user_data script will attempt to sync the root of that S3 bucket with the SaveGames directory of ark. That is why it is important that the objects be uncompressed and in the root of the directory. 
 
 ## Using an Existing GameUserSettings.ini
 You can use an existing GameUserSettings.ini so that the server starts with your custom settings. The following inputs are required to do this:

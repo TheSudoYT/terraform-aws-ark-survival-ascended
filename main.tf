@@ -122,7 +122,8 @@ module "ark_compute" {
   start_from_backup                            = var.start_from_backup
   backup_files_storage_type                    = var.backup_files_storage_type
   backup_files_local_path                      = var.backup_files_local_path
-  backup_files_s3_bucket_uri                   = var.backup_files_s3_bucket_uri
+  existing_backup_files_bootstrap_bucket_arn   = var.existing_backup_files_bootstrap_bucket_arn
+  existing_backup_files_bootstrap_bucket_name  = var.existing_backup_files_bootstrap_bucket_name
 }
 
 module "ark_backup" {
