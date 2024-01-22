@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.3.0...v1.4.0) (2024-01-22)
+
+
+### Features
+
+* **restore-from-backup:** The ability for users to provide existing save game data on startup added ([#8](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/issues/8)) ([9dfaee7](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/9dfaee7eceeab596358ad6709a216a559a5f721b))
+
 ## [1.3.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.2.0...v1.3.0) (2024-01-19)
 
 
