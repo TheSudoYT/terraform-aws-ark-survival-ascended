@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.4.1](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.4.0...v1.4.1) (2024-01-27)
+
+
+### Bug Fixes
+
+* **custom ini fix:** Fixed a bug preventing custom ini files from github from working in certain conditions ([#10](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/issues/10)) ([af8a9c1](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/af8a9c1d2e429172fad54c9708f8ab3ad0128fc8))
+
 ## [1.4.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.3.0...v1.4.0) (2024-01-22)
 
 
