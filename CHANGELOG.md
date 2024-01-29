@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.4.2](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.4.1...v1.4.2) (2024-01-29)
+
+
+### Bug Fixes
+
+* **supply crates:** Fixed a bug preventing RandomSupplyCratePoints from being configured ([#11](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/issues/11)) ([2f98471](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/2f98471fb68b5f3fe15a44e93fad1b3ded1cad7e))
+
 ### [1.4.1](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.4.0...v1.4.1) (2024-01-27)
 
 
