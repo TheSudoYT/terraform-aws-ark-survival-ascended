@@ -119,7 +119,7 @@ data "template_file" "user_data_template" {
     prevent_tribe_alliances                      = "${var.prevent_tribe_alliances}"
     pve_allow_structures_at_supply_drops         = "${var.pve_allow_structures_at_supply_drops}"
     raid_dino_character_food_drain_multiplier    = "${var.raid_dino_character_food_drain_multiplier}"
-    random_supply_crate_pionts                   = "${var.random_supply_crate_pionts}"
+    random_supply_crate_points                   = "${var.random_supply_crate_points}"
     rcon_server_game_log_buffer                  = "${var.rcon_server_game_log_buffer}"
     resource_respawn_period_multiplier           = "${var.resource_respawn_period_multiplier}"
     server_hardcore                              = "${var.server_hardcore}"

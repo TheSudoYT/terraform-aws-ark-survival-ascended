@@ -560,7 +560,7 @@ variable "raid_dino_character_food_drain_multiplier" {
   default     = 1.0
 }
 
-variable "random_supply_crate_pionts" {
+variable "random_supply_crate_points" {
   description = "If True, supply drops are in random locations. Note: This setting is known to cause artifacts becoming inaccessible on Ragnarok if active."
   type        = bool
   default     = false
