@@ -10,7 +10,7 @@ These inputs are required when migrating from an existing server with existing d
 > [!WARNING]
 > When `backup_files_storage_type = "local"` using The objects/files in the directory you specify with `backup_files_local_path` must not be compressed. Terraform will iterate through each file in that directory and upload it to the root of an S3 bucket it creates.
 
-- `backup_files_storage_type = "local"` will instruct terraform to create an S3 bucket named `ark-bootstrap-local-saves-region-accID` and upload the save files from your local PC `backup_files_local_path` directory specified to that bucket. The user_data script on the EC2 instance will download the files from that S3 bucket when the server starts and place them in the `/ark-asa/ShooterGame/Saved/SaveGames` directory.
+- `backup_files_storage_type = "local"` will instruct terraform to create an S3 bucket named `ark-bootstrap-local-saves-region-accID` and upload the save files from your local PC `backup_files_local_path` directory specified to that bucket. The user_data script on the EC2 instance will download the files from that S3 bucket when the server starts and place them in the `/ark-ark-survival-ascended/ShooterGame/Saved/SaveGames` directory.
 
 - `backup_files_storage_type = "s3"` Is informing terraform that you have an existing S3 bucket somewhere that contains the save game data. The EC2 user_data script will attempt to sync the root of that S3 bucket with the SaveGames directory of ark. That is why it is important that the objects be uncompressed and in the root of the directory. 
 
