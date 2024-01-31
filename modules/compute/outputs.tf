@@ -74,3 +74,8 @@ output "gameusersettings_s3_bucket" {
   value       = aws_s3_object.gameusersettings[*].bucket
   description = "The download URI of the gameusersettings.ini from s3 ( experimental )."
 }
+
+output "ark_server_public_ip" {
+  value       = aws_eip.ark_server_ip.public_ip
+  description = "The public IP address of the Ark server to connect on."
+}
