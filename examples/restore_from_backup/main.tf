@@ -1,4 +1,4 @@
-module "asa" {
+module "ark-survival-ascended" {
   source = "../.."
 
   # Infrastructure inputs

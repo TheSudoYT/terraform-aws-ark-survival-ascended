@@ -1,4 +1,4 @@
-module "asa" {
+module "ark-survival-ascended" {
   source = "../../"
 
   ge_proton_version          = "8-27"

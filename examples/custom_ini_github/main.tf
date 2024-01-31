@@ -1,4 +1,4 @@
-module "asa" {
+module "ark-survival-ascended" {
   source = "TheSudoYT/ark-survival-ascended/aws"
 
   # Infrastructure inputs

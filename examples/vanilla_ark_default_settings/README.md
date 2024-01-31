@@ -1,5 +1,5 @@
 # Vanilla Ark with Default Settings
-This example demonstrates all that is required to launch ASA with all default settings.
+This example demonstrates all that is required to launch ark-survival-ascended with all default settings.
 
 > [!NOTE]
 > Please change the `ark_session_name`.
