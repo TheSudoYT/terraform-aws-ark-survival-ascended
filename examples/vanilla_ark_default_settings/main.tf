@@ -1,5 +1,5 @@
 module "asa" {
-  source = "TheSudoYT/ark-survival-ascended/aws"
+  source = "../.."
 
   ge_proton_version = "8-27"
   instance_type     = "t3.xlarge"
