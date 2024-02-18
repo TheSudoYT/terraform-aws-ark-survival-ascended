@@ -5,6 +5,12 @@ variable "create_ssh_key" {
   default     = true
 }
 
+variable "enable_session_manager" {
+  description = "True or False. Determines if SSM Session Manager is enabled or not"
+  type        = bool
+  default     = false
+}
+
 variable "existing_ssh_key_name" {
   description = "The name of an EXISTING SSH key for use with the EC2 instance"
   type        = string

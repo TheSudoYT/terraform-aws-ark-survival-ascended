@@ -60,6 +60,15 @@ resource "aws_security_group" "ark_security_group" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
+  dynamic "ingress" {
+    for_each = var.enable_ssh ? [1] : []
+    content {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = var.ssh_ingress_allowed_cidr
+    }
+  }
   lifecycle {
     precondition {
       condition     = var.enable_rcon == true && var.rcon_port != null || var.enable_rcon == false && var.rcon_port == null

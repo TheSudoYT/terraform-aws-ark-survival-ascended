@@ -9,6 +9,15 @@ echo "[INFO] INSTALLING SOFTWARE"
 apt-get update
 apt-get install -y curl lib32gcc1 lsof git awscli
 
+# Install AWS SSM Agent if enabled
+if [[ ${enable_session_manager} == "true" ]]; then
+echo "[INFO] Installing AWS SSM Agent..."
+sudo snap install amazon-ssm-agent --classic
+sudo systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+sudo systemctl start snap.amazon-ssm-agent.amazon-ssm-agent.service
+echo "[INFO] AWS SSM Agent installation complete."
+fi
+
 # Install Proton from Glorious Eggroll to allow windows games to run on linux
 echo "[INFO] DOWNLOADING PROTON FROM GE"
 PROTON_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${ge_proton_version}/GE-Proton${ge_proton_version}.tar.gz"
@@ -115,7 +124,7 @@ retrieve_obj_from_s3() {
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    aws s3 cp "$src" "$dst"
+    aws s3 cp "$src" "$dst" --region ${aws_region}
     chown steam:steam /ark-asa/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini
   fi
 }
@@ -178,7 +187,7 @@ retrieve_obj_from_s3_gameini() {
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    aws s3 cp "$src" "$dst"
+    aws s3 cp "$src" "$dst" --region ${aws_region}
   fi
 }
 
@@ -242,7 +251,7 @@ retrieve_obj_from_new_s3_backup() {
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    aws s3 sync "$src" "$dst"
+    aws s3 sync "$src" "$dst" --region ${aws_region}
   fi
 }
 
@@ -257,7 +266,7 @@ retrieve_obj_from_existing_s3_backup() {
     exit_script 10
   else
     echo "[INFO] Copying $src to $dst..."
-    aws s3 sync "$src" "$dst"
+    aws s3 sync "$src" "$dst" --region ${aws_region}
   fi
 }
 
@@ -343,7 +352,7 @@ tar -zcvf "\$BACKUP_FILENAME" "\$DIR_TO_BACKUP"
 
 # Upload backup to S3
 echo "[INFO] Uploading Ark Backup to s3"
-aws s3 cp "\$BACKUP_FILENAME" s3://"\$S3_BUCKET_NAME"/
+aws s3 cp "\$BACKUP_FILENAME" s3://"\$S3_BUCKET_NAME"/ --region ${aws_region}
 
 # Remove local backup file
 echo "[INFO] Removing Local Ark Backup File"
