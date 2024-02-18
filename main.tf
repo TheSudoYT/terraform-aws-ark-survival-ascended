@@ -18,6 +18,7 @@ module "ark_compute" {
   instance_type            = var.instance_type
   ark_security_group_id    = module.ark_vpc.security_group_id
   ark_subnet_id            = module.ark_vpc.subnet_id
+  enable_session_manager   = var.enable_session_manager
   create_ssh_key           = var.create_ssh_key
   ssh_public_key           = var.create_ssh_key == true ? var.ssh_public_key : ""
   existing_ssh_key_name    = var.existing_ssh_key_name

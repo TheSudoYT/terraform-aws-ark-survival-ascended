@@ -38,7 +38,7 @@ resource "aws_instance" "ark_server" {
 
   user_data = data.template_file.user_data_template.rendered
 
-  iam_instance_profile = var.custom_gameusersettings_s3 == true && length(aws_iam_instance_profile.instance_profile) > 0 || var.custom_gameini_s3 == true && length(aws_iam_instance_profile.instance_profile) > 0 ? aws_iam_instance_profile.instance_profile[0].name : null
+  iam_instance_profile = var.custom_gameusersettings_s3 == true && length(aws_iam_instance_profile.instance_profile) > 0 || var.custom_gameini_s3 == true && length(aws_iam_instance_profile.instance_profile) > 0 || var.enable_session_manager == true ? aws_iam_instance_profile.instance_profile[0].name : null
 
 
   root_block_device {

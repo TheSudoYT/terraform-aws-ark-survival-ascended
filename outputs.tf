@@ -87,3 +87,8 @@ output "ark_server_public_ip" {
   value       = module.ark_compute.ark_server_public_ip
   description = "The public IP address of the Ark server to connect on."
 }
+
+output "session_manager_enabled" {
+  value       = module.ark_compute.session_manager_enabled
+  description = "Is AWS SSM Session Manager enabled or not."
+}

@@ -22,6 +22,7 @@ data "template_file" "user_data_template" {
   template = file("${path.module}/templates/user_data_script.sh.tpl")
   vars = {
     aws_region                 = data.aws_region.current.name
+    enable_session_manager     = var.enable_session_manager
     mod_list                   = join(",", var.mod_list)
     supported_server_platforms = join(",", var.supported_server_platforms)
     use_battleye               = "${var.use_battleye}"

@@ -9,6 +9,15 @@ echo "[INFO] INSTALLING SOFTWARE"
 apt-get update
 apt-get install -y curl lib32gcc1 lsof git awscli
 
+# Install AWS SSM Agent if enabled
+if [[ ${enable_session_manager} == "true" ]]; then
+echo "[INFO] Installing AWS SSM Agent..."
+sudo snap install amazon-ssm-agent --classic
+sudo systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+sudo systemctl start snap.amazon-ssm-agent.amazon-ssm-agent.service
+echo "[INFO] AWS SSM Agent installation complete."
+fi
+
 # Install Proton from Glorious Eggroll to allow windows games to run on linux
 echo "[INFO] DOWNLOADING PROTON FROM GE"
 PROTON_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton${ge_proton_version}/GE-Proton${ge_proton_version}.tar.gz"
