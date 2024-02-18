@@ -3,12 +3,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0.0 |
 
 ## Modules
 
@@ -31,8 +32,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_rcon"></a> [enable\_rcon](#input\_enable\_rcon) | True or False. Enable RCON or not | `bool` | `false` | no |
+| <a name="input_enable_ssh"></a> [enable\_ssh](#input\_enable\_ssh) | True or False. Determines if SSH and port 22 are enabled or not | `bool` | `true` | no |
 | <a name="input_game_client_port"></a> [game\_client\_port](#input\_game\_client\_port) | The port that the game client listens on | `number` | `7777` | no |
 | <a name="input_rcon_port"></a> [rcon\_port](#input\_rcon\_port) | The port number that RCON listens on if enabled | `number` | `null` | no |
+| <a name="input_ssh_ingress_allowed_cidr"></a> [ssh\_ingress\_allowed\_cidr](#input\_ssh\_ingress\_allowed\_cidr) | The CIDR range to allow SSH incoming connections from | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_steam_query_port"></a> [steam\_query\_port](#input\_steam\_query\_port) | The query port for steam server browser | `number` | `27015` | no |
 | <a name="input_subnet_availability_zone"></a> [subnet\_availability\_zone](#input\_subnet\_availability\_zone) | The AZ of the subnet to be created within the VPC | `string` | `"us-east-1a"` | no |
 | <a name="input_subnet_cidr_block"></a> [subnet\_cidr\_block](#input\_subnet\_cidr\_block) | The CIDR block of the  subnet to be created within the VPC | `string` | `"10.0.1.0/24"` | no |
@@ -42,6 +45,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | n/a |
-| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | n/a |
-| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | n/a |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The security group ID of the security group created by Terraform. |
+| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | The subnet ID of the subnet created by Terraform. |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC created by Terraform. |

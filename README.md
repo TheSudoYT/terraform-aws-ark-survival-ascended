@@ -251,6 +251,8 @@ No resources.
 | <a name="input_ami_id"></a> [ami\_id](#input\_ami\_id) | The AMI ID to use. Not providing one will result in the latest version of Ubuntu Focal 20.04 being used | `string` | `null` | no |
 | <a name="input_ark_session_name"></a> [ark\_session\_name](#input\_ark\_session\_name) | The name of the Ark server as it appears in the list of servers when users look for a server to join | `string` | `"ark-aws-ascended"` | no |
 | <a name="input_auto_save_interval"></a> [auto\_save\_interval](#input\_auto\_save\_interval) | Set interval for automatic saves. Must be a float. pattern allows float numbers like 15.0, 3.14, etc. Setting this to 0 will cause constant saving. | `number` | `15` | no |
+| <a name="input_backup_files_local_path"></a> [backup\_files\_local\_path](#input\_backup\_files\_local\_path) | Path to existing save game files relative to your Terraform working directory. Will be uploaded to the server. Required if `backup_files_storage_path = local` | `string` | `""` | no |
+| <a name="input_backup_files_storage_type"></a> [backup\_files\_storage\_type](#input\_backup\_files\_storage\_type) | The location of your save game files that you wish to start the server with. Supported options are `local` or `s3'. `local` means the save game files exist somewhere on the host you are running terraform apply from. `s3` means the files exist in an s3 bucket.` | `string` | `"local"` | no |
 | <a name="input_backup_interval_cron_expression"></a> [backup\_interval\_cron\_expression](#input\_backup\_interval\_cron\_expression) | How often to backup the ShooterGame/Saved directory to S3 in cron expression format (https://crontab.cronhub.io/) | `string` | `"0 23 * * *"` | no |
 | <a name="input_backup_s3_bucket_arn"></a> [backup\_s3\_bucket\_arn](#input\_backup\_s3\_bucket\_arn) | The ARN of the s3 bucket that you would like to use for ShooterGame/Saved directory backups | `string` | `""` | no |
 | <a name="input_backup_s3_bucket_name"></a> [backup\_s3\_bucket\_name](#input\_backup\_s3\_bucket\_name) | The name of the S3 bucket to backup the ShooterGame/Saved directory to | `string` | `""` | no |
@@ -263,7 +265,7 @@ No resources.
 | <a name="input_custom_gameusersettings_github"></a> [custom\_gameusersettings\_github](#input\_custom\_gameusersettings\_github) | True or False. Set true if use\_custom\_gameusersettings is true and you want to download them from github. Must be a public repo. | `bool` | `false` | no |
 | <a name="input_custom_gameusersettings_github_url"></a> [custom\_gameusersettings\_github\_url](#input\_custom\_gameusersettings\_github\_url) | The URL to the GameUserSettings.ini file on a public GitHub repo. Used when custom\_gameusersettings\_github and custom\_game\_usersettings both == true. | `string` | `""` | no |
 | <a name="input_custom_gameusersettings_s3"></a> [custom\_gameusersettings\_s3](#input\_custom\_gameusersettings\_s3) | True or False. Set true if use\_custom\_gameusersettings is true and you want to upload and download them from an S3 bucket during installation | `bool` | `false` | no |
-| <a name="input_day_cycle_speed_scale"></a> [day\_cycle\_speed\_scale](#input\_day\_cycle\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during the day. This value determines the length of each day, relative to the length of each night (as specified by NightTimeSpeedScale). Lowering this value increases the length of each day. | `number` | `1` | no |      
+| <a name="input_day_cycle_speed_scale"></a> [day\_cycle\_speed\_scale](#input\_day\_cycle\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during the day. This value determines the length of each day, relative to the length of each night (as specified by NightTimeSpeedScale). Lowering this value increases the length of each day. | `number` | `1` | no |
 | <a name="input_day_time_speed_scale"></a> [day\_time\_speed\_scale](#input\_day\_time\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during the day. This value determines the length of each day, relative to the length of each night (as specified by NightTimeSpeedScale). Lowering this value increases the length of each day. | `number` | `1` | no |
 | <a name="input_difficulty_offset"></a> [difficulty\_offset](#input\_difficulty\_offset) | Specifies the difficulty level. | `number` | `1` | no |
 | <a name="input_dino_character_food_drain_multiplier"></a> [dino\_character\_food\_drain\_multiplier](#input\_dino\_character\_food\_drain\_multiplier) | Specifies the scaling factor for creatures' food consumption. Higher values increase food consumption (creatures get hungry faster). It also affects the taming-times. | `number` | `1` | no |
@@ -282,11 +284,15 @@ No resources.
 | <a name="input_enable_pvp_gamma"></a> [enable\_pvp\_gamma](#input\_enable\_pvp\_gamma) | If True, allows use of console command gamma in PvP mode. | `bool` | `false` | no |
 | <a name="input_enable_rcon"></a> [enable\_rcon](#input\_enable\_rcon) | True or False. Enable RCON or not | `bool` | `false` | no |
 | <a name="input_enable_s3_backups"></a> [enable\_s3\_backups](#input\_enable\_s3\_backups) | True or False. Set to true to enable backing up of the ShooterGame/Saved directory to S3 | `bool` | `false` | no |
+| <a name="input_enable_session_manager"></a> [enable\_session\_manager](#input\_enable\_session\_manager) | True or False. Determines if SSM Session Manager is enabled or not | `bool` | `false` | no |
+| <a name="input_enable_ssh"></a> [enable\_ssh](#input\_enable\_ssh) | True or False. Determines if SSH and port 22 are enabled or not | `bool` | `true` | no |
+| <a name="input_existing_backup_files_bootstrap_bucket_arn"></a> [existing\_backup\_files\_bootstrap\_bucket\_arn](#input\_existing\_backup\_files\_bootstrap\_bucket\_arn) | The ARN of an existing S3 bucket with ARK save game data. Files will be downloaded to the server. Objects must be in the root of the S3 bucket and not compressed. | `string` | `""` | no |
+| <a name="input_existing_backup_files_bootstrap_bucket_name"></a> [existing\_backup\_files\_bootstrap\_bucket\_name](#input\_existing\_backup\_files\_bootstrap\_bucket\_name) | The Name of an existing S3 bucket with ARK save game data. Files will be downloaded to the server. Objects must be in the root of the S3 bucket and not compressed. | `string` | `""` | no |
 | <a name="input_existing_ssh_key_name"></a> [existing\_ssh\_key\_name](#input\_existing\_ssh\_key\_name) | The name of an EXISTING SSH key for use with the EC2 instance | `string` | `null` | no |
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | True or False. Set to true if you want Terraform destroy commands to have the ability to destroy the backup bucket while it still containts backup files | `bool` | `false` | no |
 | <a name="input_game_client_port"></a> [game\_client\_port](#input\_game\_client\_port) | The port that the game client listens on | `number` | `7777` | no |
-| <a name="input_game_ini_path"></a> [game\_ini\_path](#input\_game\_ini\_path) | Path to Game.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use\_custom\_game\_ini = true | `string` | `""` | no |
-| <a name="input_game_user_settings_ini_path"></a> [game\_user\_settings\_ini\_path](#input\_game\_user\_settings\_ini\_path) | Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use\_custom\_gameusersettings = true | `string` | `""` | no |
+| <a name="input_game_ini_path"></a> [game\_ini\_path](#input\_game\_ini\_path) | Path to Game.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use\_custom\_game\_ini = true and custom\_game\_ini\_s3 = true. | `string` | `""` | no |
+| <a name="input_game_user_settings_ini_path"></a> [game\_user\_settings\_ini\_path](#input\_game\_user\_settings\_ini\_path) | Path to GameUserSettings.ini relative to your Terraform working directory. Will be uploaded to the server. Required if use\_custom\_gameusersettings = true and custom\_game\_usersettings\_s3 = true. | `string` | `""` | no |
 | <a name="input_ge_proton_version"></a> [ge\_proton\_version](#input\_ge\_proton\_version) | The version of GE Proton to use when installing Ark. Example: 8-21 (https://github.com/GloriousEggroll/proton-ge-custom/releases) | `string` | `"8-21"` | no |
 | <a name="input_harvest_ammount_multiplier"></a> [harvest\_ammount\_multiplier](#input\_harvest\_ammount\_multiplier) | Specifies the scaling factor for yields from all harvesting activities (chopping down trees, picking berries, carving carcasses, mining rocks, etc.). Higher values increase the amount of materials harvested with each strike. | `number` | `1` | no |
 | <a name="input_harvest_health_multiplier"></a> [harvest\_health\_multiplier](#input\_harvest\_health\_multiplier) | Specifies the scaling factor for the health of items that can be harvested (trees, rocks, carcasses, etc.). Higher values increase the amount of damage (i.e., number of strikes) such objects can withstand before being destroyed, which results in higher overall harvest yields. | `number` | `1` | no |
@@ -300,7 +306,7 @@ No resources.
 | <a name="input_max_players"></a> [max\_players](#input\_max\_players) | The number of max players the server allows | `string` | `"32"` | no |
 | <a name="input_max_tamed_dinos"></a> [max\_tamed\_dinos](#input\_max\_tamed\_dinos) | Changes the maximum number of platformed-creatures/rafts allowed on the ARK (a potential performance cost). Example: MaxPlatformSaddleStructureLimit=10 would only allow 10 platform saddles/rafts across the entire ARK. | `number` | `5000` | no |
 | <a name="input_mod_list"></a> [mod\_list](#input\_mod\_list) | A list of mod IDs to add to the server. List of strings. Example: mod\_list = ['935813', '900062'] | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
-| <a name="input_night_time_speed_scale"></a> [night\_time\_speed\_scale](#input\_night\_time\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during night time. This value determines the length of each night, relative to the length of each day (as specified by DayTimeSpeedScale) Lowering this value increases the length of each night. | `number` | `1` | no | 
+| <a name="input_night_time_speed_scale"></a> [night\_time\_speed\_scale](#input\_night\_time\_speed\_scale) | Specifies the scaling factor for the passage of time in the ARK during night time. This value determines the length of each night, relative to the length of each day (as specified by DayTimeSpeedScale) Lowering this value increases the length of each night. | `number` | `1` | no |
 | <a name="input_non_permanent_diseases"></a> [non\_permanent\_diseases](#input\_non\_permanent\_diseases) | If True, makes permanent diseases not permanent. Players will lose them if on re-spawn. | `bool` | `false` | no |
 | <a name="input_override_official_difficulty"></a> [override\_official\_difficulty](#input\_override\_official\_difficulty) | Allows you to override the default server difficulty level of 4 with 5 to match the new official server difficulty level. Default value of 0.0 disables the override. A value of 5.0 will allow common creatures to spawn up to level 150. Originally (247.95) available only as command line option. | `number` | `0` | no |
 | <a name="input_override_structure_platform_prevention"></a> [override\_structure\_platform\_prevention](#input\_override\_structure\_platform\_prevention) | If True, turrets becomes be buildable and functional on platform saddles. Since 247.999 applies on spike structure too. Note: despite patch notes, in ShooterGameServer it's coded OverrideStructurePlatformPrevention with two r. | `bool` | `false` | no |
@@ -321,7 +327,7 @@ No resources.
 | <a name="input_prevent_tribe_alliances"></a> [prevent\_tribe\_alliances](#input\_prevent\_tribe\_alliances) | If True, prevents tribes from creating Alliances. | `bool` | `false` | no |
 | <a name="input_pve_allow_structures_at_supply_drops"></a> [pve\_allow\_structures\_at\_supply\_drops](#input\_pve\_allow\_structures\_at\_supply\_drops) | If True, allows building near supply drop points in PvE mode. | `bool` | `false` | no |
 | <a name="input_raid_dino_character_food_drain_multiplier"></a> [raid\_dino\_character\_food\_drain\_multiplier](#input\_raid\_dino\_character\_food\_drain\_multiplier) | Affects how quickly the food drains on such raid dinos (e.g.: Titanosaurus) | `number` | `1` | no |
-| <a name="input_random_supply_crate_points"></a> [random\_supply\_crate\_pionts](#input\_random\_supply\_crate\_pionts) | If True, supply drops are in random locations. Note: This setting is known to cause artifacts becoming inaccessible on Ragnarok if active. | `bool` | `false` | no |
+| <a name="input_random_supply_crate_points"></a> [random\_supply\_crate\_points](#input\_random\_supply\_crate\_points) | If True, supply drops are in random locations. Note: This setting is known to cause artifacts becoming inaccessible on Ragnarok if active. | `bool` | `false` | no |
 | <a name="input_rcon_port"></a> [rcon\_port](#input\_rcon\_port) | The port number that RCON listens on if enabled | `number` | `null` | no |
 | <a name="input_rcon_server_game_log_buffer"></a> [rcon\_server\_game\_log\_buffer](#input\_rcon\_server\_game\_log\_buffer) | Determines how many lines of game logs are send over the RCON. Note: despite being coded as a float it's suggested to treat it as integer. | `number` | `600` | no |
 | <a name="input_resource_respawn_period_multiplier"></a> [resource\_respawn\_period\_multiplier](#input\_resource\_respawn\_period\_multiplier) | Specifies the scaling factor for the re-spawn rate for resource nodes (trees, rocks, bushes, etc.). Lower values cause nodes to re-spawn more frequently. | `number` | `1` | no |
@@ -332,6 +338,7 @@ No resources.
 | <a name="input_ssh_ingress_allowed_cidr"></a> [ssh\_ingress\_allowed\_cidr](#input\_ssh\_ingress\_allowed\_cidr) | The CIDR range to allow SSH incoming connections from | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
 | <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | The name of the SSH key to be created for use with the EC2 instance | `string` | `"ark-ssh-key"` | no |
 | <a name="input_ssh_public_key"></a> [ssh\_public\_key](#input\_ssh\_public\_key) | The path to the ssh public key to be used with the EC2 instance | `string` | `"~/.ssh/ark_public_key.pub"` | no |
+| <a name="input_start_from_backup"></a> [start\_from\_backup](#input\_start\_from\_backup) | True of False. Set true to start the server from an existing Ark save. Requires existing save game files. | `bool` | `false` | no |
 | <a name="input_steam_query_port"></a> [steam\_query\_port](#input\_steam\_query\_port) | The query port for steam server browser | `number` | `27015` | no |
 | <a name="input_structure_pickup_hold_duration"></a> [structure\_pickup\_hold\_duration](#input\_structure\_pickup\_hold\_duration) | Specifies the quick pick-up hold duration, a value of 0 results in instant pick-up. | `number` | `0.5` | no |
 | <a name="input_structure_pickup_time_after_placement"></a> [structure\_pickup\_time\_after\_placement](#input\_structure\_pickup\_time\_after\_placement) | Amount of time in seconds after placement that quick pick-up is available. | `number` | `30` | no |
@@ -339,6 +346,7 @@ No resources.
 | <a name="input_structure_resistance_multiplier"></a> [structure\_resistance\_multiplier](#input\_structure\_resistance\_multiplier) | Specifies the scaling factor for the resistance to damage structures receive when attacked. The default value 1 provides normal damage. Higher values decrease resistance, increasing damage per attack. Lower values increase it, reducing damage per attack. A value of 0.5 results in a structure taking half damage while a value of 2.0 would result in a structure taking double normal damage. | `number` | `1` | no |
 | <a name="input_subnet_availability_zone"></a> [subnet\_availability\_zone](#input\_subnet\_availability\_zone) | The AZ of the subnet to be created within the VPC | `string` | `"us-east-1a"` | no |
 | <a name="input_subnet_cidr_block"></a> [subnet\_cidr\_block](#input\_subnet\_cidr\_block) | The CIDR block of the  subnet to be created within the VPC | `string` | `"10.0.1.0/24"` | no |
+| <a name="input_supported_server_platforms"></a> [supported\_server\_platforms](#input\_supported\_server\_platforms) | Allows the server to accept specified platforms. Options are PC for Steam, PS5 for PlayStation 5, XSX for XBOX, WINGDK for Microsoft Store, ALL for crossplay between PC and all consoles. Note: Steam dedicated server supports only PC and ALL options. Example: supported\_server\_platforms = ['PC', 'PS5'] | `list(string)` | <pre>[<br>  "PC"<br>]</pre> | no |
 | <a name="input_taming_speed_multiplier"></a> [taming\_speed\_multiplier](#input\_taming\_speed\_multiplier) | Specifies the scaling factor for creature taming speed. Higher values make taming faster. | `number` | `1` | no |
 | <a name="input_the_max_structure_in_range"></a> [the\_max\_structure\_in\_range](#input\_the\_max\_structure\_in\_range) | Specifies the maximum number of structures that can be constructed within a certain (currently hard-coded) range. Replaces the old value NewMaxStructuresInRange | `number` | `10500` | no |
 | <a name="input_use_battleye"></a> [use\_battleye](#input\_use\_battleye) | True or False. True will set the -noBattlEye flag. | `bool` | `false` | no |
@@ -349,23 +357,24 @@ No resources.
 
 ## Outputs
 
-No outputs
-
-## Future Features Roadmap (TO DO)
-| Feature | Target Date |
-| ------- | ----------- |
-| What happens if the session name is taken? | idk |
-| Add terraform-test to CI precommit and PR | now |
-| lifecycle ignore ssh 22 | meh |
-| Parametrize Game.ini options | Jan 2024
-| Restart interval | Jan 2024 |
-| Backups - RPO interval, rolling histroy, restoring | Jan 2024 |
-| Inputs for platform type | Jan 2024 |
-| Inputs for mods list(string) | Jan 2024 |
-| Allow users to define which map to use | Jan 2024 |
-| Allow users to launch a cluster of multiple maps | Feb 2024 |
-| Allow users to upload existing save game data when the server is started | Feb / March 2024 |
-| Parameterize missing inputs | April 2024 or whenever someone requests a feature |
-| Make compute stateless. Store data external from compute via RDS and EFS | Sometime 2024 ( I don't even know if this is possible ) |
-| AWS SSM Support | Feb 2024 |
-| Autoscaling Group Support | Feb 2024 |
+| Name | Description |
+|------|-------------|
+| <a name="output_admin_commands_password"></a> [admin\_commands\_password](#output\_admin\_commands\_password) | The configured admin command password. |
+| <a name="output_ark_server_public_ip"></a> [ark\_server\_public\_ip](#output\_ark\_server\_public\_ip) | The public IP address of the Ark server to connect on. |
+| <a name="output_backup_s3_bucket_arn"></a> [backup\_s3\_bucket\_arn](#output\_backup\_s3\_bucket\_arn) | The ARN of the S3 bucket created for backups if enabled. |
+| <a name="output_backup_s3_bucket_name"></a> [backup\_s3\_bucket\_name](#output\_backup\_s3\_bucket\_name) | The ID of the S3 bucket created for backups if enabled. |
+| <a name="output_custom_gameusersettings_file_name"></a> [custom\_gameusersettings\_file\_name](#output\_custom\_gameusersettings\_file\_name) | The custom gameusersettings file name that was uploaded to s3 if use custom GUS ini with s3 was configured. |
+| <a name="output_custom_ini_s3_bucket_name"></a> [custom\_ini\_s3\_bucket\_name](#output\_custom\_ini\_s3\_bucket\_name) | The ID of the S3 bucket that was created if use custom ini with s3 was configured. |
+| <a name="output_game_client_port"></a> [game\_client\_port](#output\_game\_client\_port) | The configured game client port. |
+| <a name="output_join_password"></a> [join\_password](#output\_join\_password) | The server join password required to join. |
+| <a name="output_max_players"></a> [max\_players](#output\_max\_players) | The configured max players. |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | The security group ID of the security group created by Terraform. |
+| <a name="output_server_is_password_protected"></a> [server\_is\_password\_protected](#output\_server\_is\_password\_protected) | Is the server password protected. |
+| <a name="output_server_using_custom_gameini"></a> [server\_using\_custom\_gameini](#output\_server\_using\_custom\_gameini) | Is the server using custom Game.ini. |
+| <a name="output_server_using_custom_gameusersettingsini"></a> [server\_using\_custom\_gameusersettingsini](#output\_server\_using\_custom\_gameusersettingsini) | Is the server using custom GameUserSettings.ini. |
+| <a name="output_session_manager_enabled"></a> [session\_manager\_enabled](#output\_session\_manager\_enabled) | Is AWS SSM Session Manager enabled or not. |
+| <a name="output_session_name"></a> [session\_name](#output\_session\_name) | The configured session name. |
+| <a name="output_ssh_key_name"></a> [ssh\_key\_name](#output\_ssh\_key\_name) | The name of the SSH key generated by Terraform. |
+| <a name="output_steam_query_port"></a> [steam\_query\_port](#output\_steam\_query\_port) | The configured steam query port. |
+| <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | The subnet ID of the subnet created by Terraform. |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC created by Terraform. |
