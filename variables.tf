@@ -54,6 +54,12 @@ variable "create_ssh_key" {
   default     = true
 }
 
+variable "enable_ssh" {
+  description = "True or False. Determines if SSH and port 22 are enabled or not"
+  type        = bool
+  default     = true
+}
+
 variable "enable_session_manager" {
   description = "True or False. Determines if SSM Session Manager is enabled or not"
   type        = bool
