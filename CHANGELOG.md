@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.5.0...v1.6.0) (2024-02-18)
+
+
+### Features
+
+* **ssm:** Inputs to Enabled AWS SSM Session Manager Added ([8e5abe4](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/8e5abe4ce757aebe251157f9e44a0271465d4d6d))
+
+
+### Bug Fixes
+
+* **s3:** Fixed a bug preventing newer AWS regions from being supported ([6187beb](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/commit/6187beba5fdaacde17d28888fb67180cd11aaa4c))
+
 ## [1.5.0](https://github.com/TheSudoYT/terraform-aws-ark-survival-ascended/compare/v1.4.2...v1.5.0) (2024-01-31)
 
 
