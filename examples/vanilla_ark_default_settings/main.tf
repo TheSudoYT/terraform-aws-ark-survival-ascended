@@ -1,12 +1,12 @@
 module "ark-survival-ascended" {
   source = "../.."
 
-  ge_proton_version = "8-27"
-  instance_type     = "t3.xlarge"
-  create_ssh_key    = true
-  ssh_public_key    = "../../ark_public_key.pub"
-  subnet_availability_zone = "us-east-1a"
-  ark_session_name  = "ark-aws-ascended"
+  ge_proton_version                            = "8-27"
+  instance_type                                = "t3.xlarge"
+  create_ssh_key                               = true
+  ssh_public_key                               = "../../ark_public_key.pub"
+  subnet_availability_zone                     = "us-east-1a"
+  ark_session_name                             = "ark-aws-ascended"
   taming_speed_multiplier                      = 1.0
   xp_multiplier                                = 1.0
   server_pve                                   = true
